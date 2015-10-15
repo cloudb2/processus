@@ -1,0 +1,31 @@
+{
+  "tasks": {
+    "Task 1": {
+      "description": "I am task 1. I will block 1000msecs and not error",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 1000,
+        "error": false
+      }
+    },
+    "Task 2": {
+      "description": "I am task 2. I will block 500msecs and not error",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 500,
+        "error": false
+      }
+    },
+    "Task 3": {
+      "description": "I am task 3. I will block 2000msecs and then error",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 2000,
+        "error": true
+      }
+    }
+  },
+}

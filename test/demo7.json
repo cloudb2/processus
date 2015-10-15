@@ -1,0 +1,35 @@
+{
+  "static":{
+    "global-delay":500,
+    "global-error":false
+  },
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I take 500msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": "$[static.global-delay]",
+        "error": "$[static.global-error]"
+      }
+    },
+    "task 2": {
+      "description": "I am the task 2, I take as long as task1.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": "$[static.global-delay]",
+        "error": "$[static.global-error]"
+      }
+    },
+    "task 3": {
+      "description": "I am the task 3, I take as long as task1.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": "$[static.global-delay]",
+        "error": "$[static.global-error]"
+      }
+    }
+  }
+}

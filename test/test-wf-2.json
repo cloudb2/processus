@@ -1,0 +1,29 @@
+{
+  "tasks": {
+    "Say I": {
+      "description": "I am the task that says I",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "echo '<3'"
+      }
+    },
+    "Say Love": {
+      "description": "I am the task that says I",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "echo Simple "
+      }
+    },
+    "Say YOU": {
+      "description": "I am the task that says I",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "echo Workflow "
+      }
+    }
+
+  }
+}
