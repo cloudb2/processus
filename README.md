@@ -21,6 +21,7 @@ workflows.
   * [Task Handlers - The Interface](#task-handlers---the-interface)
   * [Task Handlers - Shell Handler](#task-handlers---shell-handler)
   * [Task Handlers - Shell Demo](#task-handlers---shell-demo)
+  * [Tasks - Conditions: Introducing Skip_if and Error_if](#tasks---conditions:-introducing-skip_if-and-error_if)
 
 [Contributing](#contributing)
   * [Contributing - Roadmap](#contributing---roadmap)
@@ -51,6 +52,8 @@ A workflow in Processus is defined using JSON, which should conform to a specifi
 schema. The best way to understand that schema is looking at examples.
 
 ## Introduction
+
+Processus assumes that the person assembling the workflow is NOT necessarily familiar with the nuances of software development. Although they use JSON to configure the workflow, its executional flow and conditional constructs, they will defer the difficult task of interacting with various endpoints and systems to the task handlers. In short, Processus tries to employ a KIS (Keep It Simple) philosophy to its configuration.
 
 Let's suppose we want 3 tasks in series.
 Look at the JSON file ```./test/demo1.json```
@@ -1402,6 +1405,165 @@ Hopefully this starts to show the potential power of Processus.
 
 [top](#processus)
 
+## Tasks - Conditions: Introducing Skip_if and Error_if
+
+Tasks can have the extra properties ```skip_if``` and ```error_if```.
+
+As the names suggest, if either property evaluates to true, then Processus will either skip the task and just mark it as completed or raise an error and stop.
+
+As with sharing data values, you can reference another part of the workflow and have that substituted at execution time. In addition, Processus supports a very simple conditional constructs. As a developer you may have an understandably negative thoughts about some of these, but Processus is designed to be simple to use for those NOT familiar with the nuances of software development and conditional statements.
+
+Conditions are in the form.
+
+<valueA> [conditional operator] [ValueB]
+
+Notice, if you want a condition to be evaluated against the ```skip_if``` or ```error_if``` properties of a task, the following should be observed.
+
+[conditional operator] [ValueB] are optional
+<valueA> alone is considered to be true if it's value is a boolean of true or any variation of the string "true". All other values are considered false.
+
+|conditional operator| equivalent value|
+|--------------------|-----------------|
+|EQUALS| equals|
+| | = |
+| | == |
+| | === |
+| | is |
+|NOT | not |
+|    | is not |
+|    | ! |
+|    | != |
+|    | !== |
+| > | > |
+|   | gt |
+|   | more than |
+|   | greater than |
+| < | < |
+|   | lt |
+|   | less than |
+
+The JSON config file (demo10)
+<pre><code>
+{
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I echo Processus",
+      "blocking": true,
+      "handler": "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "echo Processus",
+        "skip me": "yeah"
+      }
+    },
+    "task 2": {
+      "description": "I am the task 2, I will be skipped",
+      "blocking": true,
+      <b>"skip_if":"$[tasks.task 1.data.skip me] is yeah",</b>
+      "handler": "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "echo Simple"
+      }
+    },
+    "task 3": {
+      "description": "I am the task 3, I will error",
+      "blocking": true,
+      <b>"error_if": "$[tasks.task 2.skip_if]",</b>
+      "handler": "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "echo Workflow"
+      }
+    }
+  }
+}
+</code></pre>
+
+**Notice** the skip_if and error_if properties of tasks 2 and 3.
+
+```$[tasks.task 1.data.skip me] is yeah``` will become ```yeah is yeah``` at execution time, evaluating to true, so the task will be skipped.
+```$[tasks.task 2.skip_if]``` will become ```true``` because that's what the skip_if will evaluate to.
+
+Running the demo
+<pre><code>
+$ ./bin/processus-cli -f test/demo10.json -l debug
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+2015-10-20 15:00:39 DEBUG task.skip_if = undefined
+2015-10-20 15:00:39 DEBUG task.error_if = undefined
+2015-10-20 15:00:39 INFO Processus
+
+2015-10-20 15:00:39 DEBUG Getting data for path: tasks.task 1.data.skip me
+2015-10-20 15:00:39 DEBUG $[tasks.task 1.data.skip me] is yeah has ref: tasks.task 1.data.skip me
+2015-10-20 15:00:39 DEBUG $[tasks.task 1.data.skip me] is yeah de-referenced value is: yeah is yeah
+2015-10-20 15:00:39 DEBUG evaluating condition yeah is yeah
+2015-10-20 15:00:39 DEBUG task.skip_if = true
+2015-10-20 15:00:39 DEBUG task.error_if = undefined
+2015-10-20 15:00:39 DEBUG Getting data for path: tasks.task 2.skip_if
+2015-10-20 15:00:39 DEBUG $[tasks.task 2.skip_if] has ref: tasks.task 2.skip_if
+2015-10-20 15:00:39 DEBUG $[tasks.task 2.skip_if] de-referenced value is: true
+2015-10-20 15:00:39 DEBUG evaluating condition true
+2015-10-20 15:00:39 DEBUG task.skip_if = undefined
+2015-10-20 15:00:39 DEBUG task.error_if = true
+2015-10-20 15:00:39 ERROR Task has error condition set.
+2015-10-20 15:00:39 DEBUG {
+  "tasks": {
+    "task 1": {
+      "description": "I am the task 1, I echo Processus",
+      "blocking": true,
+      "handler": "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "echo Processus",
+        "skip me": "yeah",
+        "stdout": "Processus\n",
+        "stderr": ""
+      },
+      "status": "completed",
+      "time-opened": 1445353239367,
+      "time-started": 1445353239369,
+      "time-completed": 1445353239395,
+      "handler-duration": 26,
+      "total-duration": 28
+    },
+    "task 2": {
+      "description": "I am the task 2, I will be skipped",
+      "blocking": true,
+      "skip_if": true,
+      "handler": "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "echo Simple"
+      },
+      "status": "completed",
+      "time-opened": 1445353239395,
+      "time-started": 1445353239397,
+      "time-completed": 1445353239398,
+      "handler-duration": 1,
+      "total-duration": 3
+    },
+    "task 3": {
+      "description": "I am the task 3, I will error",
+      "blocking": true,
+      "error_if": true,
+      "handler": "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "echo Workflow",
+        "error": "Task has error condition set."
+      },
+      "status": "error",
+      "time-opened": 1445353239398,
+      "time-started": 1445353239399
+    }
+  },
+  "status": "error"
+}
+</code></pre>
+
+**Notice** that because the ```skip_if``` and ```error_if``` properties of task 1 are undefined, no evaluation of the condition takes place and the task executes normally. Task 2 did complete, but because the ```skip_if``` evaluates to true, the task handler is NOT executed. Therefore the ```'echo Simple'``` did not execute. Finally, notice that task 3 is in the error condition and therefore so is the workflow.
+
 
 # Contributing
 
@@ -1418,4 +1580,3 @@ TBC
 4. HTTP Handler allowing Processus to interact with remote endpoints during workflow execution
 5. Workflow Handler allowing a task to create another workflow (i.e. nested Sync and Async Workflows)
 6. Support for nested tasks "injected" at executon by handlers
-7. conditions for execution skip_if, error_if, execute_if

@@ -97,7 +97,21 @@ function realExecute(workflow, callback) {
       var t2 = openTasks[taskNames[x]];
       //logger.info("Executing - [" + n2 + "] using handler [" + t2.handler + "]");
       t2['time-started'] = Date.now();
-      require(t2.handler)(n2, t2, callback, logger);
+      logger.debug("task.skip_if = " + t2.skip_if);
+      logger.debug("task.error_if = " + t2.error_if);
+
+      var skip = (t2.skip_if === true || t2.error_if === true);
+      if (!skip) {
+        //No error or skip condition so execute handler
+        require(t2.handler)(n2, t2, callback, logger);
+      }
+      else {
+        var err = null;
+        if (t2.error_if === true) {
+          err = new Error("Task has error condition set.");
+        }
+        callback(err, t2);
+      }
     };
   }
 
@@ -114,13 +128,14 @@ function realExecute(workflow, callback) {
     //if the task is open and has no children, queue it to execute
     if(t.status === 'open' && !t.tasks){
       setTaskDataValues(workflow, t);
+      setConditionValues(workflow, t);
       taskExecutionQueue.push(taskFunction);
     }
-
-    //if the task has children, but they're all completed, queue it to execute
+    //if the task has children, but they're ALL completed, queue it to execute
     if(t.status === 'open' && t.tasks){
       if(childHasStatus(t, 'completed', true)){
         setTaskDataValues(workflow, t);
+        setConditionValues(workflow, t);
         taskExecutionQueue.push(taskFunction);
       }
     }
@@ -156,7 +171,7 @@ function realExecute(workflow, callback) {
           task.status = 'error';
           task.data.error = error.message;
         });
-        workflow.satus = 'error';
+        workflow.status = 'error';
         callback(error, workflow);
       }
     });
@@ -175,18 +190,7 @@ function realExecute(workflow, callback) {
 function setTaskDataValues(workflow, task){
   var dataNames = Object.keys(task.data);
   for(var x=0; x<dataNames.length; x++){
-    var dataValue = task.data[dataNames[x]];
-    if(typeof dataValue === "string"){
-      startDelim = dataValue.indexOf("$[");
-      endDelim = dataValue.indexOf("]");
-      if (startDelim > -1){
-        var path = dataValue.substring(startDelim +2, endDelim);
-        var newValue = dataValue.substring(0, startDelim) + getData(workflow, path) + dataValue.substring(endDelim + 1, dataValue.length);
-        logger.debug(dataNames[x] + " has ref: " + path);
-        logger.debug(dataNames[x] + " de-referenced value is: " + newValue);
-        task.data[dataNames[x]] = newValue;
-      }
-    }
+    task.data[dataNames[x]] = setRefValue(workflow, task.data[dataNames[x]]);
   }
 }
 
@@ -294,19 +298,68 @@ function getData(workflow, path){
   pathElements = path.split(".");
   var obj = workflow;
   for (var x=0; x<pathElements.length; x++){
-    obj = obj[pathElements[x]];
+    //bug fix, only keep following the path if the object isn't undefined
+    if(obj !== undefined) {
+      obj = obj[pathElements[x]];
+    }
+  }
+
+  if(obj === undefined){
+    //it's undefined, so we can't get the data, that may be valid.... or not!
+    logger.warn("Unable to get value for path " + path +". Did you set the path correctly?");
   }
   return obj;
 }
 
+function setConditionValues(workflow, task){
+
+  //fetch any reference data values
+  task.skip_if = setRefValue(workflow, task.skip_if);
+  task.error_if = setRefValue(workflow, task.error_if);
+
+  //now evaluate any conditions (if any)
+  if(task.skip_if !== undefined) {
+    task.skip_if = evalCondition(task.skip_if);
+  }
+  if(task.error_if !== undefined) {
+    task.error_if = evalCondition(task.error_if);
+  }
+
+}
+
+function setRefValue(workflow, ref) {
+  if(typeof ref === "string"){
+    startDelim = ref.indexOf("$[");
+    endDelim = ref.indexOf("]");
+    if (startDelim > -1){
+      var path = ref.substring(startDelim +2, endDelim);
+      var newValue = ref.substring(0, startDelim) + getData(workflow, path) + ref.substring(endDelim + 1, ref.length);
+      logger.debug(ref + " has ref: " + path);
+      logger.debug(ref + " de-referenced value is: " + newValue);
+      return newValue;
+    }
+  }
+
+  //can't convert it, so just return the ref(if it was a ref at all) supplied
+  return ref;
+}
 //evaluate string conidition, but don't not in an eval() way
 function evalCondition(condition) {
+  logger.debug("evaluating condition " + condition);
+  if(condition  === undefined) {
+    return condition;
+  }
+  //check if the condition is a string, if not, just return it.
+  if(!isString(condition)) {
+    return condition;
+  }
+
   //trim and remove white space, then get parts
   var parts = condition.trim().match(/\S+/g);
-  if (parts.length > 3) {
+  if (parts.length > 4) {
     //more than 3 let's call it a day!
     logger.error("unable to evaluate condition [" + condition + "]");
-    throw new Error("unable to evaluate condition [" + condition + "]");
+    return condition;
   }
   if(parts.length === 1) {
     //Just one, is it the string 'true'?
@@ -316,30 +369,51 @@ function evalCondition(condition) {
     //just two, are they the same?
     return (parts[0].trim() === parts[1].trim());
   }
-  if(parts.length === 3) {
-    //three parts so, we assume value1 operation value2
-    var op = parts[1].trim().toLowerCase();
+  if(parts.length >2) {
+    //three or four parts so, we assume value1 operation [operation] value2
+    var op;
+    if(parts.length === 3) {
+      op = parts[1].trim().toLowerCase();
+    }
+    else {
+      op = parts[1].trim() + parts[2].trim();
+      op = op.toLowerCase();
+    }
     //test for equal options (non-programmer)
     if(op === '===' ||
        op === '==' ||
+       op === '=' ||
        op === 'equals' ||
        op === 'is') {
-         return (parts[0].trim() === parts[2].trim());
+         return (parts[0].trim() === parts[parts.length-1].trim());
     }
     //test for not equals (non-programmer)
     if(op === '!=' ||
        op === '!==' ||
        op === 'not' ||
-       op === '!') {
-         return (parts[0].trim() !== parts[2].trim());
+       op === '!' ||
+       op === 'isnot') {
+         return (parts[0].trim() !== parts[parts.length-1].trim());
     }
     //test for greater than note: strings will behave oddly tes < test = true :-/
-    if(op === '>') {
-      return (parts[0].trim() > parts[2].trim());
+    if(op === '>' ||
+       op === 'gt' ||
+       op === 'morethan' ||
+       op === 'greaterthan') {
+      return (parts[0].trim() > parts[parts.length-1].trim());
     }
     //test for less than
-    if(op === '<') {
-      return (parts[0].trim() < parts[2].trim());
+    if(op === '<' ||
+       op === 'lt' ||
+       op === 'lessthan') {
+      return (parts[0].trim() < parts[parts.length-1].trim());
     }
+    logger.error("invalid conditional operator '" + op + "'");
+    return condition;
   }
+}
+
+//is it a string literal or a String object (yeah, it's a javascript thing)
+function isString(s) {
+  return typeof(s) === 'string' || s instanceof String;
 }

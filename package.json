@@ -3,21 +3,28 @@
   "version": "0.0.9",
   "description": "A simple node workflow engine",
   "homepage": "http://jacec.github.io/processus/",
-  "keywords": ["workflow", "bpm", "task", "execution"],
+  "keywords": [
+    "workflow",
+    "bpm",
+    "task",
+    "execution"
+  ],
   "author": {
     "name": "Jason",
     "email": "jason@cloudb2.com"
   },
-  "bin" : { "processus-cli" : "./bin/processus-cli" },
+  "bin": {
+    "processus-cli": "./bin/processus-cli"
+  },
   "license": "MIT",
   "main": "./engine/processus",
   "devDependencies": {
     "jshint": "^2.8.0",
     "mocha": "^2.3.3"
   },
-  "repository" :
-  { "type" : "git",
-    "url" : "git://github.com/cloudb2/processus.git"
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cloudb2/processus.git"
   },
   "contributors": [],
   "dependencies": {
