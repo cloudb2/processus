@@ -21,7 +21,7 @@ workflows.
   * [Task Handlers - The Interface](#task-handlers---the-interface)
   * [Task Handlers - Shell Handler](#task-handlers---shell-handler)
   * [Task Handlers - Shell Demo](#task-handlers---shell-demo)
-  * [Tasks - Conditions: Introducing Skip_if and Error_if](#tasks---conditions:-introducing-skip_if-and-error_if)
+  * [Tasks - Conditions Skip_if and Error_if](#tasks---conditions-skip_if-and-error_if)
 
 [Contributing](#contributing)
   * [Contributing - Roadmap](#contributing---roadmap)
@@ -1405,7 +1405,7 @@ Hopefully this starts to show the potential power of Processus.
 
 [top](#processus)
 
-## Tasks - Conditions: Introducing Skip_if and Error_if
+## Tasks - Conditions Skip_if and Error_if
 
 Tasks can have the extra properties ```skip_if``` and ```error_if```.
 
@@ -1564,6 +1564,7 @@ $ ./bin/processus-cli -f test/demo10.json -l debug
 
 **Notice** that because the ```skip_if``` and ```error_if``` properties of task 1 are undefined, no evaluation of the condition takes place and the task executes normally. Task 2 did complete, but because the ```skip_if``` evaluates to true, the task handler is NOT executed. Therefore the ```'echo Simple'``` did not execute. Finally, notice that task 3 is in the error condition and therefore so is the workflow.
 
+[top](#processus)
 
 # Contributing
 
@@ -1580,3 +1581,5 @@ TBC
 4. HTTP Handler allowing Processus to interact with remote endpoints during workflow execution
 5. Workflow Handler allowing a task to create another workflow (i.e. nested Sync and Async Workflows)
 6. Support for nested tasks "injected" at executon by handlers
+
+[top](#processus)
