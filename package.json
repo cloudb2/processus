@@ -1,8 +1,11 @@
 {
   "name": "processus",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "A simple node workflow engine",
   "homepage": "http://jacec.github.io/processus/",
+  "engine": {
+    "node":"*"
+  },
   "keywords": [
     "workflow",
     "bpm",

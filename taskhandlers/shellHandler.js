@@ -13,7 +13,7 @@ module.exports = function(name, task, callback, logger){
   if(!task.data.cmd) {
     callback(new Error("No data cmd property set!"), task);
   }
-  //execute the command and check the repsonse
+  //execute the command and check the response
   exec(task.data.cmd, function(error, stdout, stderr) {
     task.data.stdout = stdout;
     task.data.stderr = stderr;
