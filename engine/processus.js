@@ -27,11 +27,60 @@
  */
 
 var async = require("async");
+var uuid = require("node-uuid");
 var logger = require('./logger');
+var store = require('./persistence/store');
 
 module.exports = {
-  execute: execute
+  execute: execute,
+  updateTasks: updateTasks
 };
+
+function updateTasks(id, tasks, callback){
+
+  store.load(id, function(err, workflow){
+    if(!err){
+      workflow = mergeTasks(workflow, tasks);
+      execute(workflow, callback);
+    }
+    else {
+      callback(err);
+    }
+  });
+}
+
+function mergeTasks(workflow, tasks) {
+    function makeTaskHandler(taskName) {
+      return function taskHandler(task, name) {
+        if(taskName == name) {
+          mergeTask(task, tasks[taskName]);
+          return false;
+        }
+        else {
+          //continue scanning
+          return true;
+        }
+      };
+    }
+    taskNames = Object.keys(tasks);
+    for(var x=0; x<taskNames.length; x++){
+      scanAllTasks(workflow.tasks, true, makeTaskHandler(taskNames[x]));
+    }
+    return workflow;
+}
+
+function mergeTask(originalTask, newTask){
+  //A Handler can only change the data status, conditions and any sub tasks.
+  originalTask.data = newTask.data;
+  originalTask.status = newTask.status;
+  originalTask.error_if = newTask.error_if;
+  originalTask.skip_if = newTask.skip_if;
+  originalTask.tasks = newTask.tasks;
+  //now update time completed
+  originalTask['time-completed'] = Date.now();
+  originalTask['handler-duration'] = originalTask['time-completed'] - originalTask['time-started'];
+  originalTask['total-duration'] = originalTask['time-completed'] - originalTask['time-opened'];
+}
 
 /**
  * Executes the supplied workflow for this instance of the processus engine.
@@ -40,9 +89,19 @@ module.exports = {
  * @returns {object} The validated and updated workflow object
  */
 function execute(workflow, callback){
-  workflow = validateWorkflow(workflow);
-  realExecute(workflow, callback);
-  return workflow;
+  //Initialise store
+  store.init(function(err){
+    if(!err){
+      workflow = validateWorkflow(workflow);
+      realExecute(workflow, callback);
+    }
+    else {
+      callback(err, workflow);
+    }
+  });
+
+
+  //return workflow;
 }
 
 //Validate the supplied workflow and remove any non-JSON things, like functions!
@@ -55,6 +114,11 @@ function validateWorkflow(workflow){
 
   //initialise the status of tasks within the workflow
   setTaskStatusWaiting(workflow);
+
+  //Set workflow UUID if not already present.
+  if(workflow.id === undefined) {
+    workflow.id = uuid.v4();
+  }
 
   //return the result
   return workflow;
@@ -78,6 +142,12 @@ function getTasksByStatus(parent, status, deep) {
 
 //Execute the resulting workflow asynchronously recursing for each next set of tasks
 function realExecute(workflow, callback) {
+
+  store.save(workflow, function(err){
+    if(err){
+      callback(err, workflow);
+    }
+  });
 
   //Open any waiting (and available) tasks
   openNextAvailableTask(workflow);
@@ -103,7 +173,7 @@ function realExecute(workflow, callback) {
       var skip = (t2.skip_if === true || t2.error_if === true);
       if (!skip) {
         //No error or skip condition so execute handler
-        require(t2.handler)(n2, t2, callback, logger);
+        require(t2.handler)(workflow.id, n2, t2, callback, logger);
       }
       else {
         var err = null;
@@ -146,41 +216,54 @@ function realExecute(workflow, callback) {
 
     //Now execute open tasks
     async.parallel(taskExecutionQueue,
-    //function callback for async when all tasks have finsihed or an error has occured
-    function(error, results) {
-      //if no error then cycle through results and update the task statuses
-      if(!error) {
-        results.map(function(task){
-          //if the task is open, set it to completed and update time stats
-          if(task.status === 'open'){
-            task.status = 'completed';
-            task['time-completed'] = Date.now();
-            task['handler-duration'] = task['time-completed'] - task['time-started'];
-            task['total-duration'] = task['time-completed'] - task['time-opened'];
-          }
-          //logger.info("Task responded");
-          //logger.info("Data\n" + JSON.stringify(task, null, 2));
-        });
+      //function callback for async when all tasks have finsihed or an error has occured
+      function(error, results) {
+        //if no error then cycle through results and update the task statuses
+        if(!error) {
+          results.map(function(task){
+            //if the task is open, set it to completed and update time stats
+            if(task.status === 'open'){
+              task.status = 'completed';
+              task['time-completed'] = Date.now();
+              task['handler-duration'] = task['time-completed'] - task['time-started'];
+              task['total-duration'] = task['time-completed'] - task['time-opened'];
+            }
+            //logger.info("Task responded");
+            //logger.info("Data\n" + JSON.stringify(task, null, 2));
+          });
 
-        //ok, all done and no error, so recurse into next set of tasks (if any)
-        realExecute(workflow, callback);
-      }
-      else {
-        results.map(function(task){
-          //if the task is open, set it to completed and update time stats
-          task.status = 'error';
-          task.data.error = error.message;
-        });
-        workflow.status = 'error';
-        callback(error, workflow);
-      }
-    });
+          //ok, all done and no error, so recurse into next set of tasks (if any)
+          realExecute(workflow, callback);
+        }
+        else {
+          results.map(function(task){
+            //ok, error so set task to error
+            task.status = 'error';
+            task.data.error = error.message;
+          });
+          //Now set the overal workflow to error
+          workflow.status = 'error';
+
+          store.save(workflow, function(err){
+            if(err){
+              callback(err, workflow);
+            }
+          });
+          callback(error, workflow);
+        }
+      });
   }
   else {
     //check if ALL tasks are completed, if so, set the workflow status
     if(childHasStatus(workflow, 'completed', true)){
       workflow.status = 'completed';
     }
+
+    store.save(workflow, function(err){
+      if(err){
+        callback(err, workflow);
+      }
+    });
     //None left in the queue so callback
     callback(null, workflow);
   }
@@ -198,7 +281,9 @@ function setTaskDataValues(workflow, task){
 function setTaskStatusWaiting(workflow){
   workflow.status = 'open';
   scanAllTasks(workflow.tasks, true, function(task, name){
-    task.status = 'waiting';
+    if(!task.status) {
+      task.status = 'waiting';
+    }
     //continue scanning
     return true;
   });
@@ -252,7 +337,7 @@ function openTasks(tasks) {
       return !task.blocking;
     }
 
-    //the task is wiaiting, so let's open it and check its children (if any)
+    //the task is waiting, so let's open it and check its children (if any)
     if(task.status === "waiting"){
       task.status = 'open';
       task['time-opened'] = Date.now();
@@ -354,63 +439,9 @@ function evalCondition(condition) {
     return condition;
   }
 
-  //trim and remove white space, then get parts
-  var parts = condition.trim().match(/\S+/g);
-  if (parts.length > 4) {
-    //more than 3 let's call it a day!
-    logger.error("unable to evaluate condition [" + condition + "]");
-    return condition;
-  }
-  if(parts.length === 1) {
-    //Just one, is it the string 'true'?
-    return (/^true$/i).test(parts[0].trim().toLowerCase());
-  }
-  if(parts.length === 2) {
-    //just two, are they the same?
-    return (parts[0].trim() === parts[1].trim());
-  }
-  if(parts.length >2) {
-    //three or four parts so, we assume value1 operation [operation] value2
-    var op;
-    if(parts.length === 3) {
-      op = parts[1].trim().toLowerCase();
-    }
-    else {
-      op = parts[1].trim() + parts[2].trim();
-      op = op.toLowerCase();
-    }
-    //test for equal options (non-programmer)
-    if(op === '===' ||
-       op === '==' ||
-       op === '=' ||
-       op === 'equals' ||
-       op === 'is') {
-         return (parts[0].trim() === parts[parts.length-1].trim());
-    }
-    //test for not equals (non-programmer)
-    if(op === '!=' ||
-       op === '!==' ||
-       op === 'not' ||
-       op === '!' ||
-       op === 'isnot') {
-         return (parts[0].trim() !== parts[parts.length-1].trim());
-    }
-    //test for greater than note: strings will behave oddly tes < test = true :-/
-    if(op === '>' ||
-       op === 'gt' ||
-       op === 'morethan' ||
-       op === 'greaterthan') {
-      return (parts[0].trim() > parts[parts.length-1].trim());
-    }
-    //test for less than
-    if(op === '<' ||
-       op === 'lt' ||
-       op === 'lessthan') {
-      return (parts[0].trim() < parts[parts.length-1].trim());
-    }
-    logger.error("invalid conditional operator '" + op + "'");
-    return condition;
-  }
+  //is it the string 'true'?
+  return (/^true$/i).test(condition.trim().toLowerCase());
+
 }
 
 //is it a string literal or a String object (yeah, it's a javascript thing)

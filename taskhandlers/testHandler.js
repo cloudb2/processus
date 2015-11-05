@@ -5,15 +5,16 @@
  * Set task.data.error = true to raise an error
  * Set task.data.delay to set the time in msecs that the task should delay
 */
-module.exports = function(name, task, callback, logger){
+module.exports = function(workflowId, taskName, task, callback, logger){
 
-  logger.info("testHandler:\n executing " + name);
+  logger.info("workflow ID " + workflowId);
+  logger.info("testHandler:\n executing " + taskName);
   logger.info("Task Description:\n " + task.description);
-  logger.debug(name + ":" + JSON.stringify(task, null, 2));
+  logger.debug(taskName + ":" + JSON.stringify(task, null, 2));
   var err;
 
   if(task.data.error === true){
-      err = new Error("This is an error from the task " + name);
+      err = new Error("This is an error from the task " + taskName);
   }
 
   var timeout = 0;
@@ -23,7 +24,7 @@ module.exports = function(name, task, callback, logger){
   }
 
   setTimeout(function(){
-    logger.info("testHandler:\n completed " + name);
+    logger.info("testHandler:\n completed " + taskName);
     callback(err, task);
   }, timeout);
 

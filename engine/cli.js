@@ -1,3 +1,30 @@
+/*!
+ * Processus, by Cloudb2.
+ *
+ * This file (and this file only) is licensed under the same slightly modified
+ * MIT license that Processus is. It stops evil-doers everywhere:
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining
+ *   a copy of this software and associated documentation files (the "Software"),
+ *   to deal in the Software without restriction, including without limitation
+ *   the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ *   and/or sell copies of the Software, and to permit persons to whom
+ *   the Software is furnished to do so, subject to the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be included
+ *   in all copies or substantial portions of the Software.
+ *
+ *   The Software shall be used for Good, not Evil.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ *   DEALINGS IN THE SOFTWARE.
+ *
+ */
 var cli = require('cli');
 var fs = require('fs');
 var processus = require('./processus');
@@ -8,54 +35,86 @@ module.exports = function() {
   console.log(require('./title'));
 
   cli.parse({
-      loglevel:   ['l', 'Set loglevel [debug|verbose|info|warn|error]', 'string', 'error'],
-      file:  ['f', 'Workflow filename', 'file', 'workflow.json']
+      log:   ['l', 'Sets the log level [debug|verbose|info|warn|error].', 'string', 'error'],
+      file:  ['f', 'Workflow or task filename. A task must also include the workflow ID.', 'file', null],
+      id: ['i', 'Workflow ID.', 'string', null]
   });
 
   cli.main(function(args, options) {
 
-    if (options.loglevel === 'debug' ||
-        options.loglevel === 'verbose' ||
-        options.loglevel === 'info' ||
-        options.loglevel === 'warn' ||
-        options.loglevel === 'error') {
+    if (options.log === 'debug' ||
+        options.log === 'verbose' ||
+        options.log === 'info' ||
+        options.log === 'warn' ||
+        options.log === 'error') {
 
-        logger.level = options.loglevel;
+        logger.level = options.log;
     }
     else {
       logger.error("Invalid log level, see help for more info.");
       return;
     }
 
-    var workflowFile;
+    if (options.file === null && options.id === null) {
+      logger.error("Must supply a worklfow or task filename.");
+      return;
+    }
+
+    if (options.file === null && options.id !== null) {
+      logger.error("Must supply a task filename.");
+      return;
+    }
+
+    var workflowTaskFile;
 
     try {
-      workflowFile = fs.readFileSync(options.file, "utf8");
+      workflowTaskFile = fs.readFileSync(options.file, "utf8");
     }
     catch(err) {
       logger.error("Failed to open JSON file " + options.file + "\n" + err.message);
       return;
     }
 
-    var workflow;
+    var workflowTaskJSON;
 
     try {
-      workflow = JSON.parse(workflowFile);
+      workflowTaskJSON = JSON.parse(workflowTaskFile);
     }
     catch(err){
         logger.error("Failed to parse JSON file " + options.file + "\n" + err.message);
         return;
     }
 
-    processus.execute(workflow, function(err, workflow){
-      if(!err) {
-        logger.info("Workflow returned successfully.");
-        logger.debug(JSON.stringify(workflow, null, 2));
-      }
-      else {
-        logger.error(err.message);
-        logger.debug(JSON.stringify(workflow, null, 2));
-      }
-    });
+    if (options.file !== '' && options.id === null) {
+
+      processus.execute(workflowTaskJSON, function(err, workflow){
+        if(!err) {
+          logger.info("Workflow returned successfully.");
+          logger.debug(JSON.stringify(workflow, null, 2));
+          return;
+        }
+        else {
+          logger.error(err.message);
+          logger.debug(JSON.stringify(workflow, null, 2));
+          return;
+        }
+      });
+    }
+
+    if(options.id !== null){
+      processus.updateTasks(options.id, workflowTaskJSON, function(err, workflow){
+        if(!err) {
+          logger.info("Workflow returned successfully.");
+          logger.debug(JSON.stringify(workflow, null, 2));
+          return;
+        }
+        else {
+          logger.error(err.message);
+          logger.debug(JSON.stringify(workflow, null, 2));
+          return;
+        }
+      });
+    }
+
   });
 };

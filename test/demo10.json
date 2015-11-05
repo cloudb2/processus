@@ -6,13 +6,13 @@
       "handler": "../taskHandlers/shellHandler",
       "data": {
         "cmd": "echo Processus",
-        "skip me": "yeah"
+        "skip me": "true"
       }
     },
     "task 2": {
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
-      "skip_if":"$[tasks.task 1.data.skip me] is yeah",
+      "skip_if":"$[tasks.task 1.data.skip me]",
       "handler": "../taskHandlers/shellHandler",
       "data": {
         "cmd": "echo Simple"

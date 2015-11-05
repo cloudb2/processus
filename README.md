@@ -1412,39 +1412,7 @@ Tasks can have the extra properties ```skip_if``` and ```error_if```.
 
 As the names suggest, if either property evaluates to true, then Processus will either skip the task and just mark it as completed or raise an error and stop.
 
-As with sharing data values, you can reference another part of the workflow and have that substituted at execution time. In addition, Processus supports a very simple conditional constructs. As a developer you may have an understandably negative thoughts about some of these, but Processus is designed to be simple to use for those NOT familiar with the nuances of software development and conditional statements.
-
-Conditions are in the form.
-
-```<valueA> [conditional operator] [ValueB]```
-
-Notice, if you want a condition to be evaluated against the ```skip_if``` or ```error_if``` properties of a task, the following should be observed.
-
-```[conditional operator] [ValueB]``` are optional
-
-```<valueA>``` alone is considered to be true if it's value is a boolean of true or any variation of the string "true". All other values are considered false.
-
-The following table shows the options for the conditional operator
-
-|conditional operator| equivalent value|
-|--------------------|-----------------|
-|EQUALS| equals|
-| | = |
-| | == |
-| | === |
-| | is |
-|NOT | not |
-|    | is not |
-|    | ! |
-|    | != |
-|    | !== |
-| > | > |
-|   | gt |
-|   | more than |
-|   | greater than |
-| < | < |
-|   | lt |
-|   | less than |
+As with sharing data values, you can reference another part of the workflow and have that substituted at execution time. Processus will evaluate the string condition and set property appropriately. Any string with the value ```true``` regardless of case, will evaluate to true. Any other string will evaluate to ```false```.
 
 Look at demo10 to see an example of ```skip_if``` and ```error_if``` in action.
 
@@ -1458,13 +1426,13 @@ The JSON config file (demo10)
       "handler": "../taskHandlers/shellHandler",
       "data": {
         "cmd": "echo Processus",
-        "skip me": "yeah"
+        "skip me": "true"
       }
     },
     "task 2": {
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
-      <b>"skip_if":"$[tasks.task 1.data.skip me] is yeah",</b>
+      <b>"skip_if":"$[tasks.task 1.data.skip me]",</b>
       "handler": "../taskHandlers/shellHandler",
       "data": {
         "cmd": "echo Simple"
@@ -1485,7 +1453,7 @@ The JSON config file (demo10)
 
 **Notice** the skip_if and error_if properties of tasks 2 and 3.
 
-```$[tasks.task 1.data.skip me] is yeah``` will become ```yeah is yeah``` at execution time, evaluating to true, so the task will be skipped.
+```$[tasks.task 1.data.skip me]``` will become ```true``` at execution time, evaluating to true, so the task will be skipped.
 
 ```$[tasks.task 2.skip_if]``` will become ```true``` because that's what the skip_if will evaluate to.
 
@@ -1506,8 +1474,8 @@ $ ./bin/processus-cli -f test/demo10.json -l debug
 
 2015-10-20 15:00:39 DEBUG Getting data for path: tasks.task 1.data.skip me
 2015-10-20 15:00:39 DEBUG $[tasks.task 1.data.skip me] is yeah has ref: tasks.task 1.data.skip me
-2015-10-20 15:00:39 DEBUG $[tasks.task 1.data.skip me] is yeah de-referenced value is: yeah is yeah
-2015-10-20 15:00:39 DEBUG evaluating condition yeah is yeah
+2015-10-20 15:00:39 DEBUG $[tasks.task 1.data.skip me] is yeah de-referenced value is: true
+2015-10-20 15:00:39 DEBUG evaluating condition true
 2015-10-20 15:00:39 DEBUG task.skip_if = true
 2015-10-20 15:00:39 DEBUG task.error_if = undefined
 2015-10-20 15:00:39 DEBUG Getting data for path: tasks.task 2.skip_if
@@ -1583,10 +1551,11 @@ TBC
  * filebased, default
  * Mongodb
 2. Restarting a paused workflow (allowing for Async handlers)
-3. Full REST API to intract with Processus
+3. Full REST API to interact with Processus
  * Swagger yaml
 4. HTTP Handler allowing Processus to interact with remote endpoints during workflow execution
 5. Workflow Handler allowing a task to create another workflow (i.e. nested Sync and Async Workflows)
-6. Support for nested tasks "injected" at executon by handlers
+6. Support for nested tasks "injected" at execution by handlers
+7. Support for environment variables
 
 [top](#processus)
