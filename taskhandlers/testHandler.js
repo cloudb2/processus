@@ -17,6 +17,10 @@ module.exports = function(workflowId, taskName, task, callback, logger){
       err = new Error("This is an error from the task " + taskName);
   }
 
+  if(task.data.pending === true){
+      task.status = "pending";
+  }
+
   var timeout = 0;
 
   if(task.data.delay) {

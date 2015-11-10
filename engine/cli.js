@@ -52,17 +52,17 @@ module.exports = function() {
     }
     else {
       logger.error("Invalid log level, see help for more info.");
-      return;
+      return -1;
     }
 
     if (options.file === null && options.id === null) {
       logger.error("Must supply a worklfow or task filename.");
-      return;
+      return -1;
     }
 
     if (options.file === null && options.id !== null) {
       logger.error("Must supply a task filename.");
-      return;
+      return -1;
     }
 
     var workflowTaskFile;
@@ -72,7 +72,7 @@ module.exports = function() {
     }
     catch(err) {
       logger.error("Failed to open JSON file " + options.file + "\n" + err.message);
-      return;
+      return err;
     }
 
     var workflowTaskJSON;
@@ -82,7 +82,7 @@ module.exports = function() {
     }
     catch(err){
         logger.error("Failed to parse JSON file " + options.file + "\n" + err.message);
-        return;
+        return err;
     }
 
     if (options.file !== '' && options.id === null) {
@@ -91,13 +91,12 @@ module.exports = function() {
         if(!err) {
           logger.info("Workflow returned successfully.");
           logger.debug(JSON.stringify(workflow, null, 2));
-          return;
         }
         else {
           logger.error(err.message);
           logger.debug(JSON.stringify(workflow, null, 2));
-          return;
         }
+        return err;
       });
     }
 
@@ -106,13 +105,12 @@ module.exports = function() {
         if(!err) {
           logger.info("Workflow returned successfully.");
           logger.debug(JSON.stringify(workflow, null, 2));
-          return;
         }
         else {
           logger.error(err.message);
           logger.debug(JSON.stringify(workflow, null, 2));
-          return;
         }
+        return err;
       });
     }
 

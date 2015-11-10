@@ -78,7 +78,6 @@ function mergeTask(originalTask, newTask){
   originalTask.tasks = newTask.tasks;
   //now update time completed
   originalTask['time-completed'] = Date.now();
-  originalTask['handler-duration'] = originalTask['time-completed'] - originalTask['time-started'];
   originalTask['total-duration'] = originalTask['time-completed'] - originalTask['time-opened'];
 }
 
@@ -148,6 +147,15 @@ function realExecute(workflow, callback) {
       callback(err, workflow);
     }
   });
+
+  //Check there's any pending tasks, if so we assume Async and exit current workflow
+  var pendingTasks = getTasksByStatus(workflow, 'pending', true);
+  var pendingTaskNames = Object.keys(pendingTasks);
+  if(pendingTaskNames.length > 0) {
+    logger.debug("found pending task(s) so returning immediately");
+    callback(null, workflow);
+    return;
+  }
 
   //Open any waiting (and available) tasks
   openNextAvailableTask(workflow);
@@ -227,6 +235,9 @@ function realExecute(workflow, callback) {
               task['time-completed'] = Date.now();
               task['handler-duration'] = task['time-completed'] - task['time-started'];
               task['total-duration'] = task['time-completed'] - task['time-opened'];
+            }
+            if(task.status === 'pending'){
+              task['handler-duration'] = Date.now() - task['time-started'];
             }
             //logger.info("Task responded");
             //logger.info("Data\n" + JSON.stringify(task, null, 2));
