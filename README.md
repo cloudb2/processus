@@ -21,7 +21,7 @@ workflows.
   * [Task Handlers - The Interface](#task-handlers---the-interface)
   * [Task Handlers - Shell Handler](#task-handlers---shell-handler)
   * [Task Handlers - Shell Demo](#task-handlers---shell-demo)
-  * [Tasks - Conditions Skip_if and Error_if](#tasks---conditions-skip_if-and-error_if)
+  * [Tasks - Conditions skipIf and errorIf](#tasks---conditions-skipIf-and-errorIf)
 
 [Contributing](#contributing)
   * [Contributing - Roadmap](#contributing---roadmap)
@@ -209,11 +209,11 @@ The output should look something like this.
         "error": false
       },
       "status": "completed",
-      "time-opened": 1444690654882,
-      "time-started": 1444690654883,
-      "time-completed": 1444690655396,
-      "handler-duration": 513,
-      "total-duration": 514
+      "timeOpened": 1444690654882,
+      "timeStarted": 1444690654883,
+      "timeCompleted": 1444690655396,
+      "handlerDuration": 513,
+      "totalDuration": 514
     },
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
@@ -224,11 +224,11 @@ The output should look something like this.
         "error": false
       },
       "status": "completed",
-      "time-opened": 1444690655396,
-      "time-started": 1444690655396,
-      "time-completed": 1444690656403,
-      "handler-duration": 1007,
-      "total-duration": 1007
+      "timeOpened": 1444690655396,
+      "timeStarted": 1444690655396,
+      "timeCompleted": 1444690656403,
+      "handlerDuration": 1007,
+      "totalDuration": 1007
     },
     "task 3": {
       "description": "I am the task 3, I take 500msecs.",
@@ -239,11 +239,11 @@ The output should look something like this.
         "error": false
       },
       "status": "completed",
-      "time-opened": 1444690656404,
-      "time-started": 1444690656404,
-      "time-completed": 1444690657908,
-      "handler-duration": 1504,
-      "total-duration": 1504
+      "timeOpened": 1444690656404,
+      "timeStarted": 1444690656404,
+      "timeCompleted": 1444690657908,
+      "handlerDuration": 1504,
+      "totalDuration": 1504
     }
   },
   "status": "completed"
@@ -255,11 +255,11 @@ The output should look something like this.
 This includes the following:
 
 1. **status** A status for each task and the overall workflow
-2. **time-opened** The time (milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now) the task was opened.
-3. **time-started** The time the task was started. Later we'll explore why this can be different to time-opened
-4. **time-completed** The time the task completed
-5. **handler-duration** The time it took the handler to execute the task
-6. **total-duration** The total duration the task was opened. Later we'll explore why this can be different to handler-duration
+2. **timeOpened** The time (milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now) the task was opened.
+3. **timeStarted** The time the task was started. Later we'll explore why this can be different to timeOpened
+4. **timeCompleted** The time the task completed
+5. **handlerDuration** The time it took the handler to execute the task
+6. **totalDuration** The total duration the task was opened. Later we'll explore why this can be different to handlerDuration
 [top](#processus)
 
 <hr>
@@ -494,7 +494,7 @@ a powerful feature, but it does make some assumptions:
 the child tasks have completed. However, that will cause it to open in parallel with its
 siblings.
 
-Incidentally this is why a task's ```time-opened``` time may differ from the ```time-started``` time. It's also why the ```total-duration``` may be different from the ```handler-duration```.
+Incidentally this is why a task's ```timeOpened``` time may differ from the ```timeStarted``` time. It's also why the ```totalDuration``` may be different from the ```handlerDuration```.
 
 Running the demo
 <pre><code>
@@ -562,11 +562,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo3.json
         "error": false
       },
       "status": "completed",
-      "time-opened": 1444695522056,
-      "time-started": 1444695522057,
-      "time-completed": 1444695523566,
-      "handler-duration": 1509,
-      "total-duration": 1510
+      "timeOpened": 1444695522056,
+      "timeStarted": 1444695522057,
+      "timeCompleted": 1444695523566,
+      "handlerDuration": 1509,
+      "totalDuration": 1510
     },
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
@@ -586,11 +586,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo3.json
             "error": false
           },
           "status": "completed",
-          "time-opened": 1444695523566,
-          "time-started": 1444695523567,
-          "time-completed": 1444695524570,
-          "handler-duration": 1003,
-          "total-duration": 1004
+          "timeOpened": 1444695523566,
+          "timeStarted": 1444695523567,
+          "timeCompleted": 1444695524570,
+          "handlerDuration": 1003,
+          "totalDuration": 1004
         },
         "task 2-2": {
           "description": "I am the task 2-2, I take 1000msecs.",
@@ -601,19 +601,19 @@ $ ./bin/processus-cli -l debug -f ./test/demo3.json
             "error": false
           },
           "status": "completed",
-          "time-opened": 1444695524571,
-          "time-started": 1444695524571,
-          "time-completed": 1444695525577,
-          "handler-duration": 1006,
-          "total-duration": 1006
+          "timeOpened": 1444695524571,
+          "timeStarted": 1444695524571,
+          "timeCompleted": 1444695525577,
+          "handlerDuration": 1006,
+          "totalDuration": 1006
         }
       },
       "status": "completed",
-      <b>"time-opened": 1444695523566,
-      "time-started": 1444695525577,
-      "time-completed": 1444695526586,
-      "handler-duration": 1009,
-      "total-duration": 3020</b>
+      <b>"timeOpened": 1444695523566,
+      "timeStarted": 1444695525577,
+      "timeCompleted": 1444695526586,
+      "handlerDuration": 1009,
+      "totalDuration": 3020</b>
     },
     "task 3": {
       "description": "I am the task 3, I take 500msecs.",
@@ -624,11 +624,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo3.json
         "error": false
       },
       "status": "completed",
-      "time-opened": 1444695526587,
-      "time-started": 1444695526587,
-      "time-completed": 1444695527091,
-      "handler-duration": 504,
-      "total-duration": 504
+      "timeOpened": 1444695526587,
+      "timeStarted": 1444695526587,
+      "timeCompleted": 1444695527091,
+      "handlerDuration": 504,
+      "totalDuration": 504
     }
   },
   "status": "completed"
@@ -636,9 +636,9 @@ $ ./bin/processus-cli -l debug -f ./test/demo3.json
 </code></pre>
 **Notice** that the times for task 2 reflect the assumptions made by the Processus engine.
 
-1. The task opened immediately, but was not executed i.e. ```time-opened```
-2. The task started once its child tasks had completed successfully i.e. ```time-started```
-3. The ```handler-duration``` i.e. the time to execute the task was ~1 sec (as configured), but overall it was open for ```total-duration``` ~3 secs (i.e. a sec for each child and a sec for itself).
+1. The task opened immediately, but was not executed i.e. ```timeOpened```
+2. The task started once its child tasks had completed successfully i.e. ```timeStarted```
+3. The ```handlerDuration``` i.e. the time to execute the task was ~1 sec (as configured), but overall it was open for ```totalDuration``` ~3 secs (i.e. a sec for each child and a sec for itself).
 
 [top](#processus)
 
@@ -913,11 +913,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo6.json
         "error": false
       },
       "status": "completed",
-      "time-opened": 1444761514349,
-      "time-started": 1444761514350,
-      "time-completed": 1444761515857,
-      "handler-duration": 1507,
-      "total-duration": 1508
+      "timeOpened": 1444761514349,
+      "timeStarted": 1444761514350,
+      "timeCompleted": 1444761515857,
+      "handlerDuration": 1507,
+      "totalDuration": 1508
     },
     "task 2": {
       "description": "I am the task 2, I take as long as task1.",
@@ -928,11 +928,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo6.json
         "error": false
       },
       "status": "completed",
-      "time-opened": 1444761515857,
-      "time-started": 1444761515859,
-      "time-completed": 1444761517370,
-      "handler-duration": 1511,
-      "total-duration": 1513
+      "timeOpened": 1444761515857,
+      "timeStarted": 1444761515859,
+      "timeCompleted": 1444761517370,
+      "handlerDuration": 1511,
+      "totalDuration": 1513
     },
     "task 3": {
       "description": "I am the task 3, I take as long as task1.",
@@ -943,11 +943,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo6.json
         "error": false
       },
       "status": "completed",
-      "time-opened": 1444761517371,
-      "time-started": 1444761517372,
-      "time-completed": 1444761518879,
-      "handler-duration": 1507,
-      "total-duration": 1508
+      "timeOpened": 1444761517371,
+      "timeStarted": 1444761517372,
+      "timeCompleted": 1444761518879,
+      "handlerDuration": 1507,
+      "totalDuration": 1508
     }
   },
   "status": "completed"
@@ -1027,11 +1027,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo7.json
         "error": "false"</b>
       },
       "status": "completed",
-      "time-opened": 1444761826343,
-      "time-started": 1444761826349,
-      "time-completed": 1444761826857,
-      "handler-duration": 508,
-      "total-duration": 514
+      "timeOpened": 1444761826343,
+      "timeStarted": 1444761826349,
+      "timeCompleted": 1444761826857,
+      "handlerDuration": 508,
+      "totalDuration": 514
     },
     "task 2": {
       "description": "I am the task 2, I take global-delay msecs, which is 500msecs.",
@@ -1042,11 +1042,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo7.json
         "error": "false"</b>
       },
       "status": "completed",
-      "time-opened": 1444761826857,
-      "time-started": 1444761826859,
-      "time-completed": 1444761827371,
-      "handler-duration": 512,
-      "total-duration": 514
+      "timeOpened": 1444761826857,
+      "timeStarted": 1444761826859,
+      "timeCompleted": 1444761827371,
+      "handlerDuration": 512,
+      "totalDuration": 514
     },
     "task 3": {
       "description": "I am the task 3, I take global-delay msecs, which is 500msecs.",
@@ -1057,11 +1057,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo7.json
         "error": "false"</b>
       },
       "status": "completed",
-      "time-opened": 1444761827372,
-      "time-started": 1444761827374,
-      "time-completed": 1444761827886,
-      "handler-duration": 512,
-      "total-duration": 514
+      "timeOpened": 1444761827372,
+      "timeStarted": 1444761827374,
+      "timeCompleted": 1444761827886,
+      "handlerDuration": 512,
+      "totalDuration": 514
     }
   },
   "status": "completed"
@@ -1158,11 +1158,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo8.json
         "error": false
       },
       "status": "completed",
-      "time-opened": 1444782891803,
-      "time-started": 1444782891804,
-      "time-completed": 1444782893322,
-      "handler-duration": 1518,
-      "total-duration": 1519
+      "timeOpened": 1444782891803,
+      "timeStarted": 1444782891804,
+      "timeCompleted": 1444782893322,
+      "handlerDuration": 1518,
+      "totalDuration": 1519
     },
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
@@ -1173,8 +1173,8 @@ $ ./bin/processus-cli -l debug -f ./test/demo8.json
         "error": "This is an error from the task task 2"
       },
       <b>"status": "error",</b>
-      "time-opened": 1444782893322,
-      "time-started": 1444782893323
+      "timeOpened": 1444782893322,
+      "timeStarted": 1444782893323
     },
     "task 3": {
       "description": "I am the task 3, I take 1500msecs.",
@@ -1357,11 +1357,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo9.json
         "stderr": ""</b>
       },
       "status": "completed",
-      "time-opened": 1444784821173,
-      "time-started": 1444784821174,
-      "time-completed": 1444784821215,
-      "handler-duration": 41,
-      "total-duration": 42
+      "timeOpened": 1444784821173,
+      "timeStarted": 1444784821174,
+      "timeCompleted": 1444784821215,
+      "handlerDuration": 41,
+      "totalDuration": 42
     },
     "task 2": {
       "description": "I am the task 2, I echo Simple",
@@ -1373,11 +1373,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo9.json
         "stderr": ""</b>
       },
       "status": "completed",
-      "time-opened": 1444784821215,
-      "time-started": 1444784821216,
-      "time-completed": 1444784821223,
-      "handler-duration": 7,
-      "total-duration": 8
+      "timeOpened": 1444784821215,
+      "timeStarted": 1444784821216,
+      "timeCompleted": 1444784821223,
+      "handlerDuration": 7,
+      "totalDuration": 8
     },
     "task 3": {
       "description": "I am the task 3, I echo Workflow",
@@ -1389,11 +1389,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo9.json
         "stderr": ""</b>
       },
       "status": "completed",
-      "time-opened": 1444784821223,
-      "time-started": 1444784821224,
-      "time-completed": 1444784821232,
-      "handler-duration": 8,
-      "total-duration": 9
+      "timeOpened": 1444784821223,
+      "timeStarted": 1444784821224,
+      "timeCompleted": 1444784821232,
+      "handlerDuration": 8,
+      "totalDuration": 9
     }
   },
   "status": "completed"
@@ -1406,15 +1406,15 @@ Hopefully this starts to show the potential power of Processus.
 
 [top](#processus)
 
-## Tasks - Conditions Skip_if and Error_if
+## Tasks - Conditions skipIf and errorIf
 
-Tasks can have the extra properties ```skip_if``` and ```error_if```.
+Tasks can have the extra properties ```skipIf``` and ```errorIf```.
 
 As the names suggest, if either property evaluates to true, then Processus will either skip the task and just mark it as completed or raise an error and stop.
 
 As with sharing data values, you can reference another part of the workflow and have that substituted at execution time. Processus will evaluate the string condition and set property appropriately. Any string with the value ```true``` regardless of case, will evaluate to true. Any other string will evaluate to ```false```.
 
-Look at demo10 to see an example of ```skip_if``` and ```error_if``` in action.
+Look at demo10 to see an example of ```skipIf``` and ```errorIf``` in action.
 
 The JSON config file (demo10)
 <pre><code>
@@ -1432,7 +1432,7 @@ The JSON config file (demo10)
     "task 2": {
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
-      <b>"skip_if":"$[tasks.task 1.data.skip me]",</b>
+      <b>"skipIf":"$[tasks.task 1.data.skip me]",</b>
       "handler": "../taskHandlers/shellHandler",
       "data": {
         "cmd": "echo Simple"
@@ -1441,7 +1441,7 @@ The JSON config file (demo10)
     "task 3": {
       "description": "I am the task 3, I will error",
       "blocking": true,
-      <b>"error_if": "$[tasks.task 2.skip_if]",</b>
+      <b>"errorIf": "$[tasks.task 2.skipIf]",</b>
       "handler": "../taskHandlers/shellHandler",
       "data": {
         "cmd": "echo Workflow"
@@ -1451,11 +1451,11 @@ The JSON config file (demo10)
 }
 </code></pre>
 
-**Notice** the skip_if and error_if properties of tasks 2 and 3.
+**Notice** the skipIf and errorIf properties of tasks 2 and 3.
 
 ```$[tasks.task 1.data.skip me]``` will become ```true``` at execution time, evaluating to true, so the task will be skipped.
 
-```$[tasks.task 2.skip_if]``` will become ```true``` because that's what the skip_if will evaluate to.
+```$[tasks.task 2.skipIf]``` will become ```true``` because that's what the skipIf will evaluate to.
 
 Running the demo
 <pre><code>
@@ -1468,22 +1468,22 @@ $ ./bin/processus-cli -f test/demo10.json -l debug
 
            Processus: A Simple Workflow Engine.
 
-2015-10-20 15:00:39 DEBUG task.skip_if = undefined
-2015-10-20 15:00:39 DEBUG task.error_if = undefined
+2015-10-20 15:00:39 DEBUG task.skipIf = undefined
+2015-10-20 15:00:39 DEBUG task.errorIf = undefined
 2015-10-20 15:00:39 INFO Processus
 
 2015-10-20 15:00:39 DEBUG Getting data for path: tasks.task 1.data.skip me
 2015-10-20 15:00:39 DEBUG $[tasks.task 1.data.skip me] is yeah has ref: tasks.task 1.data.skip me
 2015-10-20 15:00:39 DEBUG $[tasks.task 1.data.skip me] is yeah de-referenced value is: true
 2015-10-20 15:00:39 DEBUG evaluating condition true
-2015-10-20 15:00:39 DEBUG task.skip_if = true
-2015-10-20 15:00:39 DEBUG task.error_if = undefined
-2015-10-20 15:00:39 DEBUG Getting data for path: tasks.task 2.skip_if
-2015-10-20 15:00:39 DEBUG $[tasks.task 2.skip_if] has ref: tasks.task 2.skip_if
-2015-10-20 15:00:39 DEBUG $[tasks.task 2.skip_if] de-referenced value is: true
+2015-10-20 15:00:39 DEBUG task.skipIf = true
+2015-10-20 15:00:39 DEBUG task.errorIf = undefined
+2015-10-20 15:00:39 DEBUG Getting data for path: tasks.task 2.skipIf
+2015-10-20 15:00:39 DEBUG $[tasks.task 2.skipIf] has ref: tasks.task 2.skipIf
+2015-10-20 15:00:39 DEBUG $[tasks.task 2.skipIf] de-referenced value is: true
 2015-10-20 15:00:39 DEBUG evaluating condition true
-2015-10-20 15:00:39 DEBUG task.skip_if = undefined
-2015-10-20 15:00:39 DEBUG task.error_if = true
+2015-10-20 15:00:39 DEBUG task.skipIf = undefined
+2015-10-20 15:00:39 DEBUG task.errorIf = true
 2015-10-20 15:00:39 ERROR Task has error condition set.
 2015-10-20 15:00:39 DEBUG {
   "tasks": {
@@ -1498,46 +1498,46 @@ $ ./bin/processus-cli -f test/demo10.json -l debug
         "stderr": ""
       },
       "status": "completed",
-      "time-opened": 1445353239367,
-      "time-started": 1445353239369,
-      "time-completed": 1445353239395,
-      "handler-duration": 26,
-      "total-duration": 28
+      "timeOpened": 1445353239367,
+      "timeStarted": 1445353239369,
+      "timeCompleted": 1445353239395,
+      "handlerDuration": 26,
+      "totalDuration": 28
     },
     "task 2": {
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
-      "skip_if": true,
+      "skipIf": true,
       "handler": "../taskHandlers/shellHandler",
       "data": {
         "cmd": "echo Simple"
       },
       "status": "completed",
-      "time-opened": 1445353239395,
-      "time-started": 1445353239397,
-      "time-completed": 1445353239398,
-      "handler-duration": 1,
-      "total-duration": 3
+      "timeOpened": 1445353239395,
+      "timeStarted": 1445353239397,
+      "timeCompleted": 1445353239398,
+      "handlerDuration": 1,
+      "totalDuration": 3
     },
     "task 3": {
       "description": "I am the task 3, I will error",
       "blocking": true,
-      "error_if": true,
+      "errorIf": true,
       "handler": "../taskHandlers/shellHandler",
       "data": {
         "cmd": "echo Workflow",
         "error": "Task has error condition set."
       },
       "status": "error",
-      "time-opened": 1445353239398,
-      "time-started": 1445353239399
+      "timeOpened": 1445353239398,
+      "timeStarted": 1445353239399
     }
   },
   "status": "error"
 }
 </code></pre>
 
-**Notice** that because the ```skip_if``` and ```error_if``` properties of task 1 are undefined, no evaluation of the condition takes place and the task executes normally. Task 2 did complete, but because the ```skip_if``` evaluates to true, the task handler is NOT executed. Therefore the ```'echo Simple'``` did not execute. Finally, notice that task 3 is in the error status (due to the ```error_if``` condition) and therefore so is the workflow.
+**Notice** that because the ```skipIf``` and ```errorIf``` properties of task 1 are undefined, no evaluation of the condition takes place and the task executes normally. Task 2 did complete, but because the ```skipIf``` evaluates to true, the task handler is NOT executed. Therefore the ```'echo Simple'``` did not execute. Finally, notice that task 3 is in the error status (due to the ```errorIf``` condition) and therefore so is the workflow.
 
 [top](#processus)
 

@@ -17,9 +17,15 @@ module.exports = function(workflowId, taskName, task, callback, logger){
   exec(task.data.cmd, function(error, stdout, stderr) {
     task.data.stdout = stdout;
     task.data.stderr = stderr;
-    if(stdout){ logger.info(stdout); }
+    if(stdout){ logger.debug(stdout); }
     if(stderr){ logger.error(stderr); }
-    //let the processus know what happened
-    callback(error, task);
+    if(stderr !== ""){
+      callback(new Error("Shell failed with: " + stderr), task);
+    }
+    else {
+      logger.info("✔ task " + taskName + " completed successfully.");
+      callback(null, task);
+    }
+
   });
 };

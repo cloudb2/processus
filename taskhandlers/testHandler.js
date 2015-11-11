@@ -7,9 +7,9 @@
 */
 module.exports = function(workflowId, taskName, task, callback, logger){
 
-  logger.info("workflow ID " + workflowId);
-  logger.info("testHandler:\n executing " + taskName);
-  logger.info("Task Description:\n " + task.description);
+  logger.debug("workflow ID " + workflowId);
+  logger.debug("testHandler:\n executing " + taskName);
+  logger.debug("Task Description:\n " + task.description);
   logger.debug(taskName + ":" + JSON.stringify(task, null, 2));
   var err;
 
@@ -28,7 +28,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
   }
 
   setTimeout(function(){
-    logger.info("testHandler:\n completed " + taskName);
+    logger.info("✔ task " + taskName + " completed successfully.");
     callback(err, task);
   }, timeout);
 

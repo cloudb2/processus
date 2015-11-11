@@ -12,7 +12,7 @@
     "task 2": {
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
-      "skip_if":"$[tasks.task 1.data.skip me]",
+      "skipIf":"$[tasks.task 1.data.skip me]",
       "handler": "../taskHandlers/shellHandler",
       "data": {
         "cmd": "echo Simple"
@@ -21,7 +21,7 @@
     "task 3": {
       "description": "I am the task 3, I will error",
       "blocking": true,
-      "error_if": "$[tasks.task 2.skip_if]",
+      "errorIf": "$[tasks.task 2.skipIf]",
       "handler": "../taskHandlers/shellHandler",
       "data": {
         "cmd": "echo Workflow"

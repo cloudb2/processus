@@ -1,0 +1,126 @@
+{
+  "name": "processus testing workflow",
+  "description": "A workflow that calls all other workflows to test processus. Think inception!",
+  "static" : {
+    "test1": "./bin/processus-cli -l info -f ./test/demo1.json",
+    "test2": "./bin/processus-cli -l info -f ./test/demo2.json",
+    "test3": "./bin/processus-cli -l info -f ./test/demo3.json",
+    "test4": "./bin/processus-cli -l info -f ./test/demo4.json",
+    "test5": "./bin/processus-cli -l info -f ./test/demo5.json",
+    "test6": "./bin/processus-cli -l info -f ./test/demo6.json",
+    "test7": "./bin/processus-cli -l info -f ./test/demo7.json",
+    "test8": "./bin/processus-cli -l info -f ./test/demo8.json",
+    "test9": "./bin/processus-cli -l info -f ./test/demo9.json",
+    "test10": "./bin/processus-cli -l info -f ./test/demo10.json",
+    "test11a": "./test/demo11.json",
+    "test11b": "./test/demo11-async-task.json"
+  },
+  "tasks":{
+    "Test Task 1": {
+      "description": "Test Demo 1",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "$[static.test1]"
+      }
+    },
+    "Test Task 2": {
+      "description": "Test Demo 2",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "$[static.test2]"
+      }
+    },
+    "Test Task 3": {
+      "description": "Test Demo 3",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "$[static.test3]"
+      }
+    },
+    "Test Task 4": {
+      "description": "Test Demo 4",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "$[static.test4]"
+      }
+    },
+    "Test Task 5": {
+      "description": "Test Demo 5",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "$[static.test5]"
+      }
+    },
+    "Test Task 6": {
+      "description": "Test Demo 6",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "$[static.test6]"
+      }
+    },
+    "Test Task 7": {
+      "description": "Test Demo 7",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "$[static.test7]"
+      }
+    },
+    "Test Task 8": {
+      "description": "Test Demo 8",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "$[static.test8]"
+      },
+      "ignoreError": true
+    },
+    "Test Task 9": {
+      "description": "Test Demo 9",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "$[static.test9]"
+      },
+      "ignoreError": true
+    },
+    "Test Task 10": {
+      "description": "Test Demo 10",
+      "blocking": true,
+      "handler" : "../taskHandlers/shellHandler",
+      "data": {
+        "cmd": "$[static.test10]"
+      },
+      "ignoreError": true
+    },
+    "Test Task 11": {
+      "description": "Test Demo 11",
+      "blocking": true,
+      "tasks": {
+        "Test Task 11a": {
+          "description": "Test Demo 11a",
+          "blocking": true,
+          "handler" : "../taskHandlers/workflowHandler",
+          "data": {
+            "file": "$[static.test11a]"
+          }
+        },
+        "Test Task 11b": {
+          "description": "Test Demo 11b",
+          "blocking": true,
+          "handler" : "../taskHandlers/workflowHandler",
+          "data": {
+            "file": "$[static.test11b]",
+            "id": "$[tasks.Test Task 11.tasks.Test Task 11a.data.workflow.id]"
+          }
+        }
+      }
+    }
+  }
+}

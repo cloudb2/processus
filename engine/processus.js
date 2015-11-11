@@ -73,12 +73,12 @@ function mergeTask(originalTask, newTask){
   //A Handler can only change the data status, conditions and any sub tasks.
   originalTask.data = newTask.data;
   originalTask.status = newTask.status;
-  originalTask.error_if = newTask.error_if;
-  originalTask.skip_if = newTask.skip_if;
+  originalTask.errorIf = newTask.errorIf;
+  originalTask.skipIf = newTask.skipIf;
   originalTask.tasks = newTask.tasks;
   //now update time completed
-  originalTask['time-completed'] = Date.now();
-  originalTask['total-duration'] = originalTask['time-completed'] - originalTask['time-opened'];
+  originalTask.timeCompleted = Date.now();
+  originalTask.totalDuration = originalTask.timeCompleted - originalTask.timeOpened;
 }
 
 /**
@@ -143,8 +143,10 @@ function getTasksByStatus(parent, status, deep) {
 function realExecute(workflow, callback) {
 
   store.save(workflow, function(err){
+    logger.debug("save point a reached.");
     if(err){
       callback(err, workflow);
+      return;
     }
   });
 
@@ -174,18 +176,21 @@ function realExecute(workflow, callback) {
       var n2 = taskNames[x];
       var t2 = openTasks[taskNames[x]];
       //logger.info("Executing - [" + n2 + "] using handler [" + t2.handler + "]");
-      t2['time-started'] = Date.now();
-      logger.debug("task.skip_if = " + t2.skip_if);
-      logger.debug("task.error_if = " + t2.error_if);
-
-      var skip = (t2.skip_if === true || t2.error_if === true);
+      t2.timeStarted = Date.now();
+      logger.debug("task.skipIf = " + t2.skipIf);
+      logger.debug("task.errorIf = " + t2.errorIf);
+      var skip = (t2.skipIf === true ||
+                  t2.errorIf === true ||
+                  t2.handler === '' ||
+                  t2.handler === undefined);
       if (!skip) {
         //No error or skip condition so execute handler
+        logger.info("⧖ Staring task " + n2);
         require(t2.handler)(workflow.id, n2, t2, callback, logger);
       }
       else {
         var err = null;
-        if (t2.error_if === true) {
+        if (t2.errorIf === true) {
           err = new Error("Task has error condition set.");
         }
         callback(err, t2);
@@ -232,12 +237,12 @@ function realExecute(workflow, callback) {
             //if the task is open, set it to completed and update time stats
             if(task.status === 'open'){
               task.status = 'completed';
-              task['time-completed'] = Date.now();
-              task['handler-duration'] = task['time-completed'] - task['time-started'];
-              task['total-duration'] = task['time-completed'] - task['time-opened'];
+              task.timeCompleted = Date.now();
+              task.handlerDuration = task.timeCompleted - task.timeStarted;
+              task.totalDuration = task.timeCompleted - task.timeOpened;
             }
             if(task.status === 'pending'){
-              task['handler-duration'] = Date.now() - task['time-started'];
+              task.handlerDuration = Date.now() - task.timeStarted;
             }
             //logger.info("Task responded");
             //logger.info("Data\n" + JSON.stringify(task, null, 2));
@@ -247,20 +252,36 @@ function realExecute(workflow, callback) {
           realExecute(workflow, callback);
         }
         else {
+          var exitWorkflow = false;
           results.map(function(task){
             //ok, error so set task to error
-            task.status = 'error';
-            task.data.error = error.message;
-          });
-          //Now set the overal workflow to error
-          workflow.status = 'error';
 
-          store.save(workflow, function(err){
-            if(err){
-              callback(err, workflow);
+            task.data.error = error.message;
+            if(task.ignoreError === undefined ||
+               task.ignoreError === false) {
+              exitWorkflow = true;
+              task.status = 'error';
             }
+            if(task.ignoreError === true) {
+              task.status = 'completed';
+            }
+
           });
-          callback(error, workflow);
+          //Now set the overall workflow to error
+          if(exitWorkflow) {
+            workflow.status = 'error';
+            store.save(workflow, function(err){
+              logger.debug("save point b reached.");
+              if(err){
+                callback(err, workflow);
+                return;
+              }
+            });
+            callback(error, workflow);
+          }
+          else {
+            realExecute(workflow, callback);
+          }
         }
       });
   }
@@ -269,10 +290,11 @@ function realExecute(workflow, callback) {
     if(childHasStatus(workflow, 'completed', true)){
       workflow.status = 'completed';
     }
-
     store.save(workflow, function(err){
+      logger.debug("save point c reached.");
       if(err){
         callback(err, workflow);
+        return;
       }
     });
     //None left in the queue so callback
@@ -282,10 +304,13 @@ function realExecute(workflow, callback) {
 
 //check data values and look out for $[] references and update the value accordingly
 function setTaskDataValues(workflow, task){
-  var dataNames = Object.keys(task.data);
-  for(var x=0; x<dataNames.length; x++){
-    task.data[dataNames[x]] = setRefValue(workflow, task.data[dataNames[x]]);
+  if(task.data !== undefined) {
+    var dataNames = Object.keys(task.data);
+    for(var x=0; x<dataNames.length; x++){
+      task.data[dataNames[x]] = setRefValue(workflow, task.data[dataNames[x]]);
+    }
   }
+
 }
 
 //Init all tasks to waiting and set workflow status to open
@@ -351,7 +376,7 @@ function openTasks(tasks) {
     //the task is waiting, so let's open it and check its children (if any)
     if(task.status === "waiting"){
       task.status = 'open';
-      task['time-opened'] = Date.now();
+      task.timeOpened = Date.now();
       //we've opened the task, so open it's children (if any)
       if(task.tasks){
         openTasks(task.tasks);
@@ -410,15 +435,15 @@ function getData(workflow, path){
 function setConditionValues(workflow, task){
 
   //fetch any reference data values
-  task.skip_if = setRefValue(workflow, task.skip_if);
-  task.error_if = setRefValue(workflow, task.error_if);
+  task.skipIf = setRefValue(workflow, task.skipIf);
+  task.errorIf = setRefValue(workflow, task.errorIf);
 
   //now evaluate any conditions (if any)
-  if(task.skip_if !== undefined) {
-    task.skip_if = evalCondition(task.skip_if);
+  if(task.skipIf !== undefined) {
+    task.skipIf = evalCondition(task.skipIf);
   }
-  if(task.error_if !== undefined) {
-    task.error_if = evalCondition(task.error_if);
+  if(task.errorIf !== undefined) {
+    task.errorIf = evalCondition(task.errorIf);
   }
 
 }

@@ -15,7 +15,7 @@ function load(id, config, callback) {
   fs.readFile(current, function (err, data) {
     var workflowLoaded;
     if (err) {
-      logger.error("Unable to find workflow [" + id + "] " + err);
+      logger.error("✘ Unable to find workflow [" + id + "] " + err);
     }
     else {
       workflowLoaded = JSON.parse(data);
@@ -25,51 +25,56 @@ function load(id, config, callback) {
 }
 
 function init(config, callback){
-  if (!fs.existsSync(config.dataDirectory)){
-    fs.mkdir(config.dataDirectory, function(err){
-      if(err) {
-        logger.error("Error creating data directory: " + err);
-      }
-      else {
-        logger.debug("created data directory " + config.dataDirectory);
-      }
-      callback(err);
-    });
-  }
-  else {
-    logger.debug("data directory " + config.dataDirectory + " already exists");
+
+  var stat;
+  try {
+    stat = fs.statSync(config.dataDirectory);
     callback(null);
+  }
+  catch(err) {
+    try {
+      fs.mkdirSync(config.dataDirectory);
+      callback(null);
+    }
+    catch(error) {
+      logger.error("✘ Fatal Error, unable to find or create the data directory. " + error);
+      callback(error);
+    }
   }
 }
 
 function save(workflow, config, callback) {
   var current = config.dataDirectory + "/" + workflow.id;
   //If the file already exists rename it based on current time
-  if(fs.existsSync(current)) {
-    fs.rename(current, current + "_" + Date.now(), function(err){
-      if(err) {
-        logger.error("Error renaming file: " + err);
-      }
-      else {
-        writeCurrent(workflow, current, function(err){callback(err);});
-      }
+  var stat;
+  try {
+    stat = fs.statSync(current);
+    try {
+      fs.renameSync(current, current + "_" + Date.now());
+      writeCurrent(workflow, current, function(err){
+        callback(err);
+      });
+    }
+    catch(renameError) {
+      logger.error("✘ Fatal Error, unable to rename existing workflow. " + renameError);
+      callback(renameError);
+    }
+  }
+  catch(existsError) {
+    writeCurrent(workflow, current, function(err){
       callback(err);
     });
-  }
-  else {
-    writeCurrent(workflow, current, function(err){callback(err);});
   }
 }
 
 function writeCurrent(workflow, current, callback) {
   //Save current workflow
-  fs.writeFile(current, JSON.stringify(workflow, null, 2), function(err) {
-      if(err) {
-        logger.error("Error writing file: " + err);
-      }
-      else {
-        logger.debug("saved workflow: " + current);
-      }
-      callback(err);
-  });
+  try {
+    fs.writeFileSync(current, JSON.stringify(workflow, null, 2));
+    callback(null);
+  }
+  catch(writeError) {
+    callback(writeError);
+  }
+
 }

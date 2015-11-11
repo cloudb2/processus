@@ -51,17 +51,17 @@ module.exports = function() {
         logger.level = options.log;
     }
     else {
-      logger.error("Invalid log level, see help for more info.");
+      logger.error("✘ Invalid log level, see help for more info.");
       return -1;
     }
 
     if (options.file === null && options.id === null) {
-      logger.error("Must supply a worklfow or task filename.");
+      logger.error("✘ Must supply a worklfow or task filename.");
       return -1;
     }
 
     if (options.file === null && options.id !== null) {
-      logger.error("Must supply a task filename.");
+      logger.error("✘ Must supply a task filename.");
       return -1;
     }
 
@@ -71,7 +71,7 @@ module.exports = function() {
       workflowTaskFile = fs.readFileSync(options.file, "utf8");
     }
     catch(err) {
-      logger.error("Failed to open JSON file " + options.file + "\n" + err.message);
+      logger.error("✘ Failed to open JSON file " + options.file + "\n" + err.message);
       return err;
     }
 
@@ -81,7 +81,7 @@ module.exports = function() {
       workflowTaskJSON = JSON.parse(workflowTaskFile);
     }
     catch(err){
-        logger.error("Failed to parse JSON file " + options.file + "\n" + err.message);
+        logger.error("✘ Failed to parse JSON file " + options.file + "\n" + err.message);
         return err;
     }
 
@@ -89,11 +89,11 @@ module.exports = function() {
 
       processus.execute(workflowTaskJSON, function(err, workflow){
         if(!err) {
-          logger.info("Workflow returned successfully.");
+          logger.debug("Workflow returned successfully.");
           logger.debug(JSON.stringify(workflow, null, 2));
         }
         else {
-          logger.error(err.message);
+          logger.error("✘ " + err.message);
           logger.debug(JSON.stringify(workflow, null, 2));
         }
         return err;
@@ -103,11 +103,11 @@ module.exports = function() {
     if(options.id !== null){
       processus.updateTasks(options.id, workflowTaskJSON, function(err, workflow){
         if(!err) {
-          logger.info("Workflow returned successfully.");
+          logger.debug("Workflow returned successfully.");
           logger.debug(JSON.stringify(workflow, null, 2));
         }
         else {
-          logger.error(err.message);
+          logger.error("✘ " + err.message);
           logger.debug(JSON.stringify(workflow, null, 2));
         }
         return err;
