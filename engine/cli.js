@@ -91,6 +91,9 @@ module.exports = function() {
         if(!err) {
           logger.debug("Workflow returned successfully.");
           logger.debug(JSON.stringify(workflow, null, 2));
+          if(workflow.status === "completed"){
+            logger.info("✰ Workflow [" + options.file + "] completed successfully.");
+          }
         }
         else {
           logger.error("✘ " + err.message);
@@ -105,6 +108,9 @@ module.exports = function() {
         if(!err) {
           logger.debug("Workflow returned successfully.");
           logger.debug(JSON.stringify(workflow, null, 2));
+          if(workflow.status === "completed"){
+            logger.info("✰ Workflow [" + options.file + "] completed successfully.");
+          }
         }
         else {
           logger.error("✘ " + err.message);

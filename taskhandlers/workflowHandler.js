@@ -42,7 +42,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
   if(task.data.id === undefined) {
     processus.execute(workflowTaskJSON, function(err, workflow){
       if(!err) {
-        logger.info("✔ Workflow completed successfully.");
+        logger.info("✔ Workflow [" + task.data.file + "] completed successfully.");
         logger.debug(JSON.stringify(workflow, null, 2));
         task.data.workflow = workflow;
         callback(null, task);

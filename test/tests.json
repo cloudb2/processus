@@ -16,7 +16,7 @@
     "test11b": "./test/demo11-async-task.json"
   },
   "tasks":{
-    "Test Task 1": {
+    "Test Demo 1": {
       "description": "Test Demo 1",
       "blocking": true,
       "handler" : "../taskHandlers/shellHandler",
@@ -24,7 +24,7 @@
         "cmd": "$[static.test1]"
       }
     },
-    "Test Task 2": {
+    "Test Demo 2": {
       "description": "Test Demo 2",
       "blocking": true,
       "handler" : "../taskHandlers/shellHandler",
@@ -32,7 +32,7 @@
         "cmd": "$[static.test2]"
       }
     },
-    "Test Task 3": {
+    "Test Demo 3": {
       "description": "Test Demo 3",
       "blocking": true,
       "handler" : "../taskHandlers/shellHandler",
@@ -40,7 +40,7 @@
         "cmd": "$[static.test3]"
       }
     },
-    "Test Task 4": {
+    "Test Demo 4": {
       "description": "Test Demo 4",
       "blocking": true,
       "handler" : "../taskHandlers/shellHandler",
@@ -48,7 +48,7 @@
         "cmd": "$[static.test4]"
       }
     },
-    "Test Task 5": {
+    "Test Demo 5": {
       "description": "Test Demo 5",
       "blocking": true,
       "handler" : "../taskHandlers/shellHandler",
@@ -56,7 +56,7 @@
         "cmd": "$[static.test5]"
       }
     },
-    "Test Task 6": {
+    "Test Demo 6": {
       "description": "Test Demo 6",
       "blocking": true,
       "handler" : "../taskHandlers/shellHandler",
@@ -64,7 +64,7 @@
         "cmd": "$[static.test6]"
       }
     },
-    "Test Task 7": {
+    "Test Demo 7": {
       "description": "Test Demo 7",
       "blocking": true,
       "handler" : "../taskHandlers/shellHandler",
@@ -72,7 +72,7 @@
         "cmd": "$[static.test7]"
       }
     },
-    "Test Task 8": {
+    "Test Demo 8": {
       "description": "Test Demo 8",
       "blocking": true,
       "handler" : "../taskHandlers/shellHandler",
@@ -81,7 +81,7 @@
       },
       "ignoreError": true
     },
-    "Test Task 9": {
+    "Test Demo 9": {
       "description": "Test Demo 9",
       "blocking": true,
       "handler" : "../taskHandlers/shellHandler",
@@ -90,7 +90,7 @@
       },
       "ignoreError": true
     },
-    "Test Task 10": {
+    "Test Demo 10": {
       "description": "Test Demo 10",
       "blocking": true,
       "handler" : "../taskHandlers/shellHandler",
@@ -99,11 +99,11 @@
       },
       "ignoreError": true
     },
-    "Test Task 11": {
+    "Test Demo 11": {
       "description": "Test Demo 11",
       "blocking": true,
       "tasks": {
-        "Test Task 11a": {
+        "Test Demo 11a": {
           "description": "Test Demo 11a",
           "blocking": true,
           "handler" : "../taskHandlers/workflowHandler",
@@ -111,13 +111,13 @@
             "file": "$[static.test11a]"
           }
         },
-        "Test Task 11b": {
+        "Test Demo 11b": {
           "description": "Test Demo 11b",
           "blocking": true,
           "handler" : "../taskHandlers/workflowHandler",
           "data": {
             "file": "$[static.test11b]",
-            "id": "$[tasks.Test Task 11.tasks.Test Task 11a.data.workflow.id]"
+            "id": "$[tasks.Test Demo 11.tasks.Test Demo 11a.data.workflow.id]"
           }
         }
       }

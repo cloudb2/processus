@@ -263,6 +263,7 @@ function realExecute(workflow, callback) {
               task.status = 'error';
             }
             if(task.ignoreError === true) {
+              logger.info("❖ Ignoring error as requested... la la la")
               task.status = 'completed';
             }
 
