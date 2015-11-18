@@ -1,12 +1,12 @@
 
 var processus = require('../engine/processus');
 var fs = require('fs');
-/* Test Task Handler
- * Simply logs the task and returns in accordance with the supplied data
- * Options are:
- * Set task.data.error = true to raise an error
- * Set task.data.delay to set the time in msecs that the task should delay
-*/
+
+/* Workflow Handler
+ * using the parameter data.file, this handler will attempt to load the corresponding file
+ * execute it and save the resulting workflow output in data.workflow.
+ * as with the CLI add data.id to update an existing workflow
+ */
 module.exports = function(workflowId, taskName, task, callback, logger){
 
   var err;
@@ -52,7 +52,6 @@ module.exports = function(workflowId, taskName, task, callback, logger){
       else {
         logger.error("✘ " + err.message);
         logger.debug(JSON.stringify(workflow, null, 2));
-        task.data.error = err;
         callback(err, task);
       }
       return err;
