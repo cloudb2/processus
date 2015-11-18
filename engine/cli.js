@@ -67,6 +67,8 @@ module.exports = function() {
 
     var workflowTaskFile;
 
+    logger.info("reading workflow file " + options.file);
+
     try {
       workflowTaskFile = fs.readFileSync(options.file, "utf8");
     }
@@ -94,9 +96,13 @@ module.exports = function() {
           if(workflow.status === "completed"){
             logger.info("✰ Workflow [" + options.file + "] completed successfully.");
           }
+          else {
+            logger.info("✰ Workflow [" + options.file + "] exited without error, but did not complete.");
+          }
         }
         else {
           logger.error("✘ " + err.message);
+          logger.error("✘ Workflow [" + options.file + "] exited with error!");
           logger.debug(JSON.stringify(workflow, null, 2));
         }
         return err;

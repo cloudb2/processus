@@ -7,26 +7,29 @@
 */
 module.exports = function(workflowId, taskName, task, callback, logger){
 
-  logger.debug("workflow ID " + workflowId);
-  logger.debug("testHandler:\n executing " + taskName);
-  logger.debug("Task Description:\n " + task.description);
-  logger.debug(taskName + ":" + JSON.stringify(task, null, 2));
   var err;
 
+  //Check for presence of the data property
+  if(!task.data) {
+    callback(new Error("Task [" + taskName + "] has no data property!"), task);
+    return;
+  }
+
+  //Mimic an error if asked?
   if(task.data.error === true){
-      err = new Error("This is an error from the task " + taskName);
+    err = new Error("This is an error from the task " + taskName);
   }
 
+  //mimic a pending status if asked?
   if(task.data.pending === true){
-      task.status = "pending";
+    task.status = "pending";
   }
 
+  //Get time out and wait accordingly
   var timeout = 0;
-
   if(task.data.delay) {
     timeout=task.data.delay;
   }
-
   setTimeout(function(){
     logger.info("✔ task " + taskName + " completed successfully.");
     callback(err, task);

@@ -47,11 +47,76 @@ or clone this repo
 git clone https://github.com/cloudb2/processus
 ```
 
-
 A workflow in Processus is defined using JSON, which should conform to a specific
-schema. The best way to understand that schema is looking at examples.
+structure. The best way to understand that structure is by looking at examples.
+
+A workflow, in it's simplest form, is defined as follows.
+
+```
+{
+  "tasks": {
+  },
+  "id": "[instance UUID]"
+  "status": "[open|error|completed]"
+}
+```
+Both id and status are added by processus at execution time.
+
+execute the above example ex1.json using the following command.
+```
+../bin/processus-cli -l info -f ./test/ex1.json
+```
+
+You should see something like this.
+```
+$ ./bin/processus-cli -l info -f test/ex1.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+2015-11-12 00:59:16 INFO ✰ Workflow [test/ex1.json] exited without error, but did not complete.
+```
+***Note***
+1. You can add additional meta data to the workflow such as a name and description, but that will be ignored by Processus.
+2. The status of a workflow can be open, error or completed.
+3. In this example there are no tasks, so the Processus returns open, assuming that a task will be injected later. More on this later.
+
+execute ex1 again, this time with a log level of debug.
+```
+../bin/processus-cli -l info -f ./test/ex1.json
+```
+
+You should see something like this.
+```
+$ ./bin/processus-cli -l debug -f test/ex1.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+2015-11-12 01:02:00 DEBUG save point a reached.
+2015-11-12 01:02:00 DEBUG save point c reached.
+2015-11-12 01:02:00 DEBUG Workflow returned successfully.
+2015-11-12 01:02:00 DEBUG {
+  "tasks": {},
+  "status": "open",
+  "id": "33fda8ab-4cac-4acb-80fa-65c731eb6983"
+}
+2015-11-12 01:02:00 INFO ✰ Workflow [test/ex1.json] exited without error, but did not complete.
+```
+***Note***
+1. The status and id have been added by Processus
+
 
 ## Introduction
+
 
 Processus assumes that the person assembling the workflow is NOT necessarily familiar with the nuances of software development. Although they use JSON to configure the workflow, its executional flow and conditional constructs, they will defer the difficult task of interacting with various endpoints and systems to the task handlers. In short, Processus tries to employ a KIS (Keep It Simple) philosophy to its configuration.
 

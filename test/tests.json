@@ -18,7 +18,7 @@
   "tasks":{
     "Test Demo 1": {
       "description": "Test Demo 1",
-      "blocking": true,
+      "blocking": false,
       "handler" : "../taskHandlers/shellHandler",
       "data": {
         "cmd": "$[static.test1]"
@@ -26,7 +26,7 @@
     },
     "Test Demo 2": {
       "description": "Test Demo 2",
-      "blocking": true,
+      "blocking": false,
       "handler" : "../taskHandlers/shellHandler",
       "data": {
         "cmd": "$[static.test2]"
@@ -34,7 +34,7 @@
     },
     "Test Demo 3": {
       "description": "Test Demo 3",
-      "blocking": true,
+      "blocking": false,
       "handler" : "../taskHandlers/shellHandler",
       "data": {
         "cmd": "$[static.test3]"
@@ -42,7 +42,7 @@
     },
     "Test Demo 4": {
       "description": "Test Demo 4",
-      "blocking": true,
+      "blocking": false,
       "handler" : "../taskHandlers/shellHandler",
       "data": {
         "cmd": "$[static.test4]"
@@ -50,7 +50,7 @@
     },
     "Test Demo 5": {
       "description": "Test Demo 5",
-      "blocking": true,
+      "blocking": false,
       "handler" : "../taskHandlers/shellHandler",
       "data": {
         "cmd": "$[static.test5]"
@@ -58,7 +58,7 @@
     },
     "Test Demo 6": {
       "description": "Test Demo 6",
-      "blocking": true,
+      "blocking": false,
       "handler" : "../taskHandlers/shellHandler",
       "data": {
         "cmd": "$[static.test6]"
@@ -66,7 +66,7 @@
     },
     "Test Demo 7": {
       "description": "Test Demo 7",
-      "blocking": true,
+      "blocking": false,
       "handler" : "../taskHandlers/shellHandler",
       "data": {
         "cmd": "$[static.test7]"
@@ -74,7 +74,7 @@
     },
     "Test Demo 8": {
       "description": "Test Demo 8",
-      "blocking": true,
+      "blocking": false,
       "handler" : "../taskHandlers/shellHandler",
       "data": {
         "cmd": "$[static.test8]"
@@ -83,7 +83,7 @@
     },
     "Test Demo 9": {
       "description": "Test Demo 9",
-      "blocking": true,
+      "blocking": false,
       "handler" : "../taskHandlers/shellHandler",
       "data": {
         "cmd": "$[static.test9]"
@@ -92,7 +92,7 @@
     },
     "Test Demo 10": {
       "description": "Test Demo 10",
-      "blocking": true,
+      "blocking": false,
       "handler" : "../taskHandlers/shellHandler",
       "data": {
         "cmd": "$[static.test10]"
@@ -101,7 +101,7 @@
     },
     "Test Demo 11": {
       "description": "Test Demo 11",
-      "blocking": true,
+      "blocking": false,
       "tasks": {
         "Test Demo 11a": {
           "description": "Test Demo 11a",

@@ -11,12 +11,14 @@ module.exports = function(workflowId, taskName, task, callback, logger){
 
   var err;
   if(!task.data) {
-    callback(new Error("No task data property!"), task);
+    callback(new Error("Task [" + taskName + "] has no data property!"), task);
+    return;
   }
 
   //Validate that the data cmd property has been set
   if(!task.data.file) {
-    callback(new Error("No data file property set!"), task);
+    callback(new Error("Task [" + taskName + "] has no data.file property set!"), task);
+    return;
   }
 
   var workflowTaskFile;

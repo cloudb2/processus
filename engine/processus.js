@@ -91,13 +91,15 @@ function execute(workflow, callback){
   //Initialise store
   store.init(function(err){
     if(!err){
-      workflow = validateWorkflow(workflow);
-      realExecute(workflow, callback);
+      logger.debug("init complete without error.");
+
     }
     else {
       callback(err, workflow);
     }
   });
+  workflow = validateWorkflow(workflow);
+  realExecute(workflow, callback);
 
 
   //return workflow;
@@ -175,7 +177,6 @@ function realExecute(workflow, callback) {
     return function(callback){
       var n2 = taskNames[x];
       var t2 = openTasks[taskNames[x]];
-      //logger.info("Executing - [" + n2 + "] using handler [" + t2.handler + "]");
       t2.timeStarted = Date.now();
       logger.debug("task.skipIf = " + t2.skipIf);
       logger.debug("task.errorIf = " + t2.errorIf);
@@ -186,13 +187,51 @@ function realExecute(workflow, callback) {
       if (!skip) {
         //No error or skip condition so execute handler
         logger.info("⧖ Staring task " + n2);
-        require(t2.handler)(workflow.id, n2, t2, callback, logger);
+        require(t2.handler)(workflow.id, n2, t2, function(err, t2returned){
+          //handler returned, check if there's an error
+          if(err) {
+            //there is, so set it on the task
+            t2returned.errorMsg = err.message;
+            t2returned.status = "error";
+            //Should we ignore the error?
+            if(t2returned.ignoreError === true) {
+              logger.info("ignoring error, as request for task " + n2);
+              t2returned.status = 'executing';
+              //reset err object
+              err = undefined;
+            }
+          }
+          //If the task is executing mark it as completed and update times
+          if(t2returned.status === 'executing'){
+            t2returned.status = 'completed';
+            t2returned.timeCompleted = Date.now();
+            t2returned.handlerDuration = t2returned.timeCompleted - t2returned.timeStarted;
+            t2returned.totalDuration = t2returned.timeCompleted - t2returned.timeOpened;
+          }
+          //If the task is pending (as marked by the hander) then we assume
+          //an async call that will return in the future
+          if(t2returned.status === 'pending'){
+            t2returned.handlerDuration = Date.now() - t2returned.timeStarted;
+          }
+          //callback to Async
+          callback(err, t2returned);
+        }, logger);
       }
       else {
+        //Ok, we're skipping the handler is that because errorIf is true?
         var err = null;
         if (t2.errorIf === true) {
           err = new Error("Task has error condition set.");
         }
+        //If it's exeucuting but has no handler (i.e. it could just be a parent place holder task),
+        //mark it completed.
+        if(t2.status === 'executing'){
+          t2.status = 'completed';
+          t2.timeCompleted = Date.now();
+          t2.handlerDuration = t2.timeCompleted - t2.timeStarted;
+          t2.totalDuration = t2.timeCompleted - t2.timeOpened;
+        }
+        //call back to Async, with error if necessary.
         callback(err, t2);
       }
     };
@@ -212,6 +251,7 @@ function realExecute(workflow, callback) {
     if(t.status === 'open' && !t.tasks){
       setTaskDataValues(workflow, t);
       setConditionValues(workflow, t);
+      t.status = "executing";
       taskExecutionQueue.push(taskFunction);
     }
     //if the task has children, but they're ALL completed, queue it to execute
@@ -219,6 +259,7 @@ function realExecute(workflow, callback) {
       if(childHasStatus(t, 'completed', true)){
         setTaskDataValues(workflow, t);
         setConditionValues(workflow, t);
+        t.status = "executing";
         taskExecutionQueue.push(taskFunction);
       }
     }
@@ -233,56 +274,21 @@ function realExecute(workflow, callback) {
       function(error, results) {
         //if no error then cycle through results and update the task statuses
         if(!error) {
-          results.map(function(task){
-            //if the task is open, set it to completed and update time stats
-            if(task.status === 'open'){
-              task.status = 'completed';
-              task.timeCompleted = Date.now();
-              task.handlerDuration = task.timeCompleted - task.timeStarted;
-              task.totalDuration = task.timeCompleted - task.timeOpened;
-            }
-            if(task.status === 'pending'){
-              task.handlerDuration = Date.now() - task.timeStarted;
-            }
-            //logger.info("Task responded");
-            //logger.info("Data\n" + JSON.stringify(task, null, 2));
-          });
-
           //ok, all done and no error, so recurse into next set of tasks (if any)
           realExecute(workflow, callback);
         }
         else {
-          var exitWorkflow = false;
-          results.map(function(task){
-            //ok, error so set task to error
 
-            task.data.error = error.message;
-            if(task.ignoreError === undefined ||
-               task.ignoreError === false) {
-              exitWorkflow = true;
-              task.status = 'error';
-            }
-            if(task.ignoreError === true) {
-              logger.info("❖ Ignoring error as requested... la la la")
-              task.status = 'completed';
-            }
-
-          });
           //Now set the overall workflow to error
-          if(exitWorkflow) {
-            workflow.status = 'error';
-            store.save(workflow, function(err){
-              logger.debug("save point b reached.");
-              if(err){
-                callback(err, workflow);
-                return;
-              }
-            });
-            callback(error, workflow);
-          }
-          else {
-            realExecute(workflow, callback);
-          }
+          workflow.status = 'error';
+          store.save(workflow, function(err){
+            logger.debug("save point b reached.");
+            if(err){
+              callback(err, workflow);
+              return;
+            }
+          });
+          callback(error, workflow);
         }
       });
   }

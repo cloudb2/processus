@@ -27,12 +27,15 @@ function load(id, config, callback) {
 function init(config, callback){
 
   var stat;
+
   try {
+    logger.debug("checking for data directory");
     stat = fs.statSync(config.dataDirectory);
     callback(null);
   }
   catch(err) {
     try {
+      logger.debug("creating data directory");
       fs.mkdirSync(config.dataDirectory);
       callback(null);
     }

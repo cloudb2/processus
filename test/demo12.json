@@ -1,0 +1,15 @@
+{
+  "tasks": {
+    "call github": {
+      "blocking": true,
+      "handler": "../taskhandlers/requestHandler",
+      "data": {
+        "options": {
+            "url": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json",
+            "method": "GET",
+            "json": true
+        }
+      }
+    }
+  }
+}
