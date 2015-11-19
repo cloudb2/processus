@@ -29,6 +29,7 @@ var cli = require('cli');
 var fs = require('fs');
 var processus = require('./processus');
 var logger = require('./logger');
+var store = require('./persistence/store');
 
 module.exports = function() {
 
@@ -64,67 +65,24 @@ module.exports = function() {
       return -1;
     }
 
-    var workflowTaskFile;
-
-    logger.info("reading workflow file " + options.file);
-
-    try {
-      workflowTaskFile = fs.readFileSync(options.file, "utf8");
-    }
-    catch(err) {
-      logger.error("✘ Failed to open JSON file " + options.file + "\n" + err.message);
-      return err;
-    }
-
     var workflowTaskJSON;
-
-    try {
-      workflowTaskJSON = JSON.parse(workflowTaskFile);
-    }
-    catch(err){
-        logger.error("✘ Failed to parse JSON file " + options.file + "\n" + err.message);
+    store.loadDef(options.file, function(err, workflowFile){
+      if(!err){
+        workflowTaskJSON = workflowFile;
+      }
+      else {
         return err;
+      }
+    });
+    if(workflowTaskJSON === undefined){
+      return;
     }
 
-    if (options.file !== '' && options.id === null) {
-
-      processus.execute(workflowTaskJSON, function(err, workflow){
-        if(!err) {
-          logger.debug("Workflow returned successfully.");
-          logger.debug(JSON.stringify(workflow, null, 2));
-          if(workflow.status === "completed"){
-            logger.info("✰ Workflow [" + options.file + "] with id [" + workflow.id + "] completed successfully.");
-          }
-          else {
-            logger.info("✰ Workflow [" + options.file + "] with id [" + workflow.id + "] exited without error, but did not complete.");
-          }
-        }
-        else {
-          logger.error("✘ " + err.message);
-          logger.error("✘ Workflow [" + options.file + "] with id [" + workflow.id + "] exited with error!");
-          logger.debug(JSON.stringify(workflow, null, 2));
-        }
-        return err;
-      });
-    }
-
-    if(options.id !== null){
-      processus.updateTasks(options.id, workflowTaskJSON, function(err, workflow){
-        if(!err) {
-          logger.debug("Workflow returned successfully.");
-          logger.debug(JSON.stringify(workflow, null, 2));
-          if(workflow.status === "completed"){
-            logger.info("✰ Workflow [[" + options.file + "] with id [" + workflow.id + "] completed successfully.");
-          }
-        }
-        else {
-          logger.error("✘ " + err.message);
-          logger.error("✘ Workflow [" + options.file + "] with id [" + workflow.id + "] exited with error!");
-          logger.debug(JSON.stringify(workflow, null, 2));
-        }
-        return err;
-      });
-    }
+    processus.runWorkflow(options.file, options.id, workflowTaskJSON, function(err, workflow){
+      if(err){
+        //logger.error(err);
+      }
+    });
 
   });
 };

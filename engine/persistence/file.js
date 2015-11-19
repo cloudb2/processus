@@ -3,12 +3,46 @@
  */
 var logger = require('../logger');
 var fs = require('fs');
+var envParser = require('../envParser');
 
 module.exports = {
   save: save,
   init: init,
-  load: load
+  load: load,
+  loadDef: loadDef
 };
+
+function loadDef(id, callback){
+
+  var workflowTaskFile;
+
+  logger.info("reading workflow file [" + id + "]");
+
+  try {
+    workflowTaskFile = fs.readFileSync(id, "utf8");
+  }
+  catch(err) {
+    logger.error("✘ Failed to open JSON file [" + id + "]" + err.message);
+    callback(err, null);
+    return;
+  }
+
+  var workflowTaskJSON;
+
+  //parse and replace any env vars
+  workflowTaskFile = envParser.parse(workflowTaskFile);
+  
+  try {
+    workflowTaskJSON = JSON.parse(workflowTaskFile);
+  }
+  catch(err){
+      logger.error("✘ Failed to parse JSON file [" + id + "]" + err.message);
+      callback(err, null);
+      return;
+  }
+
+  callback(null, workflowTaskJSON);
+}
 
 function load(id, config, callback) {
   var current = config.dataDirectory + "/" + id;
@@ -29,13 +63,13 @@ function init(config, callback){
   var stat;
 
   try {
-    logger.debug("checking for data directory");
+    logger.debug("checking for data directory [" + config.dataDirectory + "]");
     stat = fs.statSync(config.dataDirectory);
     callback(null);
   }
   catch(err) {
     try {
-      logger.debug("creating data directory");
+      logger.debug("creating data directory [" + config.dataDirectory + "]");
       fs.mkdirSync(config.dataDirectory);
       callback(null);
     }

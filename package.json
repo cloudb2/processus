@@ -1,6 +1,6 @@
 {
   "name": "processus",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A simple node workflow engine",
   "homepage": "http://cloudb2.github.io/processus/",
   "engine": {
@@ -33,6 +33,7 @@
   "dependencies": {
     "async": "^1.4.2",
     "cli": "^0.10.0",
+    "dotenv": "^1.2.0",
     "node-uuid": "^1.4.3",
     "request": "^2.66.0",
     "winston": "^1.1.0"

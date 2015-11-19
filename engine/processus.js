@@ -25,16 +25,61 @@
  *   DEALINGS IN THE SOFTWARE.
  *
  */
-
+require('dotenv').load();
 var async = require("async");
 var uuid = require("node-uuid");
 var logger = require('./logger');
 var store = require('./persistence/store');
 
+
 module.exports = {
   execute: execute,
-  updateTasks: updateTasks
+  updateTasks: updateTasks,
+  runWorkflow: runWorkflow
 };
+
+function runWorkflow(defId, id, workflowTaskJSON, callback) {
+  if (id === null || id === undefined) {
+
+    execute(workflowTaskJSON, function(err, workflow){
+      if(!err) {
+        logger.debug("Workflow returned successfully.");
+        logger.debug(JSON.stringify(workflow, null, 2));
+        if(workflow.status === "completed"){
+          logger.info("✰ Workflow [" + defId + "] with id [" + workflow.id + "] completed successfully.");
+        }
+        else {
+          logger.info("✰ Workflow [" + defId + "] with id [" + workflow.id + "] exited without error, but did not complete.");
+        }
+      }
+      else {
+        logger.error("✘ " + err.message);
+        logger.error("✘ Workflow [" + defId + "] with id [" + workflow.id + "] exited with error!");
+        logger.debug(JSON.stringify(workflow, null, 2));
+      }
+      callback(err, workflow);
+    });
+  }
+
+  if(id !== null && id !== undefined){
+    updateTasks(id, workflowTaskJSON, function(err, workflow){
+      if(!err) {
+        logger.debug("Workflow returned successfully.");
+        logger.debug(JSON.stringify(workflow, null, 2));
+        if(workflow.status === "completed"){
+          logger.info("✰ Workflow [" + defId + "] with id [" + id + "] updated successfully.");
+        }
+      }
+      else {
+        logger.error("✘ " + err.message);
+        logger.error("✘ Workflow [" + defId + "] with id [" + id + "] failed to update with error!");
+        logger.debug(JSON.stringify(workflow, null, 2));
+      }
+      callback(err, workflow);
+    });
+  }
+
+}
 
 function updateTasks(id, tasks, callback){
 
@@ -186,7 +231,7 @@ function realExecute(workflow, callback) {
                   t2.handler === undefined);
       if (!skip) {
         //No error or skip condition so execute handler
-        logger.info("⧖ Staring task [" + n2 + "]");
+        logger.info("⧖ Starting task [" + n2 + "]");
         require(t2.handler)(workflow.id, n2, t2, function(err, t2returned){
           //handler returned, check if there's an error
           if(err) {

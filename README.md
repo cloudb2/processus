@@ -70,8 +70,8 @@ $ ./bin/processus-cli -l info -f ./test/ex1.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 00:19:06 INFO reading workflow file ./test/ex1.json
-2015-11-19 00:19:06 INFO ✰ Workflow [./test/ex1.json] with id [208810ae-14f3-4331-bd3f-adace417e38d] exited without error, but did not complete.
+info: reading workflow file [./test/ex1.json]
+info: ✰ Workflow [./test/ex1.json] with id [5e4993b8-563f-448e-a983-3f1e0b342d60] exited without error, but did not complete.
 ```
 ***Note***
 
@@ -95,18 +95,18 @@ $ ./bin/processus-cli -l debug -f ./test/ex1.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 00:19:43 INFO reading workflow file ./test/ex1.json
-2015-11-19 00:19:43 DEBUG checking for data directory
-2015-11-19 00:19:43 DEBUG init complete without error.
-2015-11-19 00:19:43 DEBUG save point a reached.
-2015-11-19 00:19:43 DEBUG save point c reached.
-2015-11-19 00:19:43 DEBUG Workflow returned successfully.
-2015-11-19 00:19:43 DEBUG {
+info: reading workflow file [./test/ex1.json]
+debug: checking for data directory [_data]
+debug: init complete without error.
+debug: save point a reached.
+debug: save point c reached.
+debug: Workflow returned successfully.
+debug: {
   "tasks": {},
   "status": "open",
-  "id": "8a2467ad-ad05-4dca-92b8-aac815d7dbec"
+  "id": "bec87e05-d4c4-43e8-b16c-8c89215f28a2"
 }
-2015-11-19 00:19:43 INFO ✰ Workflow [./test/ex1.json] with id [8a2467ad-ad05-4dca-92b8-aac815d7dbec] exited without error, but did not complete.
+info: ✰ Workflow [./test/ex1.json] with id [bec87e05-d4c4-43e8-b16c-8c89215f28a2] exited without error, but did not complete.
 ```
 ***Note***
 
@@ -145,7 +145,7 @@ So, in short, this simple workflow will execute ```echo 'hello, world'``` and ``
 
 execute ex2.json
 ```
-../bin/processus-cli -l debug -f ./test/ex2.json
+./bin/processus-cli -l debug -f ./test/ex2.json
 ```
 
 You should see something like this.
@@ -159,17 +159,27 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 00:20:54 INFO reading workflow file ./test/ex2.json
-2015-11-19 00:20:54 INFO ⧖ Staring task say hello
-2015-11-19 00:20:54 INFO stdout ➜ [hello, world
+info: reading workflow file [./test/ex2.json]
+debug: checking for data directory [_data]
+debug: init complete without error.
+debug: save point a reached.
+debug: task.skipIf = undefined
+debug: task.errorIf = undefined
+info: ⧖ Starting task [say hello]
+debug: stdout ➜ [hello, world
 ]
-2015-11-19 00:20:54 INFO ✔ task [say hello] completed successfully.
-2015-11-19 00:20:54 INFO ⧖ Staring task say hello again
-2015-11-19 00:20:54 INFO stdout ➜ [hello, world again
+info: ✔ task [say hello] completed successfully.
+debug: save point a reached.
+debug: task.skipIf = undefined
+debug: task.errorIf = undefined
+info: ⧖ Starting task [say hello again]
+debug: stdout ➜ [hello, world again
 ]
-2015-11-19 00:20:54 INFO ✔ task [say hello again] completed successfully.
-2015-11-19 00:20:54 DEBUG Workflow returned successfully.
-2015-11-19 00:20:54 DEBUG {
+info: ✔ task [say hello again] completed successfully.
+debug: save point a reached.
+debug: save point c reached.
+debug: Workflow returned successfully.
+debug: {
   "tasks": {
     "say hello": {
       "blocking": true,
@@ -180,11 +190,11 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
         "stderr": ""
       },
       "status": "completed",
-      "timeOpened": 1447892454206,
-      "timeStarted": 1447892454208,
-      "timeCompleted": 1447892454234,
-      "handlerDuration": 26,
-      "totalDuration": 28
+      "timeOpened": 1447974872204,
+      "timeStarted": 1447974872206,
+      "timeCompleted": 1447974872224,
+      "handlerDuration": 18,
+      "totalDuration": 20
     },
     "say hello again": {
       "blocking": true,
@@ -195,17 +205,17 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
         "stderr": ""
       },
       "status": "completed",
-      "timeOpened": 1447892454237,
-      "timeStarted": 1447892454238,
-      "timeCompleted": 1447892454244,
-      "handlerDuration": 6,
-      "totalDuration": 7
+      "timeOpened": 1447974872225,
+      "timeStarted": 1447974872226,
+      "timeCompleted": 1447974872235,
+      "handlerDuration": 9,
+      "totalDuration": 10
     }
   },
   "status": "completed",
-  "id": "9909133c-158a-4f0f-8778-99d7c378ef7d"
+  "id": "e83de778-d64b-403f-b29d-c305c9f854dd"
 }
-2015-11-19 00:20:54 INFO ✰ Workflow [./test/ex2.json] with id [9909133c-158a-4f0f-8778-99d7c378ef7d] completed successfully.
+info: ✰ Workflow [./test/ex2.json] with id [e83de778-d64b-403f-b29d-c305c9f854dd] completed successfully.
 ```
 ***Note***
 
@@ -231,8 +241,7 @@ Make a pull requests and ensure you can run ```./runtests.sh``` successfully. Pl
 
 ### Roadmap
 * Workflow Persistence Plugin Architecture
-  * filebased, default
-  * Mongodb
+  * Add Mongodb persistence type
 * Full REST API to interact with Processus
   * Swagger yaml
-* Support for environment variables
+  

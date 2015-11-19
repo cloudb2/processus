@@ -20,6 +20,7 @@ workflows.
   * [Handlers](#handlers)
     * [requestHandler](#requestHandler)
     * [workflowHandler](#workflowHandler)
+  * [Environment Variables](#environment-variables)
 
 <hr>
 
@@ -288,14 +289,14 @@ $ ./bin/processus-cli -l info -f ./test/demo1.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 00:23:07 INFO reading workflow file ./test/demo1.json
-2015-11-19 00:23:08 INFO ⧖ Staring task task 1
-2015-11-19 00:23:09 INFO ✔ task task 1 completed successfully.
-2015-11-19 00:23:09 INFO ⧖ Staring task task 2
-2015-11-19 00:23:10 INFO ✔ task task 2 completed successfully.
-2015-11-19 00:23:10 INFO ⧖ Staring task task 3
-2015-11-19 00:23:11 INFO ✔ task task 3 completed successfully.
-2015-11-19 00:23:11 INFO ✰ Workflow [./test/demo1.json] with id [92760c03-98fb-4ebe-baf4-bae5b65939c6] completed successfully.
+info: reading workflow file [./test/demo1.json]
+info: ⧖ Starting task [task 1]
+info: ✔ task task 1 completed successfully.
+info: ⧖ Starting task [task 2]
+info: ✔ task task 2 completed successfully.
+info: ⧖ Starting task [task 3]
+info: ✔ task task 3 completed successfully.
+info: ✰ Workflow [./test/demo1.json] with id [79893dc3-7bcd-4596-bfc4-3c4380b04775] completed successfully.
 ```
 
 ### Parallel Tasks
@@ -348,14 +349,14 @@ $ ./bin/processus-cli -l info -f ./test/demo2.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 00:24:50 INFO reading workflow file ./test/demo2.json
-2015-11-19 00:24:50 INFO ⧖ Staring task task 1
-2015-11-19 00:24:50 INFO ⧖ Staring task task 2
-2015-11-19 00:24:50 INFO ⧖ Staring task task 3
-2015-11-19 00:24:51 INFO ✔ task task 3 completed successfully.
-2015-11-19 00:24:51 INFO ✔ task task 2 completed successfully.
-2015-11-19 00:24:52 INFO ✔ task task 1 completed successfully.
-2015-11-19 00:24:52 INFO ✰ Workflow [./test/demo2.json] with id [e7eee333-2c24-4c60-901c-0ed0b8e57d54] completed successfully.
+info: reading workflow file [./test/demo2.json]
+info: ⧖ Starting task [task 1]
+info: ⧖ Starting task [task 2]
+info: ⧖ Starting task [task 3]
+info: ✔ task task 3 completed successfully.
+info: ✔ task task 2 completed successfully.
+info: ✔ task task 1 completed successfully.
+info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564f4d8] completed successfully.
 ```
 ***Note***
 
@@ -443,18 +444,18 @@ $ ./bin/processus-cli -l info -f ./test/demo3.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 00:49:31 INFO reading workflow file ./test/demo3.json
-2015-11-19 00:49:31 INFO ⧖ Staring task task 1
-2015-11-19 00:49:32 INFO ✔ task task 1 completed successfully.
-2015-11-19 00:49:33 INFO ⧖ Staring task task 2-1
-2015-11-19 00:49:34 INFO ✔ task task 2-1 completed successfully.
-2015-11-19 00:49:34 INFO ⧖ Staring task task 2-2
-2015-11-19 00:49:35 INFO ✔ task task 2-2 completed successfully.
-2015-11-19 00:49:35 INFO ⧖ Staring task task 2
-2015-11-19 00:49:36 INFO ✔ task task 2 completed successfully.
-2015-11-19 00:49:36 INFO ⧖ Staring task task 3
-2015-11-19 00:49:36 INFO ✔ task task 3 completed successfully.
-2015-11-19 00:49:36 INFO ✰ Workflow [./test/demo3.json] with id [2966f6d0-f06f-4c51-9123-65591e31de1d] completed successfully.
+info: reading workflow file [./test/demo3.json]
+info: ⧖ Starting task [task 1]
+info: ✔ task task 1 completed successfully.
+info: ⧖ Starting task [task 2-1]
+info: ✔ task task 2-1 completed successfully.
+info: ⧖ Starting task [task 2-2]
+info: ✔ task task 2-2 completed successfully.
+info: ⧖ Starting task [task 2]
+info: ✔ task task 2 completed successfully.
+info: ⧖ Starting task [task 3]
+info: ✔ task task 3 completed successfully.
+info: ✰ Workflow [./test/demo3.json] with id [7e1a009b-024b-4cd9-84f2-0c1fb3fcf9da] completed successfully.
 ```
 
 **Notice** that task ```task 2-1``` and ```task 2-2``` are completed before the parent task ```task 2``` is executed.
@@ -513,11 +514,13 @@ $ ./bin/processus-cli -l debug -f ./test/demo6.json
  (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
 
            Processus: A Simple Workflow Engine.
+
+info: reading workflow file [./test/demo6.json]
 ...
-[output removed for clarity]
+[detail removed for clarity]
 ...
-2015-11-19 00:30:11 DEBUG Workflow returned successfully.
-2015-11-19 00:30:12 DEBUG {
+debug: Workflow returned successfully.
+debug: {
   "tasks": {
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
@@ -528,46 +531,47 @@ $ ./bin/processus-cli -l debug -f ./test/demo6.json
         "error": false
       },
       "status": "completed",
-      "timeOpened": 1447893007451,
-      "timeStarted": 1447893007452,
-      "timeCompleted": 1447893008960,
-      "handlerDuration": 1508,
-      "totalDuration": 1509
+      "timeOpened": 1447974646175,
+      "timeStarted": 1447974646176,
+      "timeCompleted": 1447974647682,
+      "handlerDuration": 1506,
+      "totalDuration": 1507
     },
     "task 2": {
       "description": "I am the task 2, I take as long as task1.",
       "blocking": true,
       "handler": "../taskHandlers/testHandler",
       "data": {
-        "delay": "1500", <---[updated value]
+        "delay": "1500",
         "error": false
       },
       "status": "completed",
-      "timeOpened": 1447893008963,
-      "timeStarted": 1447893008966,
-      "timeCompleted": 1447893010482,
-      "handlerDuration": 1516,
-      "totalDuration": 1519
+      "timeOpened": 1447974647685,
+      "timeStarted": 1447974647687,
+      "timeCompleted": 1447974649199,
+      "handlerDuration": 1512,
+      "totalDuration": 1514
     },
     "task 3": {
       "description": "I am the task 3, I take as long as task1.",
       "blocking": true,
       "handler": "../taskHandlers/testHandler",
       "data": {
-        "delay": "1500", <---[updated value]
+        "delay": "1500",
         "error": false
       },
       "status": "completed",
-      "timeOpened": 1447893010484,
-      "timeStarted": 1447893010485,
-      "timeCompleted": 1447893011997,
-      "handlerDuration": 1512,
-      "totalDuration": 1513
+      "timeOpened": 1447974649203,
+      "timeStarted": 1447974649204,
+      "timeCompleted": 1447974650715,
+      "handlerDuration": 1511,
+      "totalDuration": 1512
     }
   },
   "status": "completed",
-  "id": "6757ac60-3de9-4fc3-922b-6a3e34686f03"
+  "id": "008bebca-a264-4e7e-9bb4-376f979689f6"
 }
+info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f979689f6] completed successfully.
 ```
 
 ### Passing Static Data
@@ -663,13 +667,14 @@ $ ./bin/processus-cli -l debug -f ./test/demo8.json
 
            Processus: A Simple Workflow Engine.
 
-...
-[output removed for clarity]
-...
-
-2015-11-19 00:39:21 ERROR ✘ This is an error from the task task 2
-2015-11-19 00:39:21 ERROR ✘ Workflow [./test/demo8.json] with id [faacf120-51df-4e33-8c89-74cfa5c2f9e9] exited with error!
-2015-11-19 00:39:21 DEBUG {
+info: reading workflow file [./test/demo8.json]
+info: ⧖ Starting task [task 1]
+info: ✔ task task 1 completed successfully.
+info: ⧖ Starting task [task 2]
+info: ✔ task task 2 completed successfully.
+error: ✘ task [task 2] is raising a deliberate error
+error: ✘ Workflow [./test/demo8.json] with id [81b1f5ae-2975-456c-b281-285f59aeecf0] exited with error!
+debug: {
   "tasks": {
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
@@ -680,11 +685,11 @@ $ ./bin/processus-cli -l debug -f ./test/demo8.json
         "error": false
       },
       "status": "completed",
-      "timeOpened": 1447893558565,
-      "timeStarted": 1447893558567,
-      "timeCompleted": 1447893560071,
-      "handlerDuration": 1504,
-      "totalDuration": 1506
+      "timeOpened": 1447974502977,
+      "timeStarted": 1447974502978,
+      "timeCompleted": 1447974504486,
+      "handlerDuration": 1508,
+      "totalDuration": 1509
     },
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
@@ -695,9 +700,9 @@ $ ./bin/processus-cli -l debug -f ./test/demo8.json
         "error": true
       },
       "status": "error",
-      "timeOpened": 1447893560074,
-      "timeStarted": 1447893560075,
-      "errorMsg": "This is an error from the task task 2"
+      "timeOpened": 1447974504489,
+      "timeStarted": 1447974504489,
+      "errorMsg": "task [task 2] is raising a deliberate error"
     },
     "task 3": {
       "description": "I am the task 3, I take 1500msecs.",
@@ -711,7 +716,7 @@ $ ./bin/processus-cli -l debug -f ./test/demo8.json
     }
   },
   "status": "error",
-  "id": "faacf120-51df-4e33-8c89-74cfa5c2f9e9"
+  "id": "81b1f5ae-2975-456c-b281-285f59aeecf0"
 }
 ```
 ***Note***
@@ -735,15 +740,15 @@ $ ./bin/processus-cli -l info -f ./test/demo8a.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 00:55:58 INFO reading workflow file ./test/demo8a.json
-2015-11-19 00:55:58 INFO ⧖ Staring task task 1
-2015-11-19 00:56:00 INFO ✔ task task 1 completed successfully.
-2015-11-19 00:56:00 INFO ⧖ Staring task task 2
-2015-11-19 00:56:01 INFO ✔ task task 2 completed successfully.
-2015-11-19 00:56:01 INFO ignoring error, as request for task task 2
-2015-11-19 00:56:01 INFO ⧖ Staring task task 3
-2015-11-19 00:56:02 INFO ✔ task task 3 completed successfully.
-2015-11-19 00:56:02 INFO ✰ Workflow [./test/demo8a.json] with id [9062e489-ae9e-49b5-b72c-0dcfd2ba7eb7] completed successfully.
+info: reading workflow file [./test/demo8a.json]
+info: ⧖ Starting task [task 1]
+info: ✔ task task 1 completed successfully.
+info: ⧖ Starting task [task 2]
+info: ✔ task task 2 completed successfully.
+info: ignoring error, as requested for task [task 2]
+info: ⧖ Starting task [task 3]
+info: ✔ task task 3 completed successfully.
+info: ✰ Workflow [./test/demo8a.json] with id [0f7033d7-3edf-4a8b-a4af-a0bc32c842f3] completed successfully.
 
 ```
 
@@ -806,14 +811,12 @@ $ ./bin/processus-cli -l info -f test/demo10.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 08:31:37 INFO reading workflow file test/demo10.json
-2015-11-19 08:31:37 INFO ⧖ Staring task [task 1]
-2015-11-19 08:31:37 INFO stdout ➜ [Processus
-]
-2015-11-19 08:31:37 INFO ✔ task [task 1] completed successfully.
-2015-11-19 08:31:37 INFO skipping [task 2]
-2015-11-19 08:31:37 ERROR ✘ Task [task 3] has error condition set.
-2015-11-19 08:31:37 ERROR ✘ Workflow [test/demo10.json] with id [b892cdda-693d-4c2f-9592-5abb012c9d29] exited with error!
+info: reading workflow file [test/demo10.json]
+info: ⧖ Starting task [task 1]
+info: ✔ task [task 1] completed successfully.
+info: skipping [task 2]
+error: ✘ Task [task 3] has error condition set.
+error: ✘ Workflow [test/demo10.json] with id [90727723-da21-46e4-8ac3-b5e132b2bab8] exited with error!
 ```
 
 ### Handlers
@@ -867,11 +870,12 @@ $ ./bin/processus-cli -l debug -f test/demo12.json
 
            Processus: A Simple Workflow Engine.
 
+info: reading workflow file [test/demo12.json]
 ...
 [detail removed for simplicity]
 ...
-2015-11-19 08:50:33 DEBUG Workflow returned successfully.
-2015-11-19 08:50:33 DEBUG {
+debug: Workflow returned successfully.
+debug: {
   "tasks": {
     "call github for demo1": {
       "blocking": true,
@@ -924,19 +928,19 @@ $ ./bin/processus-cli -l debug -f test/demo12.json
             "etag": "\"e1fcf909fd53a8f6fa2e085835e59fba51f1344b\"",
             "content-type": "text/plain; charset=utf-8",
             "cache-control": "max-age=300",
-            "x-github-request-id": "C71B4F18:5926:25FE057F:564D8D58",
+            "x-github-request-id": "17EB2F18:5094:7EDF2C9:564E55CB",
             "content-length": "692",
             "accept-ranges": "bytes",
-            "date": "Thu, 19 Nov 2015 08:50:33 GMT",
+            "date": "Thu, 19 Nov 2015 23:05:48 GMT",
             "via": "1.1 varnish",
             "connection": "close",
-            "x-served-by": "cache-lax1431-LAX",
+            "x-served-by": "cache-sjc3123-SJC",
             "x-cache": "MISS",
             "x-cache-hits": "0",
             "vary": "Authorization,Accept-Encoding",
             "access-control-allow-origin": "*",
-            "x-fastly-request-id": "7fec929ad02c98bb6e318f5a9e69eb00735f507e",
-            "expires": "Thu, 19 Nov 2015 08:55:33 GMT",
+            "x-fastly-request-id": "04ac282da1afb0e12aa3f6fe448450aabedf083a",
+            "expires": "Thu, 19 Nov 2015 23:10:48 GMT",
             "source-age": "0"
           },
           "request": {
@@ -993,17 +997,17 @@ $ ./bin/processus-cli -l debug -f test/demo12.json
         }
       },
       "status": "completed",
-      "timeOpened": 1447923032276,
-      "timeStarted": 1447923032277,
-      "timeCompleted": 1447923033142,
-      "handlerDuration": 865,
-      "totalDuration": 866
+      "timeOpened": 1447974347653,
+      "timeStarted": 1447974347654,
+      "timeCompleted": 1447974348486,
+      "handlerDuration": 832,
+      "totalDuration": 833
     }
   },
   "status": "completed",
-  "id": "717c73bd-6dc7-4dfc-a761-14123e880682"
+  "id": "60946ca2-af30-4a78-babb-3b1d80a09ed2"
 }
-2015-11-19 08:50:33 INFO ✰ Workflow [test/demo12.json] with id [717c73bd-6dc7-4dfc-a761-14123e880682] completed successfully.
+info: ✰ Workflow [test/demo12.json] with id [60946ca2-af30-4a78-babb-3b1d80a09ed2] completed successfully.
 ```
 
 ### workflowHandler
@@ -1037,12 +1041,12 @@ $ ./bin/processus-cli -l debug -f test/demo13.json
 
            Processus: A Simple Workflow Engine.
 
+info: reading workflow file [test/demo13.json]
 ...
 [detail removed for simplicity]
 ...
-
-2015-11-19 08:56:57 DEBUG Workflow returned successfully.
-2015-11-19 08:56:57 DEBUG {
+debug: Workflow returned successfully.
+debug: {
   "tasks": {
     "call demo1 workflow": {
       "description": "calls the workflow in the file demo1",
@@ -1061,11 +1065,11 @@ $ ./bin/processus-cli -l debug -f test/demo13.json
                 "error": false
               },
               "status": "completed",
-              "timeOpened": 1447923413975,
-              "timeStarted": 1447923413977,
-              "timeCompleted": 1447923415486,
-              "handlerDuration": 1509,
-              "totalDuration": 1511
+              "timeOpened": 1447974254582,
+              "timeStarted": 1447974254582,
+              "timeCompleted": 1447974256088,
+              "handlerDuration": 1506,
+              "totalDuration": 1506
             },
             "task 2": {
               "description": "I am the task 2, I take 1000msecs.",
@@ -1076,11 +1080,11 @@ $ ./bin/processus-cli -l debug -f test/demo13.json
                 "error": false
               },
               "status": "completed",
-              "timeOpened": 1447923415488,
-              "timeStarted": 1447923415488,
-              "timeCompleted": 1447923416490,
+              "timeOpened": 1447974256090,
+              "timeStarted": 1447974256091,
+              "timeCompleted": 1447974257093,
               "handlerDuration": 1002,
-              "totalDuration": 1002
+              "totalDuration": 1003
             },
             "task 3": {
               "description": "I am the task 3, I take 500msecs.",
@@ -1091,31 +1095,85 @@ $ ./bin/processus-cli -l debug -f test/demo13.json
                 "error": false
               },
               "status": "completed",
-              "timeOpened": 1447923416492,
-              "timeStarted": 1447923416492,
-              "timeCompleted": 1447923416999,
-              "handlerDuration": 507,
+              "timeOpened": 1447974257095,
+              "timeStarted": 1447974257096,
+              "timeCompleted": 1447974257602,
+              "handlerDuration": 506,
               "totalDuration": 507
             }
           },
           "status": "completed",
-          "id": "7bb68bbd-ab31-418a-93f6-f3c8cfb977f0"
+          "id": "c29d5d5b-beeb-45d5-abe9-c8d15ea6bf0e"
         }
       },
       "status": "completed",
-      "timeOpened": 1447923413968,
-      "timeStarted": 1447923413970,
-      "timeCompleted": 1447923417003,
-      "handlerDuration": 3033,
-      "totalDuration": 3035
+      "timeOpened": 1447974254576,
+      "timeStarted": 1447974254577,
+      "timeCompleted": 1447974257605,
+      "handlerDuration": 3028,
+      "totalDuration": 3029
     }
   },
   "status": "completed",
-  "id": "b9accbd9-8d25-4d40-8418-01eb13491e52"
+  "id": "e9898256-b00d-47ca-bcea-2ed314296e89"
 }
-2015-11-19 08:56:57 INFO ✰ Workflow [test/demo13.json] with id [b9accbd9-8d25-4d40-8418-01eb13491e52] completed successfully.
+info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296e89] completed successfully.
 ```
 
 ***Note***
 
 1.  the parent workflow contains one task ```call demo1 workflow``` which contains the ```data.workflow``` property which contains the resulting ```demo1.json``` workflow.
+
+### Environment Variables
+
+It's possible to 'inject' environment variables into your workflow.
+
+Consider ```demo14.json```
+```
+{
+  "tasks": {
+    "show env": {
+      "blocking": true,
+      "handler" : "../taskHandlers/logHandler",
+      "data": {
+        "level": "info",
+        "log": "TEST_ENV = $env[TEST_ENV]"
+      }
+    }
+  }
+}
+```
+***Note***
+
+1. Note that we're using a new handler called ```logHandler``` which, as the name suggests, logs the output supplied.
+2. Similar to data referencing, Processus uses the ```$env[<ENVIRONMENT NAME>]``` as a marker for environment variables.
+
+looking at the example ```.env``` file used by Processus, we see the following.
+```
+# persistence env vars
+DATA_DIR="_data"
+DB_TYPE="file"
+
+# test env vars
+TEST_TASKS_BLOCKING="true"
+TEST_ENV="HELLO, WORLD"
+```
+
+Therefore we can conclude that the output of the ```demo14.json``` would be ```TEST_ENV = HELLO, WORLD```
+
+Let's try it
+```
+$ ./bin/processus-cli -l info -f test/demo14.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+info: reading workflow file [test/demo14.json]
+info: ⧖ Starting task [show env]
+info: TEST_ENV = HELLO, WORLD
+info: ✰ Workflow [test/demo14.json] with id [f8442a63-dffd-4247-9eb7-44fac3a4df34] completed successfully.
+```
