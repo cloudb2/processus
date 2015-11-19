@@ -530,9 +530,9 @@ siblings.</li>
 
 <p>Processus supports a very simple mechanism for referencing data between tasks.</p>
 
-<p>The format is $[]</p>
+<p>The format is <code>$[&lt;path.to.reference&gt;]</code></p>
 
-<p>For example, if a task has a data value of $[tasks.task 1.data.delay] this value will be substituted, at execution time, with the value stored in the delay data property of task 1.</p>
+<p>For example, if a task has a data value of <code>$[tasks.task 1.data.delay]</code> this value will be substituted, at execution time, with the value stored in the delay data property of task 1.</p>
 
 <p>Consider demo6.json</p>
 
@@ -826,26 +826,6 @@ siblings.</li>
 <p>As with sharing data values, you can reference another part of the workflow and have that substituted at execution time. Processus will evaluate the string condition and set property appropriately. Any string with the value <code>true</code> regardless of case, will evaluate to true. Any other string will evaluate to <code>false</code>.</p>
 
 <p>Look at demo10 to see an example of <code>skipIf</code> and <code>errorIf</code> in action.</p>
-
-<h2>
-<a id="contributing---roadmap" class="anchor" href="#contributing---roadmap" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing - Roadmap</h2>
-
-<ul>
-<li>Workflow Persistence Plugin Architecture
-
-<ul>
-<li>filebased, default</li>
-<li>Mongodb</li>
-</ul>
-</li>
-<li>Full REST API to interact with Processus
-
-<ul>
-<li>Swagger yaml</li>
-</ul>
-</li>
-<li>Support for environment variables</li>
-</ul>
         </section>
 
         <footer>
