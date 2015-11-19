@@ -7,6 +7,16 @@ workflows.
 
 * [Installation](#installation)
 * [Using Processus](#using-processus)
+  * [Workflow](#workflow)
+  * [Tasks](#tasks)
+  * [Testing Tasks](#testing-tasks)
+  * [Parallel Tasks](#parallel-tasks)
+  * [Nested Tasks](#nested-tasks)
+  * [Passing Data Between Tasks](#passing-data-between-tasks)
+  * [Passing Static Data](#passing-static-data)
+  * [Handling Errors](#handling-errors)
+    * [ignoreError Property](#ignoreerror-property)
+  * [Task Conditions - skipIf and errorIf](#task-conditions---skipif-and-errorif)
 * [Contributing](#contributing)
   * [Contributing - Roadmap](#contributing---roadmap)
 
@@ -35,7 +45,7 @@ git clone https://github.com/cloudb2/processus
 
 A workflow in Processus is defined using JSON, which should conform to a specific structure. The best way to understand that structure is by looking at examples.
 
-### The Workflow
+### Workflow
 
 A workflow, in it's simplest form, is defined as follows.
 ```
@@ -701,7 +711,7 @@ $ ./bin/processus-cli -l debug -f ./test/demo8.json
 2. The workflow is also in the ```error``` state.
 3. Task 3 is in the ```waiting``` state.
 
-### ignoreError Property
+#### ignoreError Property
 
 It's possible for a task to have an ignoreError property. If set to true, any errors for a task will be logged in the ```errorMsg``` property and the task state will be set to ```completed```.
 
