@@ -9,7 +9,7 @@ workflows.
 * [Overview](#overview)
   * [Workflow](#workflow)
   * [Tasks](#tasks)
-  * [User Guide](http://cloudb2.github.io/processus/)
+* [User Guide](http://cloudb2.github.io/processus/)
 * [Contributing - Roadmap](#contributing---roadmap)
 
 <hr>
@@ -216,7 +216,7 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
   * ```pending``` A handler has finished executing but a response is pending. i.e. it is expected that the workflow will be updated at some point in the future from an async callback.
   * ```error``` An error occured during execution of the handler
 
-
+See the [User Guide](http://cloudb2.github.io/processus/) for much more!
 
 ## Contributing
 
