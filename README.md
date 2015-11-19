@@ -2,6 +2,10 @@
 
 Processus is a simple lightweight workflow engine designed to help orchestrate multiple tasks.
 
+[![Node version](https://img.shields.io/badge/node-v4.2.2LTS-green.svg)](https://nodejs.org/en/)
+[![NPM version](https://img.shields.io/badge/processus-npm-blue.svg)](https://www.npmjs.com/package/processus)
+[![License MIT](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/cloudb2/processus/blob/master/LICENSE)
+
 There are many workflow engines already, but Processus makes some very specific assumptions that make it easy to quickly write simple, yet powerful
 workflows.
 
