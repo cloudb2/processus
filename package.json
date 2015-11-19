@@ -1,8 +1,8 @@
 {
   "name": "processus",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "A simple node workflow engine",
-  "homepage": "http://jacec.github.io/processus/",
+  "homepage": "http://cloudb2.github.io/processus/",
   "engine": {
     "node": "*"
   },
