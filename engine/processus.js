@@ -195,7 +195,7 @@ function realExecute(workflow, callback) {
             t2returned.status = "error";
             //Should we ignore the error?
             if(t2returned.ignoreError === true) {
-              logger.info("ignoring error, as request for task " + n2);
+              logger.info("ignoring error, as requested for task [" + n2 + "]");
               t2returned.status = 'executing';
               //reset err object
               err = undefined;

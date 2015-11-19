@@ -5,11 +5,13 @@
     "test1": "./bin/processus-cli -l info -f ./test/demo1.json",
     "test2": "./bin/processus-cli -l info -f ./test/demo2.json",
     "test3": "./bin/processus-cli -l info -f ./test/demo3.json",
+    "test3a": "./bin/processus-cli -l info -f ./test/demo3a.json",
     "test4": "./bin/processus-cli -l info -f ./test/demo4.json",
     "test5": "./bin/processus-cli -l info -f ./test/demo5.json",
     "test6": "./bin/processus-cli -l info -f ./test/demo6.json",
     "test7": "./bin/processus-cli -l info -f ./test/demo7.json",
     "test8": "./bin/processus-cli -l info -f ./test/demo8.json",
+    "test8a": "./bin/processus-cli -l info -f ./test/demo8a.json",
     "test9": "./bin/processus-cli -l info -f ./test/demo9.json",
     "test10": "./bin/processus-cli -l info -f ./test/demo10.json",
     "test11a": "./test/demo11.json",
@@ -39,6 +41,14 @@
       "handler" : "../taskHandlers/execHandler",
       "data": {
         "cmd": "$[static.test3]"
+      }
+    },
+    "Test Demo 3a": {
+      "description": "Test Demo 3a",
+      "blocking": false,
+      "handler" : "../taskHandlers/execHandler",
+      "data": {
+        "cmd": "$[static.test3a]"
       }
     },
     "Test Demo 4": {
@@ -79,6 +89,15 @@
       "handler" : "../taskHandlers/execHandler",
       "data": {
         "cmd": "$[static.test8]"
+      },
+      "ignoreError": true
+    },
+    "Test Demo 8a": {
+      "description": "Test Demo 8a",
+      "blocking": false,
+      "handler" : "../taskHandlers/execHandler",
+      "data": {
+        "cmd": "$[static.test8a]"
       },
       "ignoreError": true
     },
@@ -136,9 +155,10 @@
     },
     "show success": {
       "blocking": true,
-      "handler" : "../taskHandlers/execHandler",
+      "handler" : "../taskHandlers/logHandler",
       "data": {
-        "cmd": "echo '\n\n\nSUCCESS ¯\\_(ツ)_/¯\n\n'"
+        "level": "info",
+        "log": "\n\n\nSUCCESS ¯\\_(ツ)_/¯\n\n"
       }
     }
   }

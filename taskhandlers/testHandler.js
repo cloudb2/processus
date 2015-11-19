@@ -17,7 +17,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
 
   //Mimic an error if asked?
   if(task.data.error === true){
-    err = new Error("This is an error from the task " + taskName);
+    err = new Error("task [" + taskName + "] is raising a deliberate error");
   }
 
   //mimic a pending status if asked?

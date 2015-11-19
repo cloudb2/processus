@@ -26,7 +26,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
     //Set the stdout and stderr properties of the data object in the task
     task.data.stdout = stdout;
     task.data.stderr = stderr;
-    if(stdout){ logger.info("stdout ➜ [" + stdout + "]"); }
+    if(stdout){ logger.debug("stdout ➜ [" + stdout + "]"); }
     if(stderr){ logger.error(stderr); }
     if(error){
       callback(new Error("exec failed with: [" + error.message + "]"), task);
