@@ -94,15 +94,15 @@ module.exports = function() {
           logger.debug("Workflow returned successfully.");
           logger.debug(JSON.stringify(workflow, null, 2));
           if(workflow.status === "completed"){
-            logger.info("✰ Workflow [" + options.file + "] completed successfully.");
+            logger.info("✰ Workflow [" + options.file + "] with id [" + workflow.id + "] completed successfully.");
           }
           else {
-            logger.info("✰ Workflow [" + options.file + "] exited without error, but did not complete.");
+            logger.info("✰ Workflow [" + options.file + "] with id [" + workflow.id + "] exited without error, but did not complete.");
           }
         }
         else {
           logger.error("✘ " + err.message);
-          logger.error("✘ Workflow [" + options.file + "] exited with error!");
+          logger.error("✘ Workflow [" + options.file + "] with id [" + workflow.id + "] exited with error!");
           logger.debug(JSON.stringify(workflow, null, 2));
         }
         return err;
@@ -115,11 +115,12 @@ module.exports = function() {
           logger.debug("Workflow returned successfully.");
           logger.debug(JSON.stringify(workflow, null, 2));
           if(workflow.status === "completed"){
-            logger.info("✰ Workflow [" + options.file + "] completed successfully.");
+            logger.info("✰ Workflow [[" + options.file + "] with id [" + workflow.id + "] completed successfully.");
           }
         }
         else {
           logger.error("✘ " + err.message);
+          logger.error("✘ Workflow [" + options.file + "] with id [" + workflow.id + "] exited with error!");
           logger.debug(JSON.stringify(workflow, null, 2));
         }
         return err;

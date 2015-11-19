@@ -15,12 +15,12 @@ workflows.
 
 
 [Getting Started](#getting-started)
-  * [Installation](#installation)
-  * [Intoduction](#introduction)
-  * [documentation](http://cloudb2.github.io/processus/)
+  [Installation](#installation)
+  [Intoduction](#introduction)
+  [documentation](http://cloudb2.github.io/processus/)
 
 [Contributing](#contributing)
-  * [Contributing - Roadmap](#contributing---roadmap)
+  [Contributing - Roadmap](#contributing---roadmap)
 
 <hr>
 

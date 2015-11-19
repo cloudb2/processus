@@ -1,0 +1,18 @@
+{
+  "tasks": {
+    "say hello": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world'"
+      }
+    },
+    "say hello again": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world again'"
+      }
+    }
+  }
+}

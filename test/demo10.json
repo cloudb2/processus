@@ -3,7 +3,7 @@
     "task 1": {
       "description": "I am the task 1, I echo Processus",
       "blocking": true,
-      "handler": "../taskHandlers/shellHandler",
+      "handler": "../taskHandlers/execHandler",
       "data": {
         "cmd": "echo Processus",
         "skip me": "true"
@@ -13,7 +13,7 @@
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
       "skipIf":"$[tasks.task 1.data.skip me]",
-      "handler": "../taskHandlers/shellHandler",
+      "handler": "../taskHandlers/execHandler",
       "data": {
         "cmd": "echo Simple"
       }
@@ -22,7 +22,7 @@
       "description": "I am the task 3, I will error",
       "blocking": true,
       "errorIf": "$[tasks.task 2.skipIf]",
-      "handler": "../taskHandlers/shellHandler",
+      "handler": "../taskHandlers/execHandler",
       "data": {
         "cmd": "echo Workflow"
       }
