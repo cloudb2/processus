@@ -226,6 +226,12 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
 
 ## Contributing - Roadmap
 
+### Contributing
+Yes, please.
+
+Make a pull requests and ensure you can run ```./runtests.sh``` successfully. Please add additional tests for any new features/mods you make.
+
+### Roadmap
 * Workflow Persistence Plugin Architecture
   * filebased, default
   * Mongodb

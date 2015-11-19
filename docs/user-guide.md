@@ -17,8 +17,6 @@ workflows.
   * [Handling Errors](#handling-errors)
     * [ignoreError Property](#ignoreerror-property)
   * [Task Conditions - skipIf and errorIf](#task-conditions---skipif-and-errorif)
-* [Contributing](#contributing)
-  * [Contributing - Roadmap](#contributing---roadmap)
 
 <hr>
 
@@ -229,7 +227,7 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
   * ```completed``` The task has completed successfully
   * ```pending``` A handler has finished executing but a response is pending. i.e. it is expected that the workflow will be updated at some point in the future from an async callback.
   * ```error``` An error occured during execution of the handler
-  
+
 ### Testing Tasks
 
 Processus comes with a ```testHandler``` that mimics a task by waiting for a specific period of time and then returning.
