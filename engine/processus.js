@@ -186,7 +186,7 @@ function realExecute(workflow, callback) {
                   t2.handler === undefined);
       if (!skip) {
         //No error or skip condition so execute handler
-        logger.info("⧖ Staring task " + n2);
+        logger.info("⧖ Staring task [" + n2 + "]");
         require(t2.handler)(workflow.id, n2, t2, function(err, t2returned){
           //handler returned, check if there's an error
           if(err) {
@@ -218,10 +218,13 @@ function realExecute(workflow, callback) {
         }, logger);
       }
       else {
+        if(t2.skipIf === true) {
+          logger.info("skipping [" + n2 + "]");
+        }
         //Ok, we're skipping the handler is that because errorIf is true?
         var err = null;
         if (t2.errorIf === true) {
-          err = new Error("Task has error condition set.");
+          err = new Error("Task [" + n2 + "] has error condition set.");
         }
         //If it's exeucuting but has no handler (i.e. it could just be a parent place holder task),
         //mark it completed.

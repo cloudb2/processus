@@ -17,6 +17,7 @@ workflows.
   * [Handling Errors](#handling-errors)
     * [ignoreError Property](#ignoreerror-property)
   * [Task Conditions - skipIf and errorIf](#task-conditions---skipif-and-errorif)
+  * [Handlers](#handlers)
 
 <hr>
 
@@ -705,9 +706,10 @@ $ ./bin/processus-cli -l debug -f ./test/demo8.json
 }
 ```
 ***Note***
-1. Task 2 is in the ```error``` state and Processus has added the ```errorMsg``` property
-2. The workflow is also in the ```error``` state.
-3. Task 3 is in the ```waiting``` state.
+
+1.  Task 2 is in the ```error``` state and Processus has added the ```errorMsg``` property
+2.  The workflow is also in the ```error``` state.
+3.  Task 3 is in the ```waiting``` state.
 
 #### ignoreError Property
 
@@ -745,3 +747,80 @@ As the names suggest, if either property evaluates to true, then Processus will 
 As with sharing data values, you can reference another part of the workflow and have that substituted at execution time. Processus will evaluate the string condition and set property appropriately. Any string with the value ```true``` regardless of case, will evaluate to true. Any other string will evaluate to ```false```.
 
 Look at demo10 to see an example of ```skipIf``` and ```errorIf``` in action.
+
+```
+{
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I echo Processus",
+      "blocking": true,
+      "handler": "../taskHandlers/execHandler",
+      "data": {
+        "cmd": "echo Processus",
+        "skip me": "true"
+      }
+    },
+    "task 2": {
+      "description": "I am the task 2, I will be skipped",
+      "blocking": true,
+      "skipIf":"$[tasks.task 1.data.skip me]",
+      "handler": "../taskHandlers/execHandler",
+      "data": {
+        "cmd": "echo Simple"
+      }
+    },
+    "task 3": {
+      "description": "I am the task 3, I will error",
+      "blocking": true,
+      "errorIf": "$[tasks.task 2.skipIf]",
+      "handler": "../taskHandlers/execHandler",
+      "data": {
+        "cmd": "echo Workflow"
+      }
+    }
+  }
+}
+```
+
+***Note***
+1.  ```skipIf``` of ```task 2``` will evaluate to ```true``` causing this task to be skipped
+2.  ```errorIf``` of ```task 3``` will evaluate to the same value of ```skipIf``` of the ```task 2``` causing this task to error
+
+```
+$ ./bin/processus-cli -l info -f test/demo10.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+2015-11-19 08:31:37 INFO reading workflow file test/demo10.json
+2015-11-19 08:31:37 INFO ⧖ Staring task [task 1]
+2015-11-19 08:31:37 INFO stdout ➜ [Processus
+]
+2015-11-19 08:31:37 INFO ✔ task [task 1] completed successfully.
+2015-11-19 08:31:37 INFO skipping [task 2]
+2015-11-19 08:31:37 ERROR ✘ Task [task 3] has error condition set.
+2015-11-19 08:31:37 ERROR ✘ Workflow [test/demo10.json] with id [b892cdda-693d-4c2f-9592-5abb012c9d29] exited with error!
+```
+
+### Handlers
+
+Handlers are where the real work gets done in Processus and follow a simple interface.
+
+```
+function(workflowId, taskName, task, callback, logger)
+```
+
+***Note***
+
+1.  workflowId is the UUID assigned to this instance of the workflow
+2.  taskName is the name of the task
+3.  task is an object containing all the properties of the task
+4.  callback consists of an error object (or nill) and the updated task
+
+
+
+ Processus comes
