@@ -156,24 +156,14 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
            Processus: A Simple Workflow Engine.
 
 2015-11-19 00:20:54 INFO reading workflow file ./test/ex2.json
-2015-11-19 00:20:54 DEBUG checking for data directory
-2015-11-19 00:20:54 DEBUG init complete without error.
-2015-11-19 00:20:54 DEBUG save point a reached.
-2015-11-19 00:20:54 DEBUG task.skipIf = undefined
-2015-11-19 00:20:54 DEBUG task.errorIf = undefined
 2015-11-19 00:20:54 INFO ⧖ Staring task say hello
 2015-11-19 00:20:54 INFO stdout ➜ [hello, world
 ]
 2015-11-19 00:20:54 INFO ✔ task [say hello] completed successfully.
-2015-11-19 00:20:54 DEBUG save point a reached.
-2015-11-19 00:20:54 DEBUG task.skipIf = undefined
-2015-11-19 00:20:54 DEBUG task.errorIf = undefined
 2015-11-19 00:20:54 INFO ⧖ Staring task say hello again
 2015-11-19 00:20:54 INFO stdout ➜ [hello, world again
 ]
 2015-11-19 00:20:54 INFO ✔ task [say hello again] completed successfully.
-2015-11-19 00:20:54 DEBUG save point a reached.
-2015-11-19 00:20:54 DEBUG save point c reached.
 2015-11-19 00:20:54 DEBUG Workflow returned successfully.
 2015-11-19 00:20:54 DEBUG {
   "tasks": {
