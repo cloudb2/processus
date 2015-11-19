@@ -1,37 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta charset="UTF-8">
     <title>Processus by cloudb2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
-    <div id="container">
-      <div class="inner">
+    <section class="page-header">
+      <h1 class="project-name">Processus</h1>
+      <h2 class="project-tagline">A simple lightweight nodejs workflow engine designed to help orchestrate multiple tasks.</h2>
+      <a href="https://github.com/cloudb2/processus" class="btn">View on GitHub</a>
+      <a href="https://github.com/cloudb2/processus/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/cloudb2/processus/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-        <header>
-          <h1>Processus</h1>
-          <h2>A simple lightweight nodejs workflow engine designed to help orchestrate multiple tasks.</h2>
-        </header>
-
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/cloudb2/processus/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/cloudb2/processus/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/cloudb2/processus" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
-
-        <hr>
-
-        <section id="main_content">
-          <h1>
+    <section class="main-content">
+      <h1>
 <a id="processus" class="anchor" href="#processus" aria-hidden="true"><span class="octicon octicon-link"></span></a>Processus</h1>
 
 <p>Processus is a simple lightweight workflow engine designed to help orchestrate multiple tasks.</p>
@@ -60,13 +48,14 @@ workflows.</p>
 </ul>
 </li>
 <li><a href="#task-conditions---skipif-and-errorif">Task Conditions - skipIf and errorIf</a></li>
-</ul>
-</li>
 <li>
-<a href="#contributing">Contributing</a>
+<a href="#handlers">Handlers</a>
 
 <ul>
-<li><a href="#contributing---roadmap">Contributing - Roadmap</a></li>
+<li><a href="#requestHandler">requestHandler</a></li>
+<li><a href="#workflowHandler">workflowHandler</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -93,6 +82,8 @@ workflows.</p>
 
 <pre><code>git clone https://github.com/cloudb2/processus
 </code></pre>
+
+<hr>
 
 <h2>
 <a id="using-processus" class="anchor" href="#using-processus" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using Processus</h2>
@@ -134,10 +125,13 @@ workflows.</p>
 2015-11-19 00:19:06 INFO ✰ Workflow [./test/ex1.json] with id [208810ae-14f3-4331-bd3f-adace417e38d] exited without error, but did not complete.
 </code></pre>
 
-<p><strong><em>Note</em></strong>
-1. You can add additional meta data to the workflow such as a name and description, but that will be ignored by Processus.
-2. The status of a workflow can be open, error or completed.
-3. In this example there are no tasks, so the Processus returns open, assuming that a task will be injected later. More on this later.</p>
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li>You can add additional meta data to the workflow such as a name and description, but that will be ignored by Processus.</li>
+<li>The status of a workflow can be open, error or completed.</li>
+<li>In this example there are no tasks, so the Processus returns open, assuming that a task will be injected later. More on this later.</li>
+</ol>
 
 <p>execute ex1 again, this time with a log level of debug.</p>
 
@@ -169,9 +163,12 @@ workflows.</p>
 2015-11-19 00:19:43 INFO ✰ Workflow [./test/ex1.json] with id [8a2467ad-ad05-4dca-92b8-aac815d7dbec] exited without error, but did not complete.
 </code></pre>
 
-<p><strong><em>Note</em></strong>
-1. The status and id have been added by Processus
-2. The workflow remains open as there are NO tasks to execute</p>
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li>The status and id have been added by Processus</li>
+<li>The workflow remains open as there are NO tasks to execute</li>
+</ol>
 
 <h3>
 <a id="tasks" class="anchor" href="#tasks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tasks</h3>
@@ -198,9 +195,12 @@ workflows.</p>
 }
 </code></pre>
 
-<p><strong><em>Note</em></strong>
-1. The above workflow has 2 tasks <code>say hello</code> and <code>say hello again</code>.
-2. Each task uses a handler called <code>execHandler</code> which executed the command identified in the data property of the task by <code>data.cmd</code>.</p>
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li>The above workflow has 2 tasks <code>say hello</code> and <code>say hello again</code>.</li>
+<li>Each task uses a handler called <code>execHandler</code> which executed the command identified in the data property of the task by <code>data.cmd</code>.</li>
+</ol>
 
 <p>So, in short, this simple workflow will execute <code>echo 'hello, world'</code> and <code>echo 'hello, world again'</code> sequentially.</p>
 
@@ -279,11 +279,14 @@ workflows.</p>
 2015-11-19 00:20:54 INFO ✰ Workflow [./test/ex2.json] with id [9909133c-158a-4f0f-8778-99d7c378ef7d] completed successfully.
 </code></pre>
 
-<p><strong><em>Note</em></strong>
-1. The handler has added <code>stdout</code> and <code>stderr</code> to each task's <code>data</code> property.
-2. The status of each task and the overall workflow is shown as <code>completed</code>
-3. Processus has added additional timing information to each task.
-4. The status of a task can be one of the following</p>
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li>The handler has added <code>stdout</code> and <code>stderr</code> to each task's <code>data</code> property.</li>
+<li>The status of each task and the overall workflow is shown as <code>completed</code>
+</li>
+<li>Processus has added additional timing information to each task.</li>
+<li>The status of a task can be one of the following
 
 <ul>
 <li>
@@ -299,6 +302,8 @@ workflows.</p>
 <li>
 <code>error</code> An error occured during execution of the handler</li>
 </ul>
+</li>
+</ol>
 
 <h3>
 <a id="testing-tasks" class="anchor" href="#testing-tasks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Testing Tasks</h3>
@@ -422,9 +427,12 @@ workflows.</p>
 2015-11-19 00:24:52 INFO ✰ Workflow [./test/demo2.json] with id [e7eee333-2c24-4c60-901c-0ed0b8e57d54] completed successfully.
 </code></pre>
 
-<p><strong><em>Note</em></strong>
-1. All 3 tasks started before any had finished
-2. The task completed in reverse order because the time difference</p>
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li>All 3 tasks started before any had finished</li>
+<li>The task completed in reverse order because the time difference</li>
+</ol>
 
 <h3>
 <a id="nested-tasks" class="anchor" href="#nested-tasks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Nested Tasks</h3>
@@ -783,10 +791,13 @@ siblings.</li>
 }
 </code></pre>
 
-<p><strong><em>Note</em></strong>
-1. Task 2 is in the <code>error</code> state and Processus has added the <code>errorMsg</code> property
-2. The workflow is also in the <code>error</code> state.
-3. Task 3 is in the <code>waiting</code> state.</p>
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li> Task 2 is in the <code>error</code> state and Processus has added the <code>errorMsg</code> property</li>
+<li> The workflow is also in the <code>error</code> state.</li>
+<li> Task 3 is in the <code>waiting</code> state.</li>
+</ol>
 
 <h4>
 <a id="ignoreerror-property" class="anchor" href="#ignoreerror-property" aria-hidden="true"><span class="octicon octicon-link"></span></a>ignoreError Property</h4>
@@ -826,15 +837,380 @@ siblings.</li>
 <p>As with sharing data values, you can reference another part of the workflow and have that substituted at execution time. Processus will evaluate the string condition and set property appropriately. Any string with the value <code>true</code> regardless of case, will evaluate to true. Any other string will evaluate to <code>false</code>.</p>
 
 <p>Look at demo10 to see an example of <code>skipIf</code> and <code>errorIf</code> in action.</p>
-        </section>
 
-        <footer>
-          Processus is maintained by <a href="https://github.com/cloudb2">cloudb2</a><br>
-          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
+<pre><code>{
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I echo Processus",
+      "blocking": true,
+      "handler": "../taskHandlers/execHandler",
+      "data": {
+        "cmd": "echo Processus",
+        "skip me": "true"
+      }
+    },
+    "task 2": {
+      "description": "I am the task 2, I will be skipped",
+      "blocking": true,
+      "skipIf":"$[tasks.task 1.data.skip me]",
+      "handler": "../taskHandlers/execHandler",
+      "data": {
+        "cmd": "echo Simple"
+      }
+    },
+    "task 3": {
+      "description": "I am the task 3, I will error",
+      "blocking": true,
+      "errorIf": "$[tasks.task 2.skipIf]",
+      "handler": "../taskHandlers/execHandler",
+      "data": {
+        "cmd": "echo Workflow"
+      }
+    }
+  }
+}
+</code></pre>
 
-        
-      </div>
-    </div>
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li> <code>skipIf</code> of <code>task 2</code> will evaluate to <code>true</code> causing this task to be skipped</li>
+<li> <code>errorIf</code> of <code>task 3</code> will evaluate to the same value of <code>skipIf</code> of the <code>task 2</code> causing this task to error</li>
+</ol>
+
+<pre><code>$ ./bin/processus-cli -l info -f test/demo10.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+2015-11-19 08:31:37 INFO reading workflow file test/demo10.json
+2015-11-19 08:31:37 INFO ⧖ Staring task [task 1]
+2015-11-19 08:31:37 INFO stdout ➜ [Processus
+]
+2015-11-19 08:31:37 INFO ✔ task [task 1] completed successfully.
+2015-11-19 08:31:37 INFO skipping [task 2]
+2015-11-19 08:31:37 ERROR ✘ Task [task 3] has error condition set.
+2015-11-19 08:31:37 ERROR ✘ Workflow [test/demo10.json] with id [b892cdda-693d-4c2f-9592-5abb012c9d29] exited with error!
+</code></pre>
+
+<h3>
+<a id="handlers" class="anchor" href="#handlers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Handlers</h3>
+
+<p>Handlers are where the real work gets done in Processus and follow a simple interface.</p>
+
+<pre><code>function(workflowId, taskName, task, callback, logger)
+</code></pre>
+
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li> workflowId is the UUID assigned to this instance of the workflow</li>
+<li> taskName is the name of the task</li>
+<li> task is an object containing all the properties of the task</li>
+<li> callback consists of an error object (or null) and the updated task</li>
+</ol>
+
+<p>Processus comes with a number of task handlers. It's recommended that you study these, should you wish to write or extend your own. In addition to those mentioned above, there are other task handlers.</p>
+
+<h4>
+<a id="requesthandler" class="anchor" href="#requesthandler" aria-hidden="true"><span class="octicon octicon-link"></span></a>requestHandler</h4>
+
+<p>This handler wraps the very popular nodejs module request to make HTTP requests. Simply supply a <code>data.options</code> property to the task to see the resulting HTTP request made. <code>demo12.json</code> is an example of this.</p>
+
+<pre><code>{
+  "tasks": {
+    "call github for demo1": {
+      "blocking": true,
+      "handler": "../taskhandlers/requestHandler",
+      "data": {
+        "options": {
+            "url": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json",
+            "method": "GET",
+            "json": true
+        }
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>executing this demo will result in the request and body objects being populated in the task <code>call github for demo1</code> by the http request to <code>https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json</code></p>
+
+<pre><code>$ ./bin/processus-cli -l debug -f test/demo12.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+...
+[detail removed for simplicity]
+...
+2015-11-19 08:50:33 DEBUG Workflow returned successfully.
+2015-11-19 08:50:33 DEBUG {
+  "tasks": {
+    "call github for demo1": {
+      "blocking": true,
+      "handler": "../taskhandlers/requestHandler",
+      "data": {
+        "options": {
+          "url": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json",
+          "method": "GET",
+          "json": true
+        },
+        "response": {
+          "statusCode": 200,
+          "body": {
+            "tasks": {
+              "task 1": {
+                "description": "I am the task 1, I take 1500msecs.",
+                "blocking": true,
+                "handler": "../taskHandlers/testHandler",
+                "data": {
+                  "delay": 1500,
+                  "error": false
+                }
+              },
+              "task 2": {
+                "description": "I am the task 2, I take 1000msecs.",
+                "blocking": true,
+                "handler": "../taskHandlers/testHandler",
+                "data": {
+                  "delay": 1000,
+                  "error": false
+                }
+              },
+              "task 3": {
+                "description": "I am the task 3, I take 500msecs.",
+                "blocking": true,
+                "handler": "../taskHandlers/testHandler",
+                "data": {
+                  "delay": 500,
+                  "error": false
+                }
+              }
+            }
+          },
+          "headers": {
+            "content-security-policy": "default-src 'none'",
+            "x-xss-protection": "1; mode=block",
+            "x-frame-options": "deny",
+            "x-content-type-options": "nosniff",
+            "strict-transport-security": "max-age=31536000",
+            "etag": "\"e1fcf909fd53a8f6fa2e085835e59fba51f1344b\"",
+            "content-type": "text/plain; charset=utf-8",
+            "cache-control": "max-age=300",
+            "x-github-request-id": "C71B4F18:5926:25FE057F:564D8D58",
+            "content-length": "692",
+            "accept-ranges": "bytes",
+            "date": "Thu, 19 Nov 2015 08:50:33 GMT",
+            "via": "1.1 varnish",
+            "connection": "close",
+            "x-served-by": "cache-lax1431-LAX",
+            "x-cache": "MISS",
+            "x-cache-hits": "0",
+            "vary": "Authorization,Accept-Encoding",
+            "access-control-allow-origin": "*",
+            "x-fastly-request-id": "7fec929ad02c98bb6e318f5a9e69eb00735f507e",
+            "expires": "Thu, 19 Nov 2015 08:55:33 GMT",
+            "source-age": "0"
+          },
+          "request": {
+            "uri": {
+              "protocol": "https:",
+              "slashes": true,
+              "auth": null,
+              "host": "raw.githubusercontent.com",
+              "port": 443,
+              "hostname": "raw.githubusercontent.com",
+              "hash": null,
+              "search": null,
+              "query": null,
+              "pathname": "/cloudb2/processus/master/test/demo1.json",
+              "path": "/cloudb2/processus/master/test/demo1.json",
+              "href": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json"
+            },
+            "method": "GET",
+            "headers": {
+              "accept": "application/json"
+            }
+          }
+        },
+        "body": {
+          "tasks": {
+            "task 1": {
+              "description": "I am the task 1, I take 1500msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 1500,
+                "error": false
+              }
+            },
+            "task 2": {
+              "description": "I am the task 2, I take 1000msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 1000,
+                "error": false
+              }
+            },
+            "task 3": {
+              "description": "I am the task 3, I take 500msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 500,
+                "error": false
+              }
+            }
+          }
+        }
+      },
+      "status": "completed",
+      "timeOpened": 1447923032276,
+      "timeStarted": 1447923032277,
+      "timeCompleted": 1447923033142,
+      "handlerDuration": 865,
+      "totalDuration": 866
+    }
+  },
+  "status": "completed",
+  "id": "717c73bd-6dc7-4dfc-a761-14123e880682"
+}
+2015-11-19 08:50:33 INFO ✰ Workflow [test/demo12.json] with id [717c73bd-6dc7-4dfc-a761-14123e880682] completed successfully.
+</code></pre>
+
+<h3>
+<a id="workflowhandler" class="anchor" href="#workflowhandler" aria-hidden="true"><span class="octicon octicon-link"></span></a>workflowHandler</h3>
+
+<p>The workflowHandler allows a task to call another workflow. <code>demo13.json</code> shows an example of this.</p>
+
+<pre><code>{
+  "tasks": {
+    "call demo1 workflow": {
+      "description": "calls the workflow in the file demo1",
+      "blocking": true,
+      "handler" : "../taskHandlers/workflowHandler",
+      "data": {
+        "file": "./test/demo1.json"
+      }
+    }
+  }
+}
+</code></pre>
+
+<p>Running this shows how workflows can be nested.</p>
+
+<pre><code>$ ./bin/processus-cli -l debug -f test/demo13.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+...
+[detail removed for simplicity]
+...
+
+2015-11-19 08:56:57 DEBUG Workflow returned successfully.
+2015-11-19 08:56:57 DEBUG {
+  "tasks": {
+    "call demo1 workflow": {
+      "description": "calls the workflow in the file demo1",
+      "blocking": true,
+      "handler": "../taskHandlers/workflowHandler",
+      "data": {
+        "file": "./test/demo1.json",
+        "workflow": {
+          "tasks": {
+            "task 1": {
+              "description": "I am the task 1, I take 1500msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 1500,
+                "error": false
+              },
+              "status": "completed",
+              "timeOpened": 1447923413975,
+              "timeStarted": 1447923413977,
+              "timeCompleted": 1447923415486,
+              "handlerDuration": 1509,
+              "totalDuration": 1511
+            },
+            "task 2": {
+              "description": "I am the task 2, I take 1000msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 1000,
+                "error": false
+              },
+              "status": "completed",
+              "timeOpened": 1447923415488,
+              "timeStarted": 1447923415488,
+              "timeCompleted": 1447923416490,
+              "handlerDuration": 1002,
+              "totalDuration": 1002
+            },
+            "task 3": {
+              "description": "I am the task 3, I take 500msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 500,
+                "error": false
+              },
+              "status": "completed",
+              "timeOpened": 1447923416492,
+              "timeStarted": 1447923416492,
+              "timeCompleted": 1447923416999,
+              "handlerDuration": 507,
+              "totalDuration": 507
+            }
+          },
+          "status": "completed",
+          "id": "7bb68bbd-ab31-418a-93f6-f3c8cfb977f0"
+        }
+      },
+      "status": "completed",
+      "timeOpened": 1447923413968,
+      "timeStarted": 1447923413970,
+      "timeCompleted": 1447923417003,
+      "handlerDuration": 3033,
+      "totalDuration": 3035
+    }
+  },
+  "status": "completed",
+  "id": "b9accbd9-8d25-4d40-8418-01eb13491e52"
+}
+2015-11-19 08:56:57 INFO ✰ Workflow [test/demo13.json] with id [b9accbd9-8d25-4d40-8418-01eb13491e52] completed successfully.
+</code></pre>
+
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li> the parent workflow contains one task <code>call demo1 workflow</code> which contains the <code>data.workflow</code> property which contains the resulting <code>demo1.json</code> workflow.</li>
+</ol>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/cloudb2/processus">Processus</a> is maintained by <a href="https://github.com/cloudb2">cloudb2</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
   </body>
 </html>
