@@ -13,7 +13,8 @@
     "test9": "./bin/processus-cli -l info -f ./test/demo9.json",
     "test10": "./bin/processus-cli -l info -f ./test/demo10.json",
     "test11a": "./test/demo11.json",
-    "test11b": "./test/demo11-async-task.json"
+    "test11b": "./test/demo11-async-task.json",
+    "test12": "./test/jshint.json"
   },
   "tasks":{
     "Test Demo 1": {
@@ -120,6 +121,24 @@
             "id": "$[tasks.Test Demo 11.tasks.Test Demo 11a.data.workflow.id]"
           }
         }
+      }
+    },
+    "wait for tests": {
+      "blocking": true
+    },
+    "run jshint": {
+      "description": "run jshint",
+      "blocking": true,
+      "handler" : "../taskHandlers/workflowHandler",
+      "data": {
+        "file": "$[static.test12]"
+      }
+    },
+    "show success": {
+      "blocking": true,
+      "handler" : "../taskHandlers/execHandler",
+      "data": {
+        "cmd": "echo '\n\n\nSUCCESS ¯\\_(ツ)_/¯\n\n'"
       }
     }
   }

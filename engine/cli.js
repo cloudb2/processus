@@ -54,7 +54,6 @@ module.exports = function() {
       logger.error("✘ Invalid log level, see help for more info.");
       return -1;
     }
-
     if (options.file === null && options.id === null) {
       logger.error("✘ Must supply a worklfow or task filename.");
       return -1;

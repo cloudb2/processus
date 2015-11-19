@@ -28,8 +28,12 @@ module.exports = function(workflowId, taskName, task, callback, logger){
     task.data.stderr = stderr;
     if(stdout){ logger.info("stdout ➜ [" + stdout + "]"); }
     if(stderr){ logger.error(stderr); }
+    if(error){
+      callback(new Error("exec failed with: [" + error.message + "]"), task);
+      return;
+    }
     if(stderr !== ""){
-      callback(new Error("exec failed with: " + stderr), task);
+      callback(new Error("exec failed with: [" + stderr + "]"), task);
     }
     else {
       logger.info("✔ task [" + taskName + "] completed successfully.");
