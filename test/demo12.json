@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "call github": {
+    "call github for demo1": {
       "blocking": true,
       "handler": "../taskhandlers/requestHandler",
       "data": {

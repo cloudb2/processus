@@ -18,6 +18,8 @@ workflows.
     * [ignoreError Property](#ignoreerror-property)
   * [Task Conditions - skipIf and errorIf](#task-conditions---skipif-and-errorif)
   * [Handlers](#handlers)
+    * [requestHandler](#requestHandler)
+    * [workflowHandler](#workflowHandler)
 
 <hr>
 
@@ -39,6 +41,8 @@ or clone this repo
 ```
 git clone https://github.com/cloudb2/processus
 ```
+
+<hr>
 
 ## Using Processus
 
@@ -77,6 +81,7 @@ $ ./bin/processus-cli -l info -f ./test/ex1.json
 2015-11-19 00:19:06 INFO ✰ Workflow [./test/ex1.json] with id [208810ae-14f3-4331-bd3f-adace417e38d] exited without error, but did not complete.
 ```
 ***Note***
+
 1. You can add additional meta data to the workflow such as a name and description, but that will be ignored by Processus.
 2. The status of a workflow can be open, error or completed.
 3. In this example there are no tasks, so the Processus returns open, assuming that a task will be injected later. More on this later.
@@ -111,6 +116,7 @@ $ ./bin/processus-cli -l debug -f ./test/ex1.json
 2015-11-19 00:19:43 INFO ✰ Workflow [./test/ex1.json] with id [8a2467ad-ad05-4dca-92b8-aac815d7dbec] exited without error, but did not complete.
 ```
 ***Note***
+
 1. The status and id have been added by Processus
 2. The workflow remains open as there are NO tasks to execute
 
@@ -138,6 +144,7 @@ Consider the following workflow.
 }
 ```
 ***Note***
+
 1. The above workflow has 2 tasks ```say hello``` and ```say hello again```.
 2. Each task uses a handler called ```execHandler``` which executed the command identified in the data property of the task by ```data.cmd```.
 
@@ -218,6 +225,7 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
 2015-11-19 00:20:54 INFO ✰ Workflow [./test/ex2.json] with id [9909133c-158a-4f0f-8778-99d7c378ef7d] completed successfully.
 ```
 ***Note***
+
 1. The handler has added ```stdout``` and ```stderr``` to each task's ```data``` property.
 2. The status of each task and the overall workflow is shown as ```completed```
 3. Processus has added additional timing information to each task.
@@ -350,6 +358,7 @@ $ ./bin/processus-cli -l info -f ./test/demo2.json
 2015-11-19 00:24:52 INFO ✰ Workflow [./test/demo2.json] with id [e7eee333-2c24-4c60-901c-0ed0b8e57d54] completed successfully.
 ```
 ***Note***
+
 1. All 3 tasks started before any had finished
 2. The task completed in reverse order because the time difference
 
@@ -783,6 +792,7 @@ Look at demo10 to see an example of ```skipIf``` and ```errorIf``` in action.
 ```
 
 ***Note***
+
 1.  ```skipIf``` of ```task 2``` will evaluate to ```true``` causing this task to be skipped
 2.  ```errorIf``` of ```task 3``` will evaluate to the same value of ```skipIf``` of the ```task 2``` causing this task to error
 
@@ -819,8 +829,293 @@ function(workflowId, taskName, task, callback, logger)
 1.  workflowId is the UUID assigned to this instance of the workflow
 2.  taskName is the name of the task
 3.  task is an object containing all the properties of the task
-4.  callback consists of an error object (or nill) and the updated task
+4.  callback consists of an error object (or null) and the updated task
 
+Processus comes with a number of task handlers. It's recommended that you study these, should you wish to write or extend your own. In addition to those mentioned above, there are other task handlers.
 
+#### requestHandler
 
- Processus comes
+This handler wraps the very popular nodejs module request to make HTTP requests. Simply supply a ```data.options``` property to the task to see the resulting HTTP request made. ```demo12.json``` is an example of this.
+
+```
+{
+  "tasks": {
+    "call github for demo1": {
+      "blocking": true,
+      "handler": "../taskhandlers/requestHandler",
+      "data": {
+        "options": {
+            "url": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json",
+            "method": "GET",
+            "json": true
+        }
+      }
+    }
+  }
+}
+```
+
+executing this demo will result in the request and body objects being populated in the task ```call github for demo1``` by the http request to ```https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json```
+
+```
+$ ./bin/processus-cli -l debug -f test/demo12.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+...
+[detail removed for simplicity]
+...
+2015-11-19 08:50:33 DEBUG Workflow returned successfully.
+2015-11-19 08:50:33 DEBUG {
+  "tasks": {
+    "call github for demo1": {
+      "blocking": true,
+      "handler": "../taskhandlers/requestHandler",
+      "data": {
+        "options": {
+          "url": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json",
+          "method": "GET",
+          "json": true
+        },
+        "response": {
+          "statusCode": 200,
+          "body": {
+            "tasks": {
+              "task 1": {
+                "description": "I am the task 1, I take 1500msecs.",
+                "blocking": true,
+                "handler": "../taskHandlers/testHandler",
+                "data": {
+                  "delay": 1500,
+                  "error": false
+                }
+              },
+              "task 2": {
+                "description": "I am the task 2, I take 1000msecs.",
+                "blocking": true,
+                "handler": "../taskHandlers/testHandler",
+                "data": {
+                  "delay": 1000,
+                  "error": false
+                }
+              },
+              "task 3": {
+                "description": "I am the task 3, I take 500msecs.",
+                "blocking": true,
+                "handler": "../taskHandlers/testHandler",
+                "data": {
+                  "delay": 500,
+                  "error": false
+                }
+              }
+            }
+          },
+          "headers": {
+            "content-security-policy": "default-src 'none'",
+            "x-xss-protection": "1; mode=block",
+            "x-frame-options": "deny",
+            "x-content-type-options": "nosniff",
+            "strict-transport-security": "max-age=31536000",
+            "etag": "\"e1fcf909fd53a8f6fa2e085835e59fba51f1344b\"",
+            "content-type": "text/plain; charset=utf-8",
+            "cache-control": "max-age=300",
+            "x-github-request-id": "C71B4F18:5926:25FE057F:564D8D58",
+            "content-length": "692",
+            "accept-ranges": "bytes",
+            "date": "Thu, 19 Nov 2015 08:50:33 GMT",
+            "via": "1.1 varnish",
+            "connection": "close",
+            "x-served-by": "cache-lax1431-LAX",
+            "x-cache": "MISS",
+            "x-cache-hits": "0",
+            "vary": "Authorization,Accept-Encoding",
+            "access-control-allow-origin": "*",
+            "x-fastly-request-id": "7fec929ad02c98bb6e318f5a9e69eb00735f507e",
+            "expires": "Thu, 19 Nov 2015 08:55:33 GMT",
+            "source-age": "0"
+          },
+          "request": {
+            "uri": {
+              "protocol": "https:",
+              "slashes": true,
+              "auth": null,
+              "host": "raw.githubusercontent.com",
+              "port": 443,
+              "hostname": "raw.githubusercontent.com",
+              "hash": null,
+              "search": null,
+              "query": null,
+              "pathname": "/cloudb2/processus/master/test/demo1.json",
+              "path": "/cloudb2/processus/master/test/demo1.json",
+              "href": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json"
+            },
+            "method": "GET",
+            "headers": {
+              "accept": "application/json"
+            }
+          }
+        },
+        "body": {
+          "tasks": {
+            "task 1": {
+              "description": "I am the task 1, I take 1500msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 1500,
+                "error": false
+              }
+            },
+            "task 2": {
+              "description": "I am the task 2, I take 1000msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 1000,
+                "error": false
+              }
+            },
+            "task 3": {
+              "description": "I am the task 3, I take 500msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 500,
+                "error": false
+              }
+            }
+          }
+        }
+      },
+      "status": "completed",
+      "timeOpened": 1447923032276,
+      "timeStarted": 1447923032277,
+      "timeCompleted": 1447923033142,
+      "handlerDuration": 865,
+      "totalDuration": 866
+    }
+  },
+  "status": "completed",
+  "id": "717c73bd-6dc7-4dfc-a761-14123e880682"
+}
+2015-11-19 08:50:33 INFO ✰ Workflow [test/demo12.json] with id [717c73bd-6dc7-4dfc-a761-14123e880682] completed successfully.
+```
+
+### workflowHandler
+
+The workflowHandler allows a task to call another workflow. ```demo13.json``` shows an example of this.
+
+```
+{
+  "tasks": {
+    "call demo1 workflow": {
+      "description": "calls the workflow in the file demo1",
+      "blocking": true,
+      "handler" : "../taskHandlers/workflowHandler",
+      "data": {
+        "file": "./test/demo1.json"
+      }
+    }
+  }
+}
+```
+
+Running this shows how workflows can be nested.
+
+```
+$ ./bin/processus-cli -l debug -f test/demo13.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+...
+[detail removed for simplicity]
+...
+
+2015-11-19 08:56:57 DEBUG Workflow returned successfully.
+2015-11-19 08:56:57 DEBUG {
+  "tasks": {
+    "call demo1 workflow": {
+      "description": "calls the workflow in the file demo1",
+      "blocking": true,
+      "handler": "../taskHandlers/workflowHandler",
+      "data": {
+        "file": "./test/demo1.json",
+        "workflow": {
+          "tasks": {
+            "task 1": {
+              "description": "I am the task 1, I take 1500msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 1500,
+                "error": false
+              },
+              "status": "completed",
+              "timeOpened": 1447923413975,
+              "timeStarted": 1447923413977,
+              "timeCompleted": 1447923415486,
+              "handlerDuration": 1509,
+              "totalDuration": 1511
+            },
+            "task 2": {
+              "description": "I am the task 2, I take 1000msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 1000,
+                "error": false
+              },
+              "status": "completed",
+              "timeOpened": 1447923415488,
+              "timeStarted": 1447923415488,
+              "timeCompleted": 1447923416490,
+              "handlerDuration": 1002,
+              "totalDuration": 1002
+            },
+            "task 3": {
+              "description": "I am the task 3, I take 500msecs.",
+              "blocking": true,
+              "handler": "../taskHandlers/testHandler",
+              "data": {
+                "delay": 500,
+                "error": false
+              },
+              "status": "completed",
+              "timeOpened": 1447923416492,
+              "timeStarted": 1447923416492,
+              "timeCompleted": 1447923416999,
+              "handlerDuration": 507,
+              "totalDuration": 507
+            }
+          },
+          "status": "completed",
+          "id": "7bb68bbd-ab31-418a-93f6-f3c8cfb977f0"
+        }
+      },
+      "status": "completed",
+      "timeOpened": 1447923413968,
+      "timeStarted": 1447923413970,
+      "timeCompleted": 1447923417003,
+      "handlerDuration": 3033,
+      "totalDuration": 3035
+    }
+  },
+  "status": "completed",
+  "id": "b9accbd9-8d25-4d40-8418-01eb13491e52"
+}
+2015-11-19 08:56:57 INFO ✰ Workflow [test/demo13.json] with id [b9accbd9-8d25-4d40-8418-01eb13491e52] completed successfully.
+```
+
+***Note***
+
+1.  the parent workflow contains one task ```call demo1 workflow``` which contains the ```data.workflow``` property which contains the resulting ```demo1.json``` workflow.
