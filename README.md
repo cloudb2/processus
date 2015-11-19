@@ -1,10 +1,3 @@
-```
- ____  ____   __    ___  ____  ____  ____  _  _  ____
-(  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
- ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
-(__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
-```
-
 # Processus
 
 Processus is a simple lightweight workflow engine designed to help orchestrate multiple tasks.
@@ -12,15 +5,10 @@ Processus is a simple lightweight workflow engine designed to help orchestrate m
 There are many workflow engines already, but Processus makes some very specific assumptions that make it easy to quickly write simple, yet powerful
 workflows.
 
-
-
-[Getting Started](#getting-started)
-  [Installation](#installation)
-  [Intoduction](#introduction)
-  [documentation](http://cloudb2.github.io/processus/)
-
-[Contributing](#contributing)
-  [Contributing - Roadmap](#contributing---roadmap)
+* [Installation](#installation)
+* [Using Processus](#using-processus)
+* [Contributing](#contributing)
+  * [Contributing - Roadmap](#contributing---roadmap)
 
 <hr>
 
@@ -43,11 +31,13 @@ or clone this repo
 git clone https://github.com/cloudb2/processus
 ```
 
-A workflow in Processus is defined using JSON, which should conform to a specific
-structure. The best way to understand that structure is by looking at examples.
+## Using Processus
+
+A workflow in Processus is defined using JSON, which should conform to a specific structure. The best way to understand that structure is by looking at examples.
+
+### The Workflow
 
 A workflow, in it's simplest form, is defined as follows.
-
 ```
 {
   "tasks": {
@@ -56,7 +46,7 @@ A workflow, in it's simplest form, is defined as follows.
   "status": "[open|error|completed]"
 }
 ```
-Both id and status are added by processus at execution time.
+Both ```id``` and ```status``` are added by Processus at execution time.
 
 execute the above example ex1.json using the following command.
 ```
@@ -65,7 +55,7 @@ execute the above example ex1.json using the following command.
 
 You should see something like this.
 ```
-$ ./bin/processus-cli -l info -f test/ex1.json
+$ ./bin/processus-cli -l info -f ./test/ex1.json
 
   ____  ____   __    ___  ____  ____  ____  _  _  ____
  (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
@@ -74,7 +64,8 @@ $ ./bin/processus-cli -l info -f test/ex1.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-12 00:59:16 INFO ✰ Workflow [test/ex1.json] exited without error, but did not complete.
+2015-11-19 00:19:06 INFO reading workflow file ./test/ex1.json
+2015-11-19 00:19:06 INFO ✰ Workflow [./test/ex1.json] with id [208810ae-14f3-4331-bd3f-adace417e38d] exited without error, but did not complete.
 ```
 ***Note***
 1. You can add additional meta data to the workflow such as a name and description, but that will be ignored by Processus.
@@ -83,12 +74,12 @@ $ ./bin/processus-cli -l info -f test/ex1.json
 
 execute ex1 again, this time with a log level of debug.
 ```
-../bin/processus-cli -l info -f ./test/ex1.json
+../bin/processus-cli -l debug -f ./test/ex1.json
 ```
 
 You should see something like this.
 ```
-$ ./bin/processus-cli -l debug -f test/ex1.json
+$ ./bin/processus-cli -l debug -f ./test/ex1.json
 
   ____  ____   __    ___  ____  ____  ____  _  _  ____
  (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
@@ -97,28 +88,143 @@ $ ./bin/processus-cli -l debug -f test/ex1.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-12 01:02:00 DEBUG save point a reached.
-2015-11-12 01:02:00 DEBUG save point c reached.
-2015-11-12 01:02:00 DEBUG Workflow returned successfully.
-2015-11-12 01:02:00 DEBUG {
+2015-11-19 00:19:43 INFO reading workflow file ./test/ex1.json
+2015-11-19 00:19:43 DEBUG checking for data directory
+2015-11-19 00:19:43 DEBUG init complete without error.
+2015-11-19 00:19:43 DEBUG save point a reached.
+2015-11-19 00:19:43 DEBUG save point c reached.
+2015-11-19 00:19:43 DEBUG Workflow returned successfully.
+2015-11-19 00:19:43 DEBUG {
   "tasks": {},
   "status": "open",
-  "id": "33fda8ab-4cac-4acb-80fa-65c731eb6983"
+  "id": "8a2467ad-ad05-4dca-92b8-aac815d7dbec"
 }
-2015-11-12 01:02:00 INFO ✰ Workflow [test/ex1.json] exited without error, but did not complete.
+2015-11-19 00:19:43 INFO ✰ Workflow [./test/ex1.json] with id [8a2467ad-ad05-4dca-92b8-aac815d7dbec] exited without error, but did not complete.
 ```
 ***Note***
 1. The status and id have been added by Processus
+2. The workflow remains open as there are NO tasks to execute
 
+### Tasks
 
-## Introduction
+Consider the following workflow.
+```
+{
+  "tasks": {
+    "say hello": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world'"
+      }
+    },
+    "say hello again": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world again'"
+      }
+    }
+  }
+}
+```
+***Note***
+1. The above workflow has 2 tasks ```say hello``` and ```say hello again```.
+2. Each task uses a handler called ```execHandler``` which executed the command identified in the data property of the task by ```data.cmd```.
 
+So, in short, this simple workflow will execute ```echo 'hello, world'``` and ```echo 'hello, world again'``` sequentially.
 
-Processus assumes that the person assembling the workflow is NOT necessarily familiar with the nuances of software development. Although they use JSON to configure the workflow, its executional flow and conditional constructs, they will defer the difficult task of interacting with various endpoints and systems to the task handlers. In short, Processus tries to employ a KIS (Keep It Simple) philosophy to its configuration.
+execute ex2.json
+```
+../bin/processus-cli -l debug -f ./test/ex2.json
+```
 
-Let's suppose we want 3 tasks in series.
-Look at the JSON file ```./test/demo1.json```
+You should see something like this.
+```
+$ ./bin/processus-cli -l debug -f ./test/ex2.json
 
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+2015-11-19 00:20:54 INFO reading workflow file ./test/ex2.json
+2015-11-19 00:20:54 DEBUG checking for data directory
+2015-11-19 00:20:54 DEBUG init complete without error.
+2015-11-19 00:20:54 DEBUG save point a reached.
+2015-11-19 00:20:54 DEBUG task.skipIf = undefined
+2015-11-19 00:20:54 DEBUG task.errorIf = undefined
+2015-11-19 00:20:54 INFO ⧖ Staring task say hello
+2015-11-19 00:20:54 INFO stdout ➜ [hello, world
+]
+2015-11-19 00:20:54 INFO ✔ task [say hello] completed successfully.
+2015-11-19 00:20:54 DEBUG save point a reached.
+2015-11-19 00:20:54 DEBUG task.skipIf = undefined
+2015-11-19 00:20:54 DEBUG task.errorIf = undefined
+2015-11-19 00:20:54 INFO ⧖ Staring task say hello again
+2015-11-19 00:20:54 INFO stdout ➜ [hello, world again
+]
+2015-11-19 00:20:54 INFO ✔ task [say hello again] completed successfully.
+2015-11-19 00:20:54 DEBUG save point a reached.
+2015-11-19 00:20:54 DEBUG save point c reached.
+2015-11-19 00:20:54 DEBUG Workflow returned successfully.
+2015-11-19 00:20:54 DEBUG {
+  "tasks": {
+    "say hello": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world'",
+        "stdout": "hello, world\n",
+        "stderr": ""
+      },
+      "status": "completed",
+      "timeOpened": 1447892454206,
+      "timeStarted": 1447892454208,
+      "timeCompleted": 1447892454234,
+      "handlerDuration": 26,
+      "totalDuration": 28
+    },
+    "say hello again": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world again'",
+        "stdout": "hello, world again\n",
+        "stderr": ""
+      },
+      "status": "completed",
+      "timeOpened": 1447892454237,
+      "timeStarted": 1447892454238,
+      "timeCompleted": 1447892454244,
+      "handlerDuration": 6,
+      "totalDuration": 7
+    }
+  },
+  "status": "completed",
+  "id": "9909133c-158a-4f0f-8778-99d7c378ef7d"
+}
+2015-11-19 00:20:54 INFO ✰ Workflow [./test/ex2.json] with id [9909133c-158a-4f0f-8778-99d7c378ef7d] completed successfully.
+```
+***Note***
+1. The handler has added ```stdout``` and ```stderr``` to each task's ```data``` property.
+2. The status of each task and the overall workflow is shown as ```completed```
+3. Processus has added additional timing information to each task.
+4. The status of a task can be one of the following
+  * ```waiting``` It is waiting to be opened by Processus
+  * ```open``` It is opened by Processus
+  * ```executing``` The handler associated with this task is currently executing
+  * ```completed``` The task has completed successfully
+  * ```pending``` A handler has finished executing but a response is pending. i.e. it is expected that the workflow will be updated at some point in the future from an async callback.
+  * ```error``` An error occured during execution of the handler
+
+### Testing Tasks
+
+Processus comes with a ```testHandler``` that mimics a task by waiting for a specific period of time and then returning.
+
+Consider demo1.json
 ```
 {
   "tasks":{
@@ -153,45 +259,10 @@ Look at the JSON file ```./test/demo1.json```
 }
 ```
 
-This JSON file will execute the tasks sequentially. i.e.
-```task 1``` -> ```task 2``` -> ```task 3```
+If you run this example the 3 tasks will execute as follows.
 
-Before we run this file in Processus, let's take a quick look at the Task object.
 ```
-"task 1": {
-  "description": "I am the task 1, I take 1500msecs.",
-  "blocking": true,
-  "handler" : "../taskHandlers/testHandler",
-  "data": {
-    "delay": 1500,
-    "error": false
-  }
-}
-```
-Note the following:
-
-1. **The Task Name**: The task name can contain spaces, but obviously each name must be unique or it's
-not valid JSON. In this case the name of the first task is ```task 1```
-2. **description**: A simple string containing a description of the task
-3. **blocking**: A boolean value telling Processus if you wish to block during the execution of this task
-or not. If you block for each task, they will all run sequentially. If you set this to false they
-will run in parallel (more on this later).
-4. **handler**: Is a string specifying the module name to handle the task. Processus comes with an
-example task handler called ```testHandler```, which simply outputs the task details.
-5. **data**: The data object contains information used by the task handler. In this case
-the handler ```testHandler``` uses the data parameters ```delay``` (how long the task is delayed) and
-```error``` whether the task should raise an error when it finishes. More on data objects later.
-6. Procesus will run the tasks in the order they're defined within the parent workflow object, unless blocking is set to false.
-
-Ok, now we have the simplest definition of a task, let's run the file demo1.json
-
-first run the following to see the cli options. It's assumed you're executing Processus in the directory in which it was installed.
-```
-$ ./bin/processus-cli -h
-```
-
-You should see something similar to the following.
-```
+$ ./bin/processus-cli -l info -f ./test/demo1.json
 
   ____  ____   __    ___  ____  ____  ____  _  _  ____
  (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
@@ -200,66 +271,235 @@ You should see something similar to the following.
 
            Processus: A Simple Workflow Engine.
 
-Usage:
-  processus-cli [OPTIONS] [ARGS]
-
-Options:
-  -l, --loglevel [STRING]Set loglevel [debug|verbose|info|warn|error] (Default is error)
-  -f, --file [FILE]      Workflow filename (Default is workflow.json)
-  -h, --help             Display help and usage details
-
+2015-11-19 00:23:07 INFO reading workflow file ./test/demo1.json
+2015-11-19 00:23:08 INFO ⧖ Staring task task 1
+2015-11-19 00:23:09 INFO ✔ task task 1 completed successfully.
+2015-11-19 00:23:09 INFO ⧖ Staring task task 2
+2015-11-19 00:23:10 INFO ✔ task task 2 completed successfully.
+2015-11-19 00:23:10 INFO ⧖ Staring task task 3
+2015-11-19 00:23:11 INFO ✔ task task 3 completed successfully.
+2015-11-19 00:23:11 INFO ✰ Workflow [./test/demo1.json] with id [92760c03-98fb-4ebe-baf4-bae5b65939c6] completed successfully.
 ```
 
-**Notice** that Processus defaults to the error log level, so you won't see any output other than errors. For the purposes of the demo, let's change the loglevel to ```info``` and specify the filename ```./test/demo1.json```
+### Parallel Tasks
+
+Above, the tasks were executed in series (i.e. one after the other). It's possible to execute tasks in parallel by setting the ```blocking``` property of a task to ```false```.
+
+Consider demo2.json
+```
+{
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I take 1500msecs.",
+      "blocking": false,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 1500,
+        "error": false
+      }
+    },
+    "task 2": {
+      "description": "I am the task 2, I take 1000msecs.",
+      "blocking": false,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 1000,
+        "error": false
+      }
+    },
+    "task 3": {
+      "description": "I am the task 3, I take 500msecs.",
+      "blocking": false,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 500,
+        "error": false
+      }
+    }
+  }
+}
+```
+
+Executing ```demo2.json``` will result in the following.
+```
+$ ./bin/processus-cli -l info -f ./test/demo2.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+2015-11-19 00:24:50 INFO reading workflow file ./test/demo2.json
+2015-11-19 00:24:50 INFO ⧖ Staring task task 1
+2015-11-19 00:24:50 INFO ⧖ Staring task task 2
+2015-11-19 00:24:50 INFO ⧖ Staring task task 3
+2015-11-19 00:24:51 INFO ✔ task task 3 completed successfully.
+2015-11-19 00:24:51 INFO ✔ task task 2 completed successfully.
+2015-11-19 00:24:52 INFO ✔ task task 1 completed successfully.
+2015-11-19 00:24:52 INFO ✰ Workflow [./test/demo2.json] with id [e7eee333-2c24-4c60-901c-0ed0b8e57d54] completed successfully.
+```
+***Note***
+1. All 3 tasks started before any had finished
+2. The task completed in reverse order because the time difference
+
+### Nested Tasks
+
+Tasks can be nested as shown in ```demo3.json```
 
 ```
-$ ./bin/processus-cli -l info -f ./test/demo1.json
+{
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I take 1500msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 1500,
+        "error": false
+      }
+    },
+    "task 2": {
+      "description": "I am the task 2, I take 1000msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 1000,
+        "error": false
+      },
+      "tasks": {
+        "task 2-1": {
+          "description": "I am the task 2-1, I take 1000msecs.",
+          "blocking": true,
+          "handler" : "../taskHandlers/testHandler",
+          "data": {
+            "delay": 1000,
+            "error": false
+          }
+        },
+        "task 2-2": {
+          "description": "I am the task 2-2, I take 1000msecs.",
+          "blocking": true,
+          "handler" : "../taskHandlers/testHandler",
+          "data": {
+            "delay": 1000,
+            "error": false
+          }
+        }
+      }
+    },
+    "task 3": {
+      "description": "I am the task 3, I take 500msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 500,
+        "error": false
+      }
+    }
+  }
+}
 ```
 
-The output should look something like this.
+**Notice** that ```task 2``` contains ```tasks``` itself.
+Processus allows nesting of tasks and does not limit the level of nesting. This is a powerful feature, but it does make some assumptions:
+
+1. The parent task opens directly after it's previous sibling
+2. The parent task CANNOT complete until ALL the child tasks have completed
+3. The parent task is therefore not executed until ALL of the children have completed
+4. Setting the parent's blocking property to false will NOT prevent it being delayed until
+the child tasks have completed. However, that will cause it to open in parallel with its
+siblings.
+
+Incidentally this is why a task's ```timeOpened``` time may differ from the ```timeStarted``` time. It's also why the ```totalDuration``` may be different from the ```handlerDuration```.
+
+Running the demo
 ```
+$ ./bin/processus-cli -l info -f ./test/demo3.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+2015-11-19 00:49:31 INFO reading workflow file ./test/demo3.json
+2015-11-19 00:49:31 INFO ⧖ Staring task task 1
+2015-11-19 00:49:32 INFO ✔ task task 1 completed successfully.
+2015-11-19 00:49:33 INFO ⧖ Staring task task 2-1
+2015-11-19 00:49:34 INFO ✔ task task 2-1 completed successfully.
+2015-11-19 00:49:34 INFO ⧖ Staring task task 2-2
+2015-11-19 00:49:35 INFO ✔ task task 2-2 completed successfully.
+2015-11-19 00:49:35 INFO ⧖ Staring task task 2
+2015-11-19 00:49:36 INFO ✔ task task 2 completed successfully.
+2015-11-19 00:49:36 INFO ⧖ Staring task task 3
+2015-11-19 00:49:36 INFO ✔ task task 3 completed successfully.
+2015-11-19 00:49:36 INFO ✰ Workflow [./test/demo3.json] with id [2966f6d0-f06f-4c51-9123-65591e31de1d] completed successfully.
+```
+
+**Notice** that task ```task 2-1``` and ```task 2-2``` are completed before the parent task ```task 2``` is executed.
+
+### Passing Data Between Tasks
+
+Processus supports a very simple mechanism for referencing data between tasks.
+
+The format is $[<path.to.reference>]
+
+For example, if a task has a data value of $[tasks.task 1.data.delay] this value will be substituted, at execution time, with the value stored in the delay data property of task 1.
+
+Consider demo6.json
+```
+{
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I take 1500msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 1500,
+        "error": false
+      }
+    },
+    "task 2": {
+      "description": "I am the task 2, I take as long as task1.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": "$[tasks.task 1.data.delay]",
+        "error": false
+      }
+    },
+    "task 3": {
+      "description": "I am the task 3, I take as long as task1.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": "$[tasks.task 1.data.delay]",
+        "error": false
+      }
+    }
+  }
+}
+```
+
+If you execute ```demo6.json``` in debug mode, you'll see that the delay property of tasks 2 and 3 match that of task 1.
+
+```
+$ ./bin/processus-cli -l debug -f ./test/demo6.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
 ...
-
-2015-10-12 23:24:16 INFO testHandler:
- executing task 1
-2015-10-12 23:24:16 INFO Task Description:
- I am the task 1, I take 1500msecs.
-2015-10-12 23:24:18 INFO testHandler:
- completed task 1
-2015-10-12 23:24:18 INFO testHandler:
- executing task 2
-2015-10-12 23:24:18 INFO Task Description:
- I am the task 2, I take 1000msecs.
-2015-10-12 23:24:19 INFO testHandler:
- completed task 2
-2015-10-12 23:24:19 INFO testHandler:
- executing task 3
-2015-10-12 23:24:19 INFO Task Description:
- I am the task 3, I take 500msecs.
-2015-10-12 23:24:19 INFO testHandler:
- completed task 3
-2015-10-12 23:24:19 INFO Workflow returned successfully.
-```
-
-That's it, you executed your first workflow using Processus!
-
-In this case, it didn't do a lot, except simulate 3 tasks, running sequentially,
-and each delayed half a second less than the previous task.
-
-Let's look a little closer at the workflow and tasks that returned from Processus.
-
-Execute the same command again, this time setting the loglevel to ```debug```
-
-```
-$ ./bin/processus-cli -l debug -f ./test/demo1.json
-```
-
-The output should look something like this.
-```
+[output removed for clarity]
 ...
-
-2015-10-12 22:57:37 INFO Workflow returned successfully.
-2015-10-12 22:57:37 DEBUG {
+2015-11-19 00:30:11 DEBUG Workflow returned successfully.
+2015-11-19 00:30:12 DEBUG {
   "tasks": {
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
@@ -270,11 +510,163 @@ The output should look something like this.
         "error": false
       },
       "status": "completed",
-      "timeOpened": 1444690654882,
-      "timeStarted": 1444690654883,
-      "timeCompleted": 1444690655396,
-      "handlerDuration": 513,
-      "totalDuration": 514
+      "timeOpened": 1447893007451,
+      "timeStarted": 1447893007452,
+      "timeCompleted": 1447893008960,
+      "handlerDuration": 1508,
+      "totalDuration": 1509
+    },
+    "task 2": {
+      "description": "I am the task 2, I take as long as task1.",
+      "blocking": true,
+      "handler": "../taskHandlers/testHandler",
+      "data": {
+        "delay": "1500", <---[updated value]
+        "error": false
+      },
+      "status": "completed",
+      "timeOpened": 1447893008963,
+      "timeStarted": 1447893008966,
+      "timeCompleted": 1447893010482,
+      "handlerDuration": 1516,
+      "totalDuration": 1519
+    },
+    "task 3": {
+      "description": "I am the task 3, I take as long as task1.",
+      "blocking": true,
+      "handler": "../taskHandlers/testHandler",
+      "data": {
+        "delay": "1500", <---[updated value]
+        "error": false
+      },
+      "status": "completed",
+      "timeOpened": 1447893010484,
+      "timeStarted": 1447893010485,
+      "timeCompleted": 1447893011997,
+      "handlerDuration": 1512,
+      "totalDuration": 1513
+    }
+  },
+  "status": "completed",
+  "id": "6757ac60-3de9-4fc3-922b-6a3e34686f03"
+}
+```
+
+### Passing Static Data
+
+As with the earlier example, it's also possible to pass static data from the parent workflow to each task.
+
+Consider demo7.json
+```
+{
+  "static":{
+    "global-delay":500,
+    "global-error":false
+  },
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I take global-delay msecs, which is 500msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": "$[static.global-delay]",
+        "error": "$[static.global-error]"
+      }
+    },
+    "task 2": {
+      "description": "I am the task 2, I take global-delay msecs, which is 500msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": "$[static.global-delay]",
+        "error": "$[static.global-error]"
+      }
+    },
+    "task 3": {
+      "description": "I am the task 3, I take global-delay msecs, which is 500msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": "$[static.global-delay]",
+        "error": "$[static.global-error]"
+      }
+    }
+  }
+}
+```
+In this case each task's ```delay``` property will be substituted with the ```global-delay``` property of the workflow.
+
+### Handling Errors
+
+The ```testHandler``` can force an error. To see the affect this has on the workflow consider demo8.json
+
+```
+{
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I take 1500msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 1500,
+        "error": false
+      }
+    },
+    "task 2": {
+      "description": "I am the task 2, I take 1000msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 1000,
+        "error": true
+      }
+    },
+    "task 3": {
+      "description": "I am the task 3, I take 1500msecs.",
+      "blocking": true,
+      "handler" : "../taskHandlers/testHandler",
+      "data": {
+        "delay": 1500,
+        "error": false
+      }
+    }
+  }
+}
+```
+
+Executing ```demo8.json``` results in the following
+```
+$ ./bin/processus-cli -l debug -f ./test/demo8.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+...
+[output removed for clarity]
+...
+
+2015-11-19 00:39:21 ERROR ✘ This is an error from the task task 2
+2015-11-19 00:39:21 ERROR ✘ Workflow [./test/demo8.json] with id [faacf120-51df-4e33-8c89-74cfa5c2f9e9] exited with error!
+2015-11-19 00:39:21 DEBUG {
+  "tasks": {
+    "task 1": {
+      "description": "I am the task 1, I take 1500msecs.",
+      "blocking": true,
+      "handler": "../taskHandlers/testHandler",
+      "data": {
+        "delay": 1500,
+        "error": false
+      },
+      "status": "completed",
+      "timeOpened": 1447893558565,
+      "timeStarted": 1447893558567,
+      "timeCompleted": 1447893560071,
+      "handlerDuration": 1504,
+      "totalDuration": 1506
     },
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
@@ -282,45 +674,75 @@ The output should look something like this.
       "handler": "../taskHandlers/testHandler",
       "data": {
         "delay": 1000,
-        "error": false
+        "error": true
       },
-      "status": "completed",
-      "timeOpened": 1444690655396,
-      "timeStarted": 1444690655396,
-      "timeCompleted": 1444690656403,
-      "handlerDuration": 1007,
-      "totalDuration": 1007
+      "status": "error",
+      "timeOpened": 1447893560074,
+      "timeStarted": 1447893560075,
+      "errorMsg": "This is an error from the task task 2"
     },
     "task 3": {
-      "description": "I am the task 3, I take 500msecs.",
+      "description": "I am the task 3, I take 1500msecs.",
       "blocking": true,
       "handler": "../taskHandlers/testHandler",
       "data": {
-        "delay": 500,
+        "delay": 1500,
         "error": false
       },
-      "status": "completed",
-      "timeOpened": 1444690656404,
-      "timeStarted": 1444690656404,
-      "timeCompleted": 1444690657908,
-      "handlerDuration": 1504,
-      "totalDuration": 1504
+      "status": "waiting"
     }
   },
-  "status": "completed"
+  "status": "error",
+  "id": "faacf120-51df-4e33-8c89-74cfa5c2f9e9"
 }
 ```
+***Note***
+1. Task 2 is in the ```error``` state and Processus has added the ```errorMsg``` property
+2. The workflow is also in the ```error``` state.
+3. Task 3 is in the ```waiting``` state.
 
-**Notice** that the Processus engine has added additional information to each task and the parent workflow objects.
+### ignoreError Property
 
-This includes the following:
+It's possible for a task to have an ignoreError property. If set to true, any errors for a task will be logged in the ```errorMsg``` property and the task state will be set to ```completed```.
 
-1. **status** A status for each task and the overall workflow
-2. **timeOpened** The time (milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now) the task was opened.
-3. **timeStarted** The time the task was started. Later we'll explore why this can be different to timeOpened
-4. **timeCompleted** The time the task completed
-5. **handlerDuration** The time it took the handler to execute the task
-6. **totalDuration** The total duration the task was opened. Later we'll explore why this can be different to handlerDuration
-[top](#processus)
+Execute ```demo8a.json``` to see this in action
+```
+$ ./bin/processus-cli -l info -f ./test/demo8a.json
 
-<hr>
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+2015-11-19 00:55:58 INFO reading workflow file ./test/demo8a.json
+2015-11-19 00:55:58 INFO ⧖ Staring task task 1
+2015-11-19 00:56:00 INFO ✔ task task 1 completed successfully.
+2015-11-19 00:56:00 INFO ⧖ Staring task task 2
+2015-11-19 00:56:01 INFO ✔ task task 2 completed successfully.
+2015-11-19 00:56:01 INFO ignoring error, as request for task task 2
+2015-11-19 00:56:01 INFO ⧖ Staring task task 3
+2015-11-19 00:56:02 INFO ✔ task task 3 completed successfully.
+2015-11-19 00:56:02 INFO ✰ Workflow [./test/demo8a.json] with id [9062e489-ae9e-49b5-b72c-0dcfd2ba7eb7] completed successfully.
+
+```
+
+### Task Conditions - skipIf and errorIf
+
+Tasks can have the extra properties ```skipIf``` and ```errorIf```.
+
+As the names suggest, if either property evaluates to true, then Processus will either skip the task and just mark it as completed or raise an error and stop.
+
+As with sharing data values, you can reference another part of the workflow and have that substituted at execution time. Processus will evaluate the string condition and set property appropriately. Any string with the value ```true``` regardless of case, will evaluate to true. Any other string will evaluate to ```false```.
+
+Look at demo10 to see an example of ```skipIf``` and ```errorIf``` in action.
+
+## Contributing - Roadmap
+
+* Workflow Persistence Plugin Architecture
+  * filebased, default
+  * Mongodb
+* Full REST API to interact with Processus
+  * Swagger yaml
+* Support for environment variables
