@@ -70,6 +70,7 @@ $ ./bin/processus-cli -l info -f ./test/ex1.json
 2015-11-19 00:19:06 INFO ✰ Workflow [./test/ex1.json] with id [208810ae-14f3-4331-bd3f-adace417e38d] exited without error, but did not complete.
 ```
 ***Note***
+
 1. You can add additional meta data to the workflow such as a name and description, but that will be ignored by Processus.
 2. The status of a workflow can be open, error or completed.
 3. In this example there are no tasks, so the Processus returns open, assuming that a task will be injected later. More on this later.
@@ -104,6 +105,7 @@ $ ./bin/processus-cli -l debug -f ./test/ex1.json
 2015-11-19 00:19:43 INFO ✰ Workflow [./test/ex1.json] with id [8a2467ad-ad05-4dca-92b8-aac815d7dbec] exited without error, but did not complete.
 ```
 ***Note***
+
 1. The status and id have been added by Processus
 2. The workflow remains open as there are NO tasks to execute
 
@@ -131,6 +133,7 @@ Consider the following workflow.
 }
 ```
 ***Note***
+
 1. The above workflow has 2 tasks ```say hello``` and ```say hello again```.
 2. Each task uses a handler called ```execHandler``` which executed the command identified in the data property of the task by ```data.cmd```.
 
@@ -211,6 +214,7 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
 2015-11-19 00:20:54 INFO ✰ Workflow [./test/ex2.json] with id [9909133c-158a-4f0f-8778-99d7c378ef7d] completed successfully.
 ```
 ***Note***
+
 1. The handler has added ```stdout``` and ```stderr``` to each task's ```data``` property.
 2. The status of each task and the overall workflow is shown as ```completed```
 3. Processus has added additional timing information to each task.
@@ -224,7 +228,7 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
 
 
 
-## Contributing - Roadmap
+## Contributing
 
 ### Contributing
 Yes, please.
