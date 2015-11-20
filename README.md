@@ -168,7 +168,22 @@ Consider the following workflow.
 
 1. The above workflow has 2 tasks ```say hello``` and ```say hello again```.
 2. Each task uses a handler called ```execHandler``` which executed the command identified in the data property of the task by ```data.cmd```.
-3. **See .yml version for a YAML equivalent workflow.**
+3. **See .yml versions in the test directory for a YAML equivalent workflows.** e.g.
+```
+---
+  tasks:
+    say hello:
+      blocking: true
+      handler: "../taskhandlers/execHandler"
+      data:
+        cmd: "echo 'hello, world'"
+    say hello again:
+      blocking: true
+      handler: "../taskhandlers/execHandler"
+      data:
+        cmd: "echo 'hello, world again'"
+```
+
 
 So, in short, this simple workflow will execute ```echo 'hello, world'``` and ```echo 'hello, world again'``` sequentially.
 
