@@ -1,0 +1,19 @@
+---
+  static:
+    api-key: [VISIT-openweathermap.org-FOR-YOUR-API-KEY-HERE]
+    city: london
+  tasks:
+    Call Weather API:
+      blocking: true
+      handler: "../taskhandlers/requestHandler"
+      data:
+        options:
+          url: "http://api.openweathermap.org/data/2.5/weather?q=$[static.city]&units=imperial&APPID=$[static.api-key]"
+          method: "GET"
+          json: true
+    Report Weather:
+      blocking: true
+      handler: "../taskhandlers/logHandler"
+      data:
+        level: info
+        log: "The weather in $[static.city] is $[tasks.Call Weather API.data.body.weather.0.description]"

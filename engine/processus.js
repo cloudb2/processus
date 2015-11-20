@@ -298,7 +298,7 @@ function realExecute(workflow, callback) {
     //if the task is open and has no children, queue it to execute
     if(t.status === 'open' && !t.tasks){
       setTaskDataValues(workflow, t);
-      setConditionValues(workflow, t);
+      setConditionValues(t);
       t.status = "executing";
       taskExecutionQueue.push(taskFunction);
     }
@@ -306,7 +306,7 @@ function realExecute(workflow, callback) {
     if(t.status === 'open' && t.tasks){
       if(childHasStatus(t, 'completed', true)){
         setTaskDataValues(workflow, t);
-        setConditionValues(workflow, t);
+        setConditionValues(t);
         t.status = "executing";
         taskExecutionQueue.push(taskFunction);
       }
@@ -359,12 +359,43 @@ function realExecute(workflow, callback) {
 
 //check data values and look out for $[] references and update the value accordingly
 function setTaskDataValues(workflow, task){
-  if(task.data !== undefined) {
-    var dataNames = Object.keys(task.data);
-    for(var x=0; x<dataNames.length; x++){
-      task.data[dataNames[x]] = setRefValue(workflow, task.data[dataNames[x]]);
+
+
+  var taskProperties = Object.keys(task);
+
+  taskProperties.map(function(propertyKey){
+
+    var prop = task[propertyKey];
+
+    //convert whole task to JSON string
+    var propStr = JSON.stringify(prop, null, 2);
+
+    //Now look for matching $[] references
+    refValues = propStr.match(/[$](\[(.*?)\])/g);
+
+    if(refValues) {
+
+      //Cycle through fetching the ref values and replacing
+      for(var x=0; x<refValues.length; x++){
+
+        //get current ref value
+        refValue = refValues[x];
+
+        //remove the $[] chars
+        refValue = refValue.substring(2, refValue.length -1);
+
+        //get env var
+        dataValue = getData(workflow, refValue);
+
+        //replace env ref with value
+        propStr = propStr.replace(refValues[x], dataValue);
+      }
+
     }
-  }
+
+    task[propertyKey] = JSON.parse(propStr);
+
+  });
 
 }
 
@@ -487,12 +518,8 @@ function getData(workflow, path){
   return obj;
 }
 
-function setConditionValues(workflow, task){
 
-  //fetch any reference data values
-  task.skipIf = setRefValue(workflow, task.skipIf);
-  task.errorIf = setRefValue(workflow, task.errorIf);
-
+function setConditionValues(task){
   //now evaluate any conditions (if any)
   if(task.skipIf !== undefined) {
     task.skipIf = evalCondition(task.skipIf);
@@ -500,9 +527,9 @@ function setConditionValues(workflow, task){
   if(task.errorIf !== undefined) {
     task.errorIf = evalCondition(task.errorIf);
   }
-
 }
 
+/*
 function setRefValue(workflow, ref) {
   if(typeof ref === "string"){
     startDelim = ref.indexOf("$[");
@@ -519,6 +546,8 @@ function setRefValue(workflow, ref) {
   //can't convert it, so just return the ref(if it was a ref at all) supplied
   return ref;
 }
+*/
+
 //evaluate string conidition, but don't not in an eval() way
 function evalCondition(condition) {
   logger.debug("evaluating condition " + condition);
