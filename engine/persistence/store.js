@@ -11,6 +11,15 @@ module.exports = {
   loadDef: loadDef
 };
 
+function del(id, callback) {
+  if(config.type !== null && config.type !== undefined) {
+    require('./' + config.type).del(id, callback);
+  }
+  else {
+    callback(new Error("Unable to load workflow, no store type selected."));
+  }
+}
+
 function loadDef(id, callback) {
   if(config.type !== null && config.type !== undefined) {
     require('./' + config.type).loadDef(id, callback);
