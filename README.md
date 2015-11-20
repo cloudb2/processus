@@ -38,6 +38,33 @@ or clone this repo
 git clone https://github.com/cloudb2/processus
 ```
 
+### Usage
+```
+$ ./bin/processus-cli -h
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+Usage:
+  processus-cli [OPTIONS] [ARGS]
+
+Options:
+  -l, --log [STRING]     Sets the log level
+                         [debug|verbose|info|warn|error].  (Default is error)
+  -f, --file STRING      Workflow or task definition. A task must also include
+                         the workflow ID. For YAML use .yml postfix.
+  -i, --id STRING        Workflow ID.
+  -r, --rewind NUMBER    time in reverse chronological order. 0 is current, 1
+                         is the previous save point etc.
+  -d, --delete STRING    delete a workflow instance
+      --deleteALL        delete ALL workflow instances.
+  -h, --help             Display help and usage details
+```
+
 ## Overview
 
 A workflow in Processus is defined using JSON, which should conform to a specific structure. The best way to understand that structure is by looking at examples.
@@ -141,6 +168,7 @@ Consider the following workflow.
 
 1. The above workflow has 2 tasks ```say hello``` and ```say hello again```.
 2. Each task uses a handler called ```execHandler``` which executed the command identified in the data property of the task by ```data.cmd```.
+3. **See .yml version for a YAML equivalent workflow.**
 
 So, in short, this simple workflow will execute ```echo 'hello, world'``` and ```echo 'hello, world again'``` sequentially.
 

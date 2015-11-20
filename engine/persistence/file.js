@@ -5,6 +5,7 @@ var logger = require('../logger');
 var fs = require('fs');
 var envParser = require('../envParser');
 var glob = require('glob');
+var yaml = require('js-yaml');
 
 var initialised = false;
 
@@ -73,6 +74,10 @@ function deleteInstance(id, config, callback){
 
 }
 
+function isYaml(file){
+  return file.indexOf(".yml", file.length - ".yml".length) !== -1;
+}
+
 function loadDefinition(id, callback){
 
   var workflowTaskFile;
@@ -82,6 +87,8 @@ function loadDefinition(id, callback){
   try {
     workflowTaskFile = fs.readFileSync(id, "utf8");
   }
+
+
   catch(err) {
     logger.error("✘ Failed to open JSON file [" + id + "]" + err.message);
     callback(err, null);
@@ -93,13 +100,27 @@ function loadDefinition(id, callback){
   //parse and replace any env vars
   workflowTaskFile = envParser.parse(workflowTaskFile);
 
-  try {
-    workflowTaskJSON = JSON.parse(workflowTaskFile);
+  logger.debug("file loaded: " + workflowTaskFile);
+
+  if(isYaml(id)){
+    try {
+      workflowTaskJSON = yaml.safeLoad(workflowTaskFile);
+    }
+    catch(err){
+        logger.error("✘ Failed to parse YML file [" + id + "]" + err.message);
+        callback(err, null);
+        return;
+    }
   }
-  catch(err){
-      logger.error("✘ Failed to parse JSON file [" + id + "]" + err.message);
-      callback(err, null);
-      return;
+  else {
+    try {
+      workflowTaskJSON = JSON.parse(workflowTaskFile);
+    }
+    catch(err){
+        logger.error("✘ Failed to parse JSON file [" + id + "]" + err.message);
+        callback(err, null);
+        return;
+    }
   }
 
   callback(null, workflowTaskJSON);
