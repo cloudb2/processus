@@ -39,7 +39,10 @@ module.exports = function() {
       log:   ['l', 'Sets the log level [debug|verbose|info|warn|error].', 'string', 'error'],
       file:  ['f', 'Workflow or task definition. A task must also include the workflow ID.', 'string', null],
       id: ['i', 'Workflow ID.', 'string', null],
-      rewind: ['r', 'time in reverse chronological order. 0 is current, 1 is the previous save point etc.', 'number', 0]
+      rewind: ['r', 'time in reverse chronological order. 0 is current, 1 is the previous save point etc.', 'number', 0],
+      delete: ['d', 'delete a workflow instance', 'string', null],
+      deleteALL: ['', 'delete ALL workflow instances.']
+
   });
 
   cli.main(function(args, options) {
@@ -56,14 +59,36 @@ module.exports = function() {
       logger.error("✘ Invalid log level, see help for more info.");
       return -1;
     }
+
+    if(options.deleteALL === true) {
+      store.deleteAll(function(err){
+        if(err){
+          logger.error(err);
+        }
+      });
+      return;
+    }
+
+    if(options.delete !== null) {
+
+      store.deleteInstance(options.delete, function(err){
+        if(err){
+          logger.error(err);
+        }
+      });
+      return;
+
+    }
+
     if (options.file === null && options.id === null) {
       logger.error("✘ Must supply a worklfow or task filename.");
       return -1;
     }
 
+
     if (options.file === null && options.id !== null) {
       //just an id supplied, so fetch that workflow
-      store.load(options.id, options.rewind, function(err, workflowFile){
+      store.loadInstance(options.id, options.rewind, function(err, workflowFile){
         if(!err){
           //force logger to info
           logger.level = 'info';
@@ -80,7 +105,7 @@ module.exports = function() {
     }
 
     var workflowTaskJSON;
-    store.loadDef(options.file, function(err, workflowFile){
+    store.loadDefinition(options.file, function(err, workflowFile){
       if(!err){
         workflowTaskJSON = workflowFile;
       }

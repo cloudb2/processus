@@ -6,15 +6,74 @@ var fs = require('fs');
 var envParser = require('../envParser');
 var glob = require('glob');
 
+var initialised = false;
 
 module.exports = {
-  save: save,
-  init: init,
-  load: load,
-  loadDef: loadDef
+  deleteInstance: deleteInstance,
+  loadDefinition: loadDefinition,
+  loadInstance: loadInstance,
+  initStore: initStore,
+  saveInstance: saveInstance,
+  deleteAll: deleteAll
 };
 
-function loadDef(id, callback){
+function deleteAll(config, callback){
+  glob(config.dataDirectory + "/*", function (err, files) {
+
+    if(files) {
+      files.map(function(file){
+        fs.unlink(file, function (err) {
+          if (err) {
+            logger.error("✘ Unable to delete workflow [" + file + "] " + err);
+            callback(err);
+            return;
+          }
+          logger.info("successfully deleted workflow history [" + file + "]");
+        });
+      });
+    }
+    else {
+      logger.error("✘ Unable to find workflow [" + id + "] " + err);
+    }
+
+  });
+}
+
+function deleteInstance(id, config, callback){
+  var current = config.dataDirectory + "/" + id;
+
+  fs.unlink(current, function (err) {
+    if (err) {
+      logger.error("✘ Unable to delete workflow [" + id + "] " + err);
+      callback(err);
+      return;
+    }
+    logger.info("successfully deleted workflow [" + id + "]");
+  });
+
+  glob(current + "_*", function (err, files) {
+
+    if(files) {
+      files.map(function(file){
+        fs.unlink(file, function (err) {
+          if (err) {
+            logger.error("✘ Unable to delete workflow [" + file + "] " + err);
+            callback(err);
+            return;
+          }
+          logger.info("successfully deleted workflow history [" + file + "]");
+        });
+      });
+    }
+    else {
+      logger.error("✘ Unable to find workflow [" + id + "] " + err);
+    }
+
+  });
+
+}
+
+function loadDefinition(id, callback){
 
   var workflowTaskFile;
 
@@ -46,7 +105,7 @@ function loadDef(id, callback){
   callback(null, workflowTaskJSON);
 }
 
-function load(id, rewind, config, callback) {
+function loadInstance(id, rewind, config, callback) {
   var current = config.dataDirectory + "/" + id;
   glob(current + "_*", function (err, files) {
 
@@ -81,29 +140,33 @@ function load(id, rewind, config, callback) {
 
 }
 
-function init(config, callback){
+function initStore(config, callback){
 
-  var stat;
+  if(!initialised) {
+    var stat;
 
-  try {
-    logger.debug("checking for data directory [" + config.dataDirectory + "]");
-    stat = fs.statSync(config.dataDirectory);
-    callback(null);
-  }
-  catch(err) {
     try {
-      logger.debug("creating data directory [" + config.dataDirectory + "]");
-      fs.mkdirSync(config.dataDirectory);
-      callback(null);
+      logger.debug("checking for data directory [" + config.dataDirectory + "]");
+      stat = fs.statSync(config.dataDirectory);
+      initialised = true;
     }
-    catch(error) {
-      logger.error("✘ Fatal Error, unable to find or create the data directory. " + error);
-      callback(error);
+    catch(err) {
+      try {
+        logger.debug("creating data directory [" + config.dataDirectory + "]");
+        fs.mkdirSync(config.dataDirectory);
+        initialised = true;
+      }
+      catch(error) {
+        logger.error("✘ Fatal Error, unable to find or create the data directory. " + error);
+        callback(error);
+        return;
+      }
     }
   }
+  callback(null);
 }
 
-function save(workflow, config, callback) {
+function saveInstance(workflow, config, callback) {
   var current = config.dataDirectory + "/" + workflow.id;
   //If the file already exists rename it based on current time
   var stat;

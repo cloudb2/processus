@@ -1392,3 +1392,30 @@ info: {
 
 1. We now see the workflow when it was first opened.
 2. Any attempt to rewind beyond the inistantiation of the workflow will result in the following warning ```warn: rewind value [4] is before the workflow started, assuming the oldest [3].```
+
+### Deleting workflows
+
+It's possible to delete workflow instances and it's associated history.
+
+for example
+```
+$ ./bin/processus-cli -l info -d 0567ce60-d927-4017-9ea2-02ffc8744525
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+info: successfully deleted workflow [0567ce60-d927-4017-9ea2-02ffc8744525]
+info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc8744525_1448041558388]
+info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc8744525_1448041558392]
+info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc8744525_1448041558394]
+```
+
+***Note***
+
+1. Any instance matching the supplied UUID and associated history is deleted.
+2. It's also possible to deleteALL instances with the ```--deleteALL``` flag
+3. See ```demo15.json``` and ```demo16.json``` for more examples.

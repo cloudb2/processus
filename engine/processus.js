@@ -83,7 +83,7 @@ function runWorkflow(defId, id, workflowTaskJSON, callback) {
 
 function updateTasks(id, tasks, callback){
 
-  store.load(id, 0, function(err, workflow){
+  store.loadInstance(id, 0, function(err, workflow){
     if(!err){
       workflow = mergeTasks(workflow, tasks);
       execute(workflow, callback);
@@ -134,7 +134,7 @@ function mergeTask(originalTask, newTask){
  */
 function execute(workflow, callback){
   //Initialise store
-  store.init(function(err){
+  store.initStore(function(err){
     if(!err){
       logger.debug("init complete without error.");
 
@@ -189,7 +189,7 @@ function getTasksByStatus(parent, status, deep) {
 //Execute the resulting workflow asynchronously recursing for each next set of tasks
 function realExecute(workflow, callback) {
 
-  store.save(workflow, function(err){
+  store.saveInstance(workflow, function(err){
     logger.debug("save point a reached.");
     if(err){
       callback(err, workflow);
@@ -329,7 +329,7 @@ function realExecute(workflow, callback) {
 
           //Now set the overall workflow to error
           workflow.status = 'error';
-          store.save(workflow, function(err){
+          store.saveInstance(workflow, function(err){
             logger.debug("save point b reached.");
             if(err){
               callback(err, workflow);
@@ -345,7 +345,7 @@ function realExecute(workflow, callback) {
     if(childHasStatus(workflow, 'completed', true)){
       workflow.status = 'completed';
     }
-    store.save(workflow, function(err){
+    store.saveInstance(workflow, function(err){
       logger.debug("save point c reached.");
       if(err){
         callback(err, workflow);

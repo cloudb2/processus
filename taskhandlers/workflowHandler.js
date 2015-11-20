@@ -22,7 +22,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
   }
 
   var workflowTaskJSON;
-  store.loadDef(task.data.file, function(err, workflowFile){
+  store.loadDefinition(task.data.file, function(err, workflowFile){
     if(!err){
       workflowTaskJSON = workflowFile;
     }
