@@ -12,7 +12,7 @@ module.exports = {
 };
 
 function loadDef(id, callback) {
-  if(config.type !== null) {
+  if(config.type !== null && config.type !== undefined) {
     require('./' + config.type).loadDef(id, callback);
   }
   else {
@@ -20,9 +20,9 @@ function loadDef(id, callback) {
   }
 }
 
-function load(id, callback) {
-  if(config.type !== null) {
-    require('./' + config.type).load(id, config, callback);
+function load(id, rewind, callback) {
+  if(config.type !== null && config.type !== undefined) {
+    require('./' + config.type).load(id, rewind, config, callback);
   }
   else {
     callback(new Error("Unable to load workflow, no store type selected."));
@@ -30,7 +30,7 @@ function load(id, callback) {
 }
 
 function init(callback) {
-  if(config.type !== null) {
+  if(config.type !== null && config.type !== undefined) {
     require('./' + config.type).init(config, callback);
   }
   else {
@@ -39,7 +39,7 @@ function init(callback) {
 }
 
 function save(workflow, callback) {
-  if(config.type !== null) {
+  if(config.type !== null && config.type !== undefined) {
     require('./' + config.type).save(workflow, config, callback);
   }
   else {

@@ -4,6 +4,8 @@
 var logger = require('../logger');
 var fs = require('fs');
 var envParser = require('../envParser');
+var glob = require('glob');
+
 
 module.exports = {
   save: save,
@@ -31,7 +33,7 @@ function loadDef(id, callback){
 
   //parse and replace any env vars
   workflowTaskFile = envParser.parse(workflowTaskFile);
-  
+
   try {
     workflowTaskJSON = JSON.parse(workflowTaskFile);
   }
@@ -44,18 +46,39 @@ function loadDef(id, callback){
   callback(null, workflowTaskJSON);
 }
 
-function load(id, config, callback) {
+function load(id, rewind, config, callback) {
   var current = config.dataDirectory + "/" + id;
-  fs.readFile(current, function (err, data) {
-    var workflowLoaded;
-    if (err) {
-      logger.error("✘ Unable to find workflow [" + id + "] " + err);
+  glob(current + "_*", function (err, files) {
+
+    if(files) {
+      if(rewind > 0 ) {
+        if (rewind > files.length) {
+          logger.warn("rewind value [" + rewind + "] is before the workflow started, assuming the oldest [" + files.length + "].");
+          rewind = files.length;
+
+        }
+        index = files.length - rewind < files.length ? files.length - rewind : 0;
+        current = files[index];
+      }
+
+      fs.readFile(current, function (err, data) {
+        var workflowLoaded;
+        if (err) {
+          logger.error("✘ Unable to find workflow [" + id + "] " + err);
+        }
+        else {
+          workflowLoaded = JSON.parse(data);
+        }
+        callback(err, workflowLoaded);
+      });
     }
     else {
-      workflowLoaded = JSON.parse(data);
+      logger.error("✘ Unable to find workflow [" + id + "] " + err);
     }
-    callback(err, workflowLoaded);
+
   });
+
+
 }
 
 function init(config, callback){

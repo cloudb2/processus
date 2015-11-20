@@ -83,7 +83,7 @@ function runWorkflow(defId, id, workflowTaskJSON, callback) {
 
 function updateTasks(id, tasks, callback){
 
-  store.load(id, function(err, workflow){
+  store.load(id, 0, function(err, workflow){
     if(!err){
       workflow = mergeTasks(workflow, tasks);
       execute(workflow, callback);

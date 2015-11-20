@@ -37,8 +37,9 @@ module.exports = function() {
 
   cli.parse({
       log:   ['l', 'Sets the log level [debug|verbose|info|warn|error].', 'string', 'error'],
-      file:  ['f', 'Workflow or task filename. A task must also include the workflow ID.', 'file', null],
-      id: ['i', 'Workflow ID.', 'string', null]
+      file:  ['f', 'Workflow or task definition. A task must also include the workflow ID.', 'string', null],
+      id: ['i', 'Workflow ID.', 'string', null],
+      rewind: ['r', 'time in reverse chronological order. 0 is current, 1 is the previous save point etc.', 'number', 0]
   });
 
   cli.main(function(args, options) {
@@ -61,8 +62,21 @@ module.exports = function() {
     }
 
     if (options.file === null && options.id !== null) {
-      logger.error("✘ Must supply a task filename.");
-      return -1;
+      //just an id supplied, so fetch that workflow
+      store.load(options.id, options.rewind, function(err, workflowFile){
+        if(!err){
+          //force logger to info
+          logger.level = 'info';
+          logger.info(JSON.stringify(workflowFile, null, 2));
+          return;
+        }
+        else {
+          logger.error(err.message);
+          return err;
+
+        }
+      });
+      return;
     }
 
     var workflowTaskJSON;
@@ -71,7 +85,9 @@ module.exports = function() {
         workflowTaskJSON = workflowFile;
       }
       else {
+        logger.error(err.message);
         return err;
+
       }
     });
     if(workflowTaskJSON === undefined){

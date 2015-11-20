@@ -1,6 +1,6 @@
 {
   "name": "jshint testing workflow",
-  "description": "A workflow that calls all other workflows to test processus. Think inception!",
+  "description": "A workflow that jshint for Processus directories",
   "static" : {
     "test1": "./node_modules/jshint/bin/jshint ./engine",
     "test2": "./node_modules/jshint/bin/jshint ./taskhandlers"

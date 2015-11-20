@@ -21,6 +21,7 @@ workflows.
     * [requestHandler](#requestHandler)
     * [workflowHandler](#workflowHandler)
   * [Environment Variables](#environment-variables)
+  * [Workflow History](#workflow-history)
 
 <hr>
 
@@ -78,8 +79,8 @@ $ ./bin/processus-cli -l info -f ./test/ex1.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 00:19:06 INFO reading workflow file ./test/ex1.json
-2015-11-19 00:19:06 INFO ✰ Workflow [./test/ex1.json] with id [208810ae-14f3-4331-bd3f-adace417e38d] exited without error, but did not complete.
+info: reading workflow file [./test/ex1.json]
+info: ✰ Workflow [./test/ex1.json] with id [6a29c781-ee00-4332-bb58-9ea779afb347] exited without error, but did not complete.
 ```
 ***Note***
 
@@ -103,18 +104,18 @@ $ ./bin/processus-cli -l debug -f ./test/ex1.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 00:19:43 INFO reading workflow file ./test/ex1.json
-2015-11-19 00:19:43 DEBUG checking for data directory
-2015-11-19 00:19:43 DEBUG init complete without error.
-2015-11-19 00:19:43 DEBUG save point a reached.
-2015-11-19 00:19:43 DEBUG save point c reached.
-2015-11-19 00:19:43 DEBUG Workflow returned successfully.
-2015-11-19 00:19:43 DEBUG {
+info: reading workflow file [./test/ex1.json]
+debug: checking for data directory [_data]
+debug: init complete without error.
+debug: save point a reached.
+debug: save point c reached.
+debug: Workflow returned successfully.
+debug: {
   "tasks": {},
   "status": "open",
-  "id": "8a2467ad-ad05-4dca-92b8-aac815d7dbec"
+  "id": "307e7633-c820-4f78-b739-9af50d7a56c5"
 }
-2015-11-19 00:19:43 INFO ✰ Workflow [./test/ex1.json] with id [8a2467ad-ad05-4dca-92b8-aac815d7dbec] exited without error, but did not complete.
+info: ✰ Workflow [./test/ex1.json] with id [307e7633-c820-4f78-b739-9af50d7a56c5] exited without error, but did not complete.
 ```
 ***Note***
 
@@ -167,27 +168,27 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
 
            Processus: A Simple Workflow Engine.
 
-2015-11-19 00:20:54 INFO reading workflow file ./test/ex2.json
-2015-11-19 00:20:54 DEBUG checking for data directory
-2015-11-19 00:20:54 DEBUG init complete without error.
-2015-11-19 00:20:54 DEBUG save point a reached.
-2015-11-19 00:20:54 DEBUG task.skipIf = undefined
-2015-11-19 00:20:54 DEBUG task.errorIf = undefined
-2015-11-19 00:20:54 INFO ⧖ Staring task say hello
-2015-11-19 00:20:54 INFO stdout ➜ [hello, world
+info: reading workflow file [./test/ex2.json]
+debug: checking for data directory [_data]
+debug: init complete without error.
+debug: save point a reached.
+debug: task.skipIf = undefined
+debug: task.errorIf = undefined
+info: ⧖ Starting task [say hello]
+debug: stdout ➜ [hello, world
 ]
-2015-11-19 00:20:54 INFO ✔ task [say hello] completed successfully.
-2015-11-19 00:20:54 DEBUG save point a reached.
-2015-11-19 00:20:54 DEBUG task.skipIf = undefined
-2015-11-19 00:20:54 DEBUG task.errorIf = undefined
-2015-11-19 00:20:54 INFO ⧖ Staring task say hello again
-2015-11-19 00:20:54 INFO stdout ➜ [hello, world again
+info: ✔ task [say hello] completed successfully.
+debug: save point a reached.
+debug: task.skipIf = undefined
+debug: task.errorIf = undefined
+info: ⧖ Starting task [say hello again]
+debug: stdout ➜ [hello, world again
 ]
-2015-11-19 00:20:54 INFO ✔ task [say hello again] completed successfully.
-2015-11-19 00:20:54 DEBUG save point a reached.
-2015-11-19 00:20:54 DEBUG save point c reached.
-2015-11-19 00:20:54 DEBUG Workflow returned successfully.
-2015-11-19 00:20:54 DEBUG {
+info: ✔ task [say hello again] completed successfully.
+debug: save point a reached.
+debug: save point c reached.
+debug: Workflow returned successfully.
+debug: {
   "tasks": {
     "say hello": {
       "blocking": true,
@@ -198,11 +199,11 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
         "stderr": ""
       },
       "status": "completed",
-      "timeOpened": 1447892454206,
-      "timeStarted": 1447892454208,
-      "timeCompleted": 1447892454234,
-      "handlerDuration": 26,
-      "totalDuration": 28
+      "timeOpened": 1447993811920,
+      "timeStarted": 1447993811921,
+      "timeCompleted": 1447993811950,
+      "handlerDuration": 29,
+      "totalDuration": 30
     },
     "say hello again": {
       "blocking": true,
@@ -213,17 +214,17 @@ $ ./bin/processus-cli -l debug -f ./test/ex2.json
         "stderr": ""
       },
       "status": "completed",
-      "timeOpened": 1447892454237,
-      "timeStarted": 1447892454238,
-      "timeCompleted": 1447892454244,
-      "handlerDuration": 6,
-      "totalDuration": 7
+      "timeOpened": 1447993811952,
+      "timeStarted": 1447993811952,
+      "timeCompleted": 1447993811963,
+      "handlerDuration": 11,
+      "totalDuration": 11
     }
   },
   "status": "completed",
-  "id": "9909133c-158a-4f0f-8778-99d7c378ef7d"
+  "id": "baccbfbd-3c9e-48f4-981a-c3461b8d2ffd"
 }
-2015-11-19 00:20:54 INFO ✰ Workflow [./test/ex2.json] with id [9909133c-158a-4f0f-8778-99d7c378ef7d] completed successfully.
+info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2ffd] completed successfully.
 ```
 ***Note***
 
@@ -1177,3 +1178,217 @@ info: ⧖ Starting task [show env]
 info: TEST_ENV = HELLO, WORLD
 info: ✰ Workflow [test/demo14.json] with id [f8442a63-dffd-4247-9eb7-44fac3a4df34] completed successfully.
 ```
+
+### Workflow History
+
+Processus supports the ability to inspect existing workflows and walk back through the history.
+
+for example execute ```./bin/processus-cli -l info -f ./test/ex2.json``` and note the resulting workflow id.
+
+```
+$ ./bin/processus-cli -l info -f ./test/ex2.json
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+info: reading workflow file [./test/ex2.json]
+info: ⧖ Starting task [say hello]
+info: ✔ task [say hello] completed successfully.
+info: ⧖ Starting task [say hello again]
+info: ✔ task [say hello again] completed successfully.
+info: ✰ Workflow [./test/ex2.json] with id [2b04f64a-5556-459c-b73b-257f426ae8ea] completed successfully.
+```
+
+Using the id (in case 2b04f64a-5556-459c-b73b-257f426ae8ea) you can inspect the workflow by executing ```2b04f64a-5556-459c-b73b-257f426ae8ea```
+
+```
+$ ./bin/processus-cli -l info -i 2b04f64a-5556-459c-b73b-257f426ae8ea
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+info: {
+  "tasks": {
+    "say hello": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world'",
+        "stdout": "hello, world\n",
+        "stderr": ""
+      },
+      "status": "completed",
+      "timeOpened": 1447995324195,
+      "timeStarted": 1447995324196,
+      "timeCompleted": 1447995324230,
+      "handlerDuration": 34,
+      "totalDuration": 35
+    },
+    "say hello again": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world again'",
+        "stdout": "hello, world again\n",
+        "stderr": ""
+      },
+      "status": "completed",
+      "timeOpened": 1447995324234,
+      "timeStarted": 1447995324234,
+      "timeCompleted": 1447995324243,
+      "handlerDuration": 9,
+      "totalDuration": 9
+    }
+  },
+  "status": "completed",
+  "id": "2b04f64a-5556-459c-b73b-257f426ae8ea"
+}
+```
+***Note***
+
+1. by default the current workflow is shown i.e. completed.
+2. using the parameter ```--rewind``` we're able to look back through the history of the workflow.
+
+```
+$ ./bin/processus-cli -l info -i 2b04f64a-5556-459c-b73b-257f426ae8ea -r 1
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+info: {
+  "tasks": {
+    "say hello": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world'",
+        "stdout": "hello, world\n",
+        "stderr": ""
+      },
+      "status": "completed",
+      "timeOpened": 1447995324195,
+      "timeStarted": 1447995324196,
+      "timeCompleted": 1447995324230,
+      "handlerDuration": 34,
+      "totalDuration": 35
+    },
+    "say hello again": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world again'",
+        "stdout": "hello, world again\n",
+        "stderr": ""
+      },
+      "status": "completed",
+      "timeOpened": 1447995324234,
+      "timeStarted": 1447995324234,
+      "timeCompleted": 1447995324243,
+      "handlerDuration": 9,
+      "totalDuration": 9
+    }
+  },
+  "status": "open",
+  "id": "2b04f64a-5556-459c-b73b-257f426ae8ea"
+}
+```
+
+keep rewinding by increasing the -r number.
+
+```
+$ ./bin/processus-cli -l info -i 2b04f64a-5556-459c-b73b-257f426ae8ea -r 2
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+info: {
+  "tasks": {
+    "say hello": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world'",
+        "stdout": "hello, world\n",
+        "stderr": ""
+      },
+      "status": "completed",
+      "timeOpened": 1447995324195,
+      "timeStarted": 1447995324196,
+      "timeCompleted": 1447995324230,
+      "handlerDuration": 34,
+      "totalDuration": 35
+    },
+    "say hello again": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world again'"
+      },
+      "status": "waiting"
+    }
+  },
+  "status": "open",
+  "id": "2b04f64a-5556-459c-b73b-257f426ae8ea"
+}
+```
+
+***Note***
+
+1. The wokflow is ```open``` and the last task is ```waiting```
+
+remind further
+
+```
+$ ./bin/processus-cli -l info -i 2b04f64a-5556-459c-b73b-257f426ae8ea -r 3
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+info: {
+  "tasks": {
+    "say hello": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world'"
+      },
+      "status": "waiting"
+    },
+    "say hello again": {
+      "blocking": true,
+      "handler": "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'hello, world again'"
+      },
+      "status": "waiting"
+    }
+  },
+  "status": "open",
+  "id": "2b04f64a-5556-459c-b73b-257f426ae8ea"
+}
+```
+
+***Note***
+
+1. We now see the workflow when it was first opened.
+2. Any attempt to rewind beyond the inistantiation of the workflow will result in the following warning ```warn: rewind value [4] is before the workflow started, assuming the oldest [3].```

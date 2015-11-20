@@ -14,7 +14,7 @@ workflows.
   * [Workflow](#workflow)
   * [Tasks](#tasks)
 * [User Guide](http://cloudb2.github.io/processus/)
-* [Contributing - Roadmap](#contributing---roadmap)
+* [Contributing](#contributing)
 
 <hr>
 
@@ -234,7 +234,6 @@ See the [User Guide](http://cloudb2.github.io/processus/) for much more!
 
 ## Contributing
 
-### Contributing
 Yes, please.
 
 Make a pull requests and ensure you can run ```./runtests.sh``` successfully. Please add additional tests for any new features/mods you make.
@@ -244,4 +243,3 @@ Make a pull requests and ensure you can run ```./runtests.sh``` successfully. Pl
   * Add Mongodb persistence type
 * Full REST API to interact with Processus
   * Swagger yaml
-  
