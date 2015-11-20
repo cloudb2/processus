@@ -243,8 +243,23 @@ info: ✰ Workflow [./test/ex1.json] with id [307e7633-c820-4f78-b739-9af50d7a56
 <ol>
 <li>The above workflow has 2 tasks <code>say hello</code> and <code>say hello again</code>.</li>
 <li>Each task uses a handler called <code>execHandler</code> which executed the command identified in the data property of the task by <code>data.cmd</code>.</li>
-<li><strong>See .yml version for a YAML equivalent workflow.</strong></li>
+<li>
+<strong>See .yml versions in the test directory for a YAML equivalent workflows.</strong> e.g.</li>
 </ol>
+
+<pre><code>---
+  tasks:
+    say hello:
+      blocking: true
+      handler: "../taskhandlers/execHandler"
+      data:
+        cmd: "echo 'hello, world'"
+    say hello again:
+      blocking: true
+      handler: "../taskhandlers/execHandler"
+      data:
+        cmd: "echo 'hello, world again'"
+</code></pre>
 
 <p>So, in short, this simple workflow will execute <code>echo 'hello, world'</code> and <code>echo 'hello, world again'</code> sequentially.</p>
 
