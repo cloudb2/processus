@@ -70,6 +70,7 @@ workflows.</p>
 </li>
 <li><a href="#environment-variables">Environment Variables</a></li>
 <li><a href="#workflow-history">Workflow History</a></li>
+<li><a href="#deleting-workflows">Deleting Workflows</a></li>
 </ul>
 </li>
 </ul>
@@ -95,6 +96,34 @@ workflows.</p>
 <p>or clone this repo</p>
 
 <pre><code>git clone https://github.com/cloudb2/processus
+</code></pre>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<pre><code>$ ./bin/processus-cli -h
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+Usage:
+  processus-cli [OPTIONS] [ARGS]
+
+Options:
+  -l, --log [STRING]     Sets the log level
+                         [debug|verbose|info|warn|error].  (Default is error)
+  -f, --file STRING      Workflow or task definition. A task must also include
+                         the workflow ID. For YAML use .yml postfix.
+  -i, --id STRING        Workflow ID.
+  -r, --rewind NUMBER    time in reverse chronological order. 0 is current, 1
+                         is the previous save point etc.
+  -d, --delete STRING    delete a workflow instance
+      --deleteALL        delete ALL workflow instances.
+  -h, --help             Display help and usage details
 </code></pre>
 
 <hr>
@@ -214,6 +243,7 @@ info: ✰ Workflow [./test/ex1.json] with id [307e7633-c820-4f78-b739-9af50d7a56
 <ol>
 <li>The above workflow has 2 tasks <code>say hello</code> and <code>say hello again</code>.</li>
 <li>Each task uses a handler called <code>execHandler</code> which executed the command identified in the data property of the task by <code>data.cmd</code>.</li>
+<li><strong>See .yml version for a YAML equivalent workflow.</strong></li>
 </ol>
 
 <p>So, in short, this simple workflow will execute <code>echo 'hello, world'</code> and <code>echo 'hello, world again'</code> sequentially.</p>
@@ -1498,7 +1528,7 @@ info: {
 </ol>
 
 <h3>
-<a id="deleting-workflows" class="anchor" href="#deleting-workflows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deleting workflows</h3>
+<a id="deleting-workflows" class="anchor" href="#deleting-workflows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deleting Workflows</h3>
 
 <p>It's possible to delete workflow instances and it's associated history.</p>
 
