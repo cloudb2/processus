@@ -331,7 +331,7 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -340,7 +340,7 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1000,
         "error": false
@@ -349,7 +349,7 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
     "task 3": {
       "description": "I am the task 3, I take 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 500,
         "error": false
@@ -392,7 +392,7 @@ info: ✰ Workflow [./test/demo1.json] with id [79893dc3-7bcd-4596-bfc4-3c4380b0
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": false,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -401,7 +401,7 @@ info: ✰ Workflow [./test/demo1.json] with id [79893dc3-7bcd-4596-bfc4-3c4380b0
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": false,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1000,
         "error": false
@@ -410,7 +410,7 @@ info: ✰ Workflow [./test/demo1.json] with id [79893dc3-7bcd-4596-bfc4-3c4380b0
     "task 3": {
       "description": "I am the task 3, I take 500msecs.",
       "blocking": false,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 500,
         "error": false
@@ -458,7 +458,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -467,7 +467,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1000,
         "error": false
@@ -476,7 +476,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
         "task 2-1": {
           "description": "I am the task 2-1, I take 1000msecs.",
           "blocking": true,
-          "handler" : "../taskHandlers/testHandler",
+          "handler" : "../taskhandlers/testHandler",
           "data": {
             "delay": 1000,
             "error": false
@@ -485,7 +485,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
         "task 2-2": {
           "description": "I am the task 2-2, I take 1000msecs.",
           "blocking": true,
-          "handler" : "../taskHandlers/testHandler",
+          "handler" : "../taskhandlers/testHandler",
           "data": {
             "delay": 1000,
             "error": false
@@ -496,7 +496,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
     "task 3": {
       "description": "I am the task 3, I take 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 500,
         "error": false
@@ -563,7 +563,7 @@ info: ✰ Workflow [./test/demo3.json] with id [7e1a009b-024b-4cd9-84f2-0c1fb3fc
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -572,7 +572,7 @@ info: ✰ Workflow [./test/demo3.json] with id [7e1a009b-024b-4cd9-84f2-0c1fb3fc
     "task 2": {
       "description": "I am the task 2, I take as long as task1.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[tasks.task 1.data.delay]",
         "error": false
@@ -581,7 +581,7 @@ info: ✰ Workflow [./test/demo3.json] with id [7e1a009b-024b-4cd9-84f2-0c1fb3fc
     "task 3": {
       "description": "I am the task 3, I take as long as task1.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[tasks.task 1.data.delay]",
         "error": false
@@ -612,7 +612,7 @@ debug: {
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -627,7 +627,7 @@ debug: {
     "task 2": {
       "description": "I am the task 2, I take as long as task1.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": "1500",
         "error": false
@@ -642,7 +642,7 @@ debug: {
     "task 3": {
       "description": "I am the task 3, I take as long as task1.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": "1500",
         "error": false
@@ -677,7 +677,7 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
     "task 1": {
       "description": "I am the task 1, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[static.global-delay]",
         "error": "$[static.global-error]"
@@ -686,7 +686,7 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
     "task 2": {
       "description": "I am the task 2, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[static.global-delay]",
         "error": "$[static.global-error]"
@@ -695,7 +695,7 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
     "task 3": {
       "description": "I am the task 3, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[static.global-delay]",
         "error": "$[static.global-error]"
@@ -717,7 +717,7 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -726,7 +726,7 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1000,
         "error": true
@@ -735,7 +735,7 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
     "task 3": {
       "description": "I am the task 3, I take 1500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -768,7 +768,7 @@ debug: {
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -783,7 +783,7 @@ debug: {
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": 1000,
         "error": true
@@ -796,7 +796,7 @@ debug: {
     "task 3": {
       "description": "I am the task 3, I take 1500msecs.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -861,7 +861,7 @@ info: ✰ Workflow [./test/demo8a.json] with id [0f7033d7-3edf-4a8b-a4af-a0bc32c
     "task 1": {
       "description": "I am the task 1, I echo Processus",
       "blocking": true,
-      "handler": "../taskHandlers/execHandler",
+      "handler": "../taskhandlers/execHandler",
       "data": {
         "cmd": "echo Processus",
         "skip me": "true"
@@ -871,7 +871,7 @@ info: ✰ Workflow [./test/demo8a.json] with id [0f7033d7-3edf-4a8b-a4af-a0bc32c
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
       "skipIf":"$[tasks.task 1.data.skip me]",
-      "handler": "../taskHandlers/execHandler",
+      "handler": "../taskhandlers/execHandler",
       "data": {
         "cmd": "echo Simple"
       }
@@ -880,7 +880,7 @@ info: ✰ Workflow [./test/demo8a.json] with id [0f7033d7-3edf-4a8b-a4af-a0bc32c
       "description": "I am the task 3, I will error",
       "blocking": true,
       "errorIf": "$[tasks.task 2.skipIf]",
-      "handler": "../taskHandlers/execHandler",
+      "handler": "../taskhandlers/execHandler",
       "data": {
         "cmd": "echo Workflow"
       }
@@ -988,7 +988,7 @@ debug: {
               "task 1": {
                 "description": "I am the task 1, I take 1500msecs.",
                 "blocking": true,
-                "handler": "../taskHandlers/testHandler",
+                "handler": "../taskhandlers/testHandler",
                 "data": {
                   "delay": 1500,
                   "error": false
@@ -997,7 +997,7 @@ debug: {
               "task 2": {
                 "description": "I am the task 2, I take 1000msecs.",
                 "blocking": true,
-                "handler": "../taskHandlers/testHandler",
+                "handler": "../taskhandlers/testHandler",
                 "data": {
                   "delay": 1000,
                   "error": false
@@ -1006,7 +1006,7 @@ debug: {
               "task 3": {
                 "description": "I am the task 3, I take 500msecs.",
                 "blocking": true,
-                "handler": "../taskHandlers/testHandler",
+                "handler": "../taskhandlers/testHandler",
                 "data": {
                   "delay": 500,
                   "error": false
@@ -1064,7 +1064,7 @@ debug: {
             "task 1": {
               "description": "I am the task 1, I take 1500msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 1500,
                 "error": false
@@ -1073,7 +1073,7 @@ debug: {
             "task 2": {
               "description": "I am the task 2, I take 1000msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 1000,
                 "error": false
@@ -1082,7 +1082,7 @@ debug: {
             "task 3": {
               "description": "I am the task 3, I take 500msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 500,
                 "error": false
@@ -1115,7 +1115,7 @@ info: ✰ Workflow [test/demo12.json] with id [60946ca2-af30-4a78-babb-3b1d80a09
     "call demo1 workflow": {
       "description": "calls the workflow in the file demo1",
       "blocking": true,
-      "handler" : "../taskHandlers/workflowHandler",
+      "handler" : "../taskhandlers/workflowHandler",
       "data": {
         "file": "./test/demo1.json"
       }
@@ -1145,7 +1145,7 @@ debug: {
     "call demo1 workflow": {
       "description": "calls the workflow in the file demo1",
       "blocking": true,
-      "handler": "../taskHandlers/workflowHandler",
+      "handler": "../taskhandlers/workflowHandler",
       "data": {
         "file": "./test/demo1.json",
         "workflow": {
@@ -1153,7 +1153,7 @@ debug: {
             "task 1": {
               "description": "I am the task 1, I take 1500msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 1500,
                 "error": false
@@ -1168,7 +1168,7 @@ debug: {
             "task 2": {
               "description": "I am the task 2, I take 1000msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 1000,
                 "error": false
@@ -1183,7 +1183,7 @@ debug: {
             "task 3": {
               "description": "I am the task 3, I take 500msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 500,
                 "error": false
@@ -1231,7 +1231,7 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
   "tasks": {
     "show env": {
       "blocking": true,
-      "handler" : "../taskHandlers/logHandler",
+      "handler" : "../taskhandlers/logHandler",
       "data": {
         "level": "info",
         "log": "TEST_ENV = $env[TEST_ENV]"
@@ -1495,6 +1495,36 @@ info: {
 <li>We now see the workflow when it was first opened.</li>
 <li>Any attempt to rewind beyond the inistantiation of the workflow will result in the following warning <code>warn: rewind value [4] is before the workflow started, assuming the oldest [3].</code>
 </li>
+</ol>
+
+<h3>
+<a id="deleting-workflows" class="anchor" href="#deleting-workflows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deleting workflows</h3>
+
+<p>It's possible to delete workflow instances and it's associated history.</p>
+
+<p>for example</p>
+
+<pre><code>$ ./bin/processus-cli -l info -d 0567ce60-d927-4017-9ea2-02ffc8744525
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+info: successfully deleted workflow [0567ce60-d927-4017-9ea2-02ffc8744525]
+info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc8744525_1448041558388]
+info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc8744525_1448041558392]
+info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc8744525_1448041558394]
+</code></pre>
+
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li>Any instance matching the supplied UUID and associated history is deleted.</li>
+<li>It's also possible to deleteALL instances with the <code>--deleteALL</code> flag</li>
+<li>See <code>demo15.json</code> and <code>demo16.json</code> for more examples.</li>
 </ol>
         </section>
 
