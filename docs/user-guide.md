@@ -22,6 +22,7 @@ workflows.
     * [workflowHandler](#workflowHandler)
   * [Environment Variables](#environment-variables)
   * [Workflow History](#workflow-history)
+  * [Deleting Workflows](#deleting-workflows)
 
 <hr>
 
@@ -1393,7 +1394,7 @@ info: {
 1. We now see the workflow when it was first opened.
 2. Any attempt to rewind beyond the inistantiation of the workflow will result in the following warning ```warn: rewind value [4] is before the workflow started, assuming the oldest [3].```
 
-### Deleting workflows
+### Deleting Workflows
 
 It's possible to delete workflow instances and it's associated history.
 
