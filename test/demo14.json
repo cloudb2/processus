@@ -2,7 +2,7 @@
   "tasks": {
     "show env": {
       "blocking": true,
-      "handler" : "../taskHandlers/logHandler",
+      "handler" : "../taskhandlers/logHandler",
       "data": {
         "level": "info",
         "log": "TEST_ENV = $env[TEST_ENV]"

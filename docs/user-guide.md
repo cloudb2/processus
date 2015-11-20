@@ -250,7 +250,7 @@ Consider demo1.json
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -259,7 +259,7 @@ Consider demo1.json
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1000,
         "error": false
@@ -268,7 +268,7 @@ Consider demo1.json
     "task 3": {
       "description": "I am the task 3, I take 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 500,
         "error": false
@@ -311,7 +311,7 @@ Consider demo2.json
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": false,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -320,7 +320,7 @@ Consider demo2.json
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": false,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1000,
         "error": false
@@ -329,7 +329,7 @@ Consider demo2.json
     "task 3": {
       "description": "I am the task 3, I take 500msecs.",
       "blocking": false,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 500,
         "error": false
@@ -374,7 +374,7 @@ Tasks can be nested as shown in ```demo3.json```
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -383,7 +383,7 @@ Tasks can be nested as shown in ```demo3.json```
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1000,
         "error": false
@@ -392,7 +392,7 @@ Tasks can be nested as shown in ```demo3.json```
         "task 2-1": {
           "description": "I am the task 2-1, I take 1000msecs.",
           "blocking": true,
-          "handler" : "../taskHandlers/testHandler",
+          "handler" : "../taskhandlers/testHandler",
           "data": {
             "delay": 1000,
             "error": false
@@ -401,7 +401,7 @@ Tasks can be nested as shown in ```demo3.json```
         "task 2-2": {
           "description": "I am the task 2-2, I take 1000msecs.",
           "blocking": true,
-          "handler" : "../taskHandlers/testHandler",
+          "handler" : "../taskhandlers/testHandler",
           "data": {
             "delay": 1000,
             "error": false
@@ -412,7 +412,7 @@ Tasks can be nested as shown in ```demo3.json```
     "task 3": {
       "description": "I am the task 3, I take 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 500,
         "error": false
@@ -476,7 +476,7 @@ Consider demo6.json
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -485,7 +485,7 @@ Consider demo6.json
     "task 2": {
       "description": "I am the task 2, I take as long as task1.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[tasks.task 1.data.delay]",
         "error": false
@@ -494,7 +494,7 @@ Consider demo6.json
     "task 3": {
       "description": "I am the task 3, I take as long as task1.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[tasks.task 1.data.delay]",
         "error": false
@@ -526,7 +526,7 @@ debug: {
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -541,7 +541,7 @@ debug: {
     "task 2": {
       "description": "I am the task 2, I take as long as task1.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": "1500",
         "error": false
@@ -556,7 +556,7 @@ debug: {
     "task 3": {
       "description": "I am the task 3, I take as long as task1.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": "1500",
         "error": false
@@ -590,7 +590,7 @@ Consider demo7.json
     "task 1": {
       "description": "I am the task 1, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[static.global-delay]",
         "error": "$[static.global-error]"
@@ -599,7 +599,7 @@ Consider demo7.json
     "task 2": {
       "description": "I am the task 2, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[static.global-delay]",
         "error": "$[static.global-error]"
@@ -608,7 +608,7 @@ Consider demo7.json
     "task 3": {
       "description": "I am the task 3, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[static.global-delay]",
         "error": "$[static.global-error]"
@@ -629,7 +629,7 @@ The ```testHandler``` can force an error. To see the affect this has on the work
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -638,7 +638,7 @@ The ```testHandler``` can force an error. To see the affect this has on the work
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1000,
         "error": true
@@ -647,7 +647,7 @@ The ```testHandler``` can force an error. To see the affect this has on the work
     "task 3": {
       "description": "I am the task 3, I take 1500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -680,7 +680,7 @@ debug: {
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -695,7 +695,7 @@ debug: {
     "task 2": {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": 1000,
         "error": true
@@ -708,7 +708,7 @@ debug: {
     "task 3": {
       "description": "I am the task 3, I take 1500msecs.",
       "blocking": true,
-      "handler": "../taskHandlers/testHandler",
+      "handler": "../taskhandlers/testHandler",
       "data": {
         "delay": 1500,
         "error": false
@@ -769,7 +769,7 @@ Look at demo10 to see an example of ```skipIf``` and ```errorIf``` in action.
     "task 1": {
       "description": "I am the task 1, I echo Processus",
       "blocking": true,
-      "handler": "../taskHandlers/execHandler",
+      "handler": "../taskhandlers/execHandler",
       "data": {
         "cmd": "echo Processus",
         "skip me": "true"
@@ -779,7 +779,7 @@ Look at demo10 to see an example of ```skipIf``` and ```errorIf``` in action.
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
       "skipIf":"$[tasks.task 1.data.skip me]",
-      "handler": "../taskHandlers/execHandler",
+      "handler": "../taskhandlers/execHandler",
       "data": {
         "cmd": "echo Simple"
       }
@@ -788,7 +788,7 @@ Look at demo10 to see an example of ```skipIf``` and ```errorIf``` in action.
       "description": "I am the task 3, I will error",
       "blocking": true,
       "errorIf": "$[tasks.task 2.skipIf]",
-      "handler": "../taskHandlers/execHandler",
+      "handler": "../taskhandlers/execHandler",
       "data": {
         "cmd": "echo Workflow"
       }
@@ -894,7 +894,7 @@ debug: {
               "task 1": {
                 "description": "I am the task 1, I take 1500msecs.",
                 "blocking": true,
-                "handler": "../taskHandlers/testHandler",
+                "handler": "../taskhandlers/testHandler",
                 "data": {
                   "delay": 1500,
                   "error": false
@@ -903,7 +903,7 @@ debug: {
               "task 2": {
                 "description": "I am the task 2, I take 1000msecs.",
                 "blocking": true,
-                "handler": "../taskHandlers/testHandler",
+                "handler": "../taskhandlers/testHandler",
                 "data": {
                   "delay": 1000,
                   "error": false
@@ -912,7 +912,7 @@ debug: {
               "task 3": {
                 "description": "I am the task 3, I take 500msecs.",
                 "blocking": true,
-                "handler": "../taskHandlers/testHandler",
+                "handler": "../taskhandlers/testHandler",
                 "data": {
                   "delay": 500,
                   "error": false
@@ -970,7 +970,7 @@ debug: {
             "task 1": {
               "description": "I am the task 1, I take 1500msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 1500,
                 "error": false
@@ -979,7 +979,7 @@ debug: {
             "task 2": {
               "description": "I am the task 2, I take 1000msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 1000,
                 "error": false
@@ -988,7 +988,7 @@ debug: {
             "task 3": {
               "description": "I am the task 3, I take 500msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 500,
                 "error": false
@@ -1021,7 +1021,7 @@ The workflowHandler allows a task to call another workflow. ```demo13.json``` sh
     "call demo1 workflow": {
       "description": "calls the workflow in the file demo1",
       "blocking": true,
-      "handler" : "../taskHandlers/workflowHandler",
+      "handler" : "../taskhandlers/workflowHandler",
       "data": {
         "file": "./test/demo1.json"
       }
@@ -1052,7 +1052,7 @@ debug: {
     "call demo1 workflow": {
       "description": "calls the workflow in the file demo1",
       "blocking": true,
-      "handler": "../taskHandlers/workflowHandler",
+      "handler": "../taskhandlers/workflowHandler",
       "data": {
         "file": "./test/demo1.json",
         "workflow": {
@@ -1060,7 +1060,7 @@ debug: {
             "task 1": {
               "description": "I am the task 1, I take 1500msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 1500,
                 "error": false
@@ -1075,7 +1075,7 @@ debug: {
             "task 2": {
               "description": "I am the task 2, I take 1000msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 1000,
                 "error": false
@@ -1090,7 +1090,7 @@ debug: {
             "task 3": {
               "description": "I am the task 3, I take 500msecs.",
               "blocking": true,
-              "handler": "../taskHandlers/testHandler",
+              "handler": "../taskhandlers/testHandler",
               "data": {
                 "delay": 500,
                 "error": false
@@ -1135,7 +1135,7 @@ Consider ```demo14.json```
   "tasks": {
     "show env": {
       "blocking": true,
-      "handler" : "../taskHandlers/logHandler",
+      "handler" : "../taskhandlers/logHandler",
       "data": {
         "level": "info",
         "log": "TEST_ENV = $env[TEST_ENV]"

@@ -3,7 +3,7 @@
     "task 1": {
       "description": "I am the task 1, I echo Processus",
       "blocking": true,
-      "handler" : "../taskHandlers/execHandler",
+      "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "echo Processus"
       }
@@ -11,7 +11,7 @@
     "task 2": {
       "description": "I am the task 2, I echo Simple",
       "blocking": true,
-      "handler" : "../taskHandlers/execHandler",
+      "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "echo Simple"
       }
@@ -19,7 +19,7 @@
     "task 3": {
       "description": "I am the task 3, I echo Workflow",
       "blocking": true,
-      "handler" : "../taskHandlers/execHandler",
+      "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "echo Workflow"
       }

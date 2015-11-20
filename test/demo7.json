@@ -7,7 +7,7 @@
     "task 1": {
       "description": "I am the task 1, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[static.global-delay]",
         "error": "$[static.global-error]"
@@ -16,7 +16,7 @@
     "task 2": {
       "description": "I am the task 2, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[static.global-delay]",
         "error": "$[static.global-error]"
@@ -25,7 +25,7 @@
     "task 3": {
       "description": "I am the task 3, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
-      "handler" : "../taskHandlers/testHandler",
+      "handler" : "../taskhandlers/testHandler",
       "data": {
         "delay": "$[static.global-delay]",
         "error": "$[static.global-error]"

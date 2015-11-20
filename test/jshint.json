@@ -9,7 +9,7 @@
     "run jshint for engine": {
       "description": "run jshint for engine",
       "blocking": true,
-      "handler" : "../taskHandlers/execHandler",
+      "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test1]"
       }
@@ -17,7 +17,7 @@
     "run jshint for taskhandlers": {
       "description": "run jshint for engine",
       "blocking": true,
-      "handler" : "../taskHandlers/execHandler",
+      "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test2]"
       }
