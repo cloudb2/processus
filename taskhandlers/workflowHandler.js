@@ -5,7 +5,8 @@ var store = require('../engine/persistence/store');
 /* Workflow Handler
  * using the parameter data.file, this handler will attempt to load the corresponding file
  * execute it and save the resulting workflow output in data.workflow.
- * as with the CLI add data.id to update an existing workflow
+ * as with the CLI add data.id to update an existing workflow.
+ * Set task.data.workflow to execute that workflow directly
  */
 module.exports = function(workflowId, taskName, task, callback, logger){
 

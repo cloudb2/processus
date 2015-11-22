@@ -1,4 +1,6 @@
 ---
+  name: Demo13a
+  description": A demo showing requesting a workflow and executing it. A combination of demo 12 and 13.
   tasks:
     call github for demo1:
       blocking: true

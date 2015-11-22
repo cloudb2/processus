@@ -12,6 +12,7 @@ workflows.
 
 * [Installation](#installation)
 * [Overview](#overview)
+  * [Features](#features)
   * [Workflow](#workflow)
   * [Tasks](#tasks)
 * [User Guide](http://cloudb2.github.io/processus/)
@@ -71,7 +72,7 @@ Options:
 
 A workflow in Processus is defined using JSON (or equivalent YAML), which should conform to a specific structure. The best way to understand that structure is by looking at examples.
 
-## Features
+### Features
 
 1. Define workflow in JSON or YAML
 2. Execute tasks in series (sequentially) or parallel

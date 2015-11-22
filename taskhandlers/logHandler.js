@@ -1,9 +1,8 @@
 
-/* Test Task Handler
- * Simply logs the task and returns in accordance with the supplied data
- * Options are:
- * Set task.data.error = true to raise an error
- * Set task.data.delay to set the time in msecs that the task should delay
+/* Log Handler
+ *
+ * Set task.data.level for log level
+ * Set task.data.log for log message
 */
 module.exports = function(workflowId, taskName, task, callback, logger){
 

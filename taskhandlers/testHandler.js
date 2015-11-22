@@ -4,6 +4,7 @@
  * Options are:
  * Set task.data.error = true to raise an error
  * Set task.data.delay to set the time in msecs that the task should delay
+ * Set task.data.pedning = true to mimic a pending task
 */
 module.exports = function(workflowId, taskName, task, callback, logger){
 
