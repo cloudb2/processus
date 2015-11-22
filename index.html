@@ -1,37 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta charset="UTF-8">
     <title>Processus by cloudb2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
-    <div id="container">
-      <div class="inner">
+    <section class="page-header">
+      <h1 class="project-name">Processus</h1>
+      <h2 class="project-tagline">A simple lightweight nodejs workflow engine designed to help orchestrate multiple tasks.</h2>
+      <a href="https://github.com/cloudb2/processus" class="btn">View on GitHub</a>
+      <a href="https://github.com/cloudb2/processus/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/cloudb2/processus/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-        <header>
-          <h1>Processus</h1>
-          <h2>A simple lightweight nodejs workflow engine designed to help orchestrate multiple tasks.</h2>
-        </header>
-
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/cloudb2/processus/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/cloudb2/processus/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/cloudb2/processus" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
-
-        <hr>
-
-        <section id="main_content">
-          <h1>
+    <section class="main-content">
+      <h1>
 <a id="processus" class="anchor" href="#processus" aria-hidden="true"><span class="octicon octicon-link"></span></a>Processus</h1>
 
 <p>Processus is a simple lightweight workflow engine designed to help orchestrate multiple tasks.</p>
@@ -45,6 +33,7 @@ workflows.</p>
 <a href="#using-processus">Using Processus</a>
 
 <ul>
+<li><a href="#features">Features</a></li>
 <li><a href="#workflow">Workflow</a></li>
 <li><a href="#tasks">Tasks</a></li>
 <li><a href="#testing-tasks">Testing Tasks</a></li>
@@ -96,6 +85,8 @@ workflows.</p>
 <p>or clone this repo</p>
 
 <pre><code>git clone https://github.com/cloudb2/processus
+cd processus
+npm install
 </code></pre>
 
 <h3>
@@ -132,6 +123,25 @@ Options:
 <a id="using-processus" class="anchor" href="#using-processus" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using Processus</h2>
 
 <p>A workflow in Processus is defined using JSON, which should conform to a specific structure. The best way to understand that structure is by looking at examples.</p>
+
+<h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
+
+<ol>
+<li>Define workflow in JSON or YAML</li>
+<li>Execute tasks in series (sequentially) or parallel</li>
+<li>Nested tasks</li>
+<li>Reference data between tasks</li>
+<li>Reference data from workflow to tasks</li>
+<li>Call a workflow from a workflow</li>
+<li>Extensible task handlers</li>
+<li>Task handlers included for testing, executing local commands, calling other workflows and making HTTP requests.</li>
+<li>Built in persistence (file based)</li>
+<li>Inject workflow with additional tasks</li>
+<li>Support for environment variables</li>
+<li>Inspect executed workflows and look back through their history</li>
+<li>Update in-flight (pending) workflows with async callbacks</li>
+</ol>
 
 <h3>
 <a id="workflow" class="anchor" href="#workflow" aria-hidden="true"><span class="octicon octicon-link"></span></a>Workflow</h3>
@@ -1571,15 +1581,15 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 <li>It's also possible to deleteALL instances with the <code>--deleteALL</code> flag</li>
 <li>See <code>demo15.json</code> and <code>demo16.json</code> for more examples.</li>
 </ol>
-        </section>
 
-        <footer>
-          Processus is maintained by <a href="https://github.com/cloudb2">cloudb2</a><br>
-          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/cloudb2/processus">Processus</a> is maintained by <a href="https://github.com/cloudb2">cloudb2</a>.</span>
 
-        
-      </div>
-    </div>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
   </body>
 </html>
