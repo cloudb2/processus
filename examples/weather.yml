@@ -1,7 +1,9 @@
 ---
+  name: Get Weather Example
+  description: Example of calling an API endpoint and getting the response body. Visit http://openweathermap.org/ for an API key.
   static:
-    api-key: aabb614f19d40b62badfa2050c005881
-    city: mountain view
+    api-key: $env[OPENWEATHER_API_KEY]
+    city: london
   tasks:
     Call Weather API:
       blocking: true
