@@ -1,4 +1,6 @@
 ---
+  name: Demo9
+  description: A demo showing the execHandler echo Processus, Simple, Workflow.
   tasks:
     task 1:
       description: "I am the task 1, I echo Processus"

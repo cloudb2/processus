@@ -69,6 +69,22 @@ Options:
 
 A workflow in Processus is defined using JSON (or equivalent YAML), which should conform to a specific structure. The best way to understand that structure is by looking at examples.
 
+## Features
+
+1. Define workflow in JSON or YAML
+2. Execute tasks in series (sequentially) or parallel
+3. Nested tasks
+4. Reference data between tasks
+5. Reference data from workflow to tasks
+6. Call a workflow from a workflow
+7. Extensible task handlers
+8. Task handlers included for testing, executing local commands, calling other workflows and making HTTP requests.
+9. Built in persistence (file based)
+10. Inject workflow with additional tasks
+11. Support for environment variables
+12. Inspect executed workflows and look back through their history
+13. Update in-flight (pending) workflows with async callbacks
+
 ### Workflow
 
 A workflow, in it's simplest form, is defined as follows.

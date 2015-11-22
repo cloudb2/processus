@@ -1,4 +1,6 @@
 {
+  "name": "ex2",
+  "description": "A example of 2 tasks in series.",
   "tasks": {
     "say hello": {
       "blocking": true,

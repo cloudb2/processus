@@ -1,4 +1,6 @@
 {
+  "name": "Demo15",
+  "description": "A demo showing execution of a workflow and deleting it and history.",
   "tasks":{
     "Create Workflow": {
       "description": "create an example workflow of demo1",

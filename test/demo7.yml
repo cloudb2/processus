@@ -1,4 +1,6 @@
 ---
+  name: Demo7
+  description: A demo showing static data shared from workflow to tasks.
   static:
     global-delay: 500
     global-error: false

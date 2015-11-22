@@ -22,16 +22,20 @@ module.exports = function(workflowId, taskName, task, callback, logger){
   }
 
   var workflowTaskJSON;
-  store.loadDefinition(task.data.file, function(err, workflowFile){
-    if(!err){
-      workflowTaskJSON = workflowFile;
+
+  if(task.data.workflow === undefined) {
+    store.loadDefinition(task.data.file, function(err, workflowFile){
+      if(!err){
+        workflowTaskJSON = workflowFile;
+      }
+    });
+    if(workflowTaskJSON === undefined){
+      callback(new Error("Unable to find workflow definition [" + task.data.file + "]"), task);
+      return;
     }
-    else {
-      callback(err, null);
-    }
-  });
-  if(workflowTaskJSON === undefined){
-    return;
+  }
+  else {
+    workflowTaskJSON = task.data.workflow;
   }
 
   processus.runWorkflow(task.data.file, task.data.id, workflowTaskJSON, function(err, workflow){

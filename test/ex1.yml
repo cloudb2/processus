@@ -1,2 +1,4 @@
 ---
+  name: ex1
+  description: An example of the simpliest workflow, with no tasks.
   tasks: {}

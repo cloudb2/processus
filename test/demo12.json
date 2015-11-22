@@ -1,4 +1,6 @@
 {
+  "name": "Demo12",
+  "description": "A demo showing requestHandle GETting the github raw JSON file for demo1.",
   "tasks": {
     "call github for demo1": {
       "blocking": true,

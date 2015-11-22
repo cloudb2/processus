@@ -1,4 +1,6 @@
 {
+  "name": "Demo14",
+  "description": "A demo showing deleting ALL workflow instances",
   "tasks":{
     "DELETE ALL Workflows": {
       "description": "Delete all workflows, except this one of course :-)",

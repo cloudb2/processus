@@ -1,4 +1,6 @@
 {
+  "name": "Demo3a",
+  "description": "A demo showing multi nested tasks in parallel.",
   "tasks":{
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",

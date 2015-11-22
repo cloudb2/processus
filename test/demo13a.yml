@@ -1,6 +1,4 @@
 ---
-  name: Demo12
-  description: A demo showing requestHandle GETting the github raw JSON file for demo1.
   tasks:
     call github for demo1:
       blocking: true
@@ -10,3 +8,9 @@
           url: "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json"
           method: "GET"
           json: true
+    Excute Workflow Response:
+      blocking: true,
+      handler: "../taskhandlers/workflowHandler"
+      data:
+        file: "$[tasks.call github for demo1.data.options.url]"
+        workflow: "$[tasks.call github for demo1.data.body]"

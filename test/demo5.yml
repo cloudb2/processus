@@ -1,4 +1,6 @@
 ---
+  name: Demo5
+  description: A demo showing a mixture of parallel and series.
   tasks:
     task 1:
       description: "I am the task 1, I take 1500msecs."

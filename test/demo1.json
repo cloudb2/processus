@@ -1,4 +1,6 @@
 {
+  "name": "Demo1",
+  "description": "A demo showing 3 tasks in series.",
   "tasks":{
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",

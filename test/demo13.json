@@ -1,4 +1,6 @@
 {
+  "name": "Demo13",
+  "description": "A demo showing a workflow calling a workflow.",
   "tasks": {
     "call demo1 workflow": {
       "description": "calls the workflow in the file demo1",

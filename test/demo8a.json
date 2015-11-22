@@ -1,4 +1,6 @@
 {
+  "name": "Demo8a",
+  "description": "A demo showing a task raising an error being overriden by ignoreError property and its affect on the workflow.",
   "tasks":{
     "task 1": {
       "description": "I am the task 1, I take 1500msecs.",

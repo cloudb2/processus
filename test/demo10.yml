@@ -1,4 +1,6 @@
 ---
+  name: Demo10
+  description: A demo showing skipIf and errorIf task properties in action.
   tasks:
     task 1:
       description: "I am the task 1, I echo Processus"

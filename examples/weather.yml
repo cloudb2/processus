@@ -1,7 +1,7 @@
 ---
   static:
-    api-key: [VISIT-openweathermap.org-FOR-YOUR-API-KEY-HERE]
-    city: london
+    api-key: aabb614f19d40b62badfa2050c005881
+    city: mountain view
   tasks:
     Call Weather API:
       blocking: true

@@ -370,7 +370,8 @@ function setTaskDataValues(workflow, task){
     //convert whole task to JSON string
     var propStr = JSON.stringify(prop, null, 2);
 
-    //Now look for matching $[] references
+    logger.debug("checking for $[] in " + propStr);
+    //Now look for matching '$[]' references
     refValues = propStr.match(/[$](\[(.*?)\])/g);
 
     if(refValues) {
@@ -381,14 +382,25 @@ function setTaskDataValues(workflow, task){
         //get current ref value
         refValue = refValues[x];
 
-        //remove the $[] chars
+        //remove the '$[]' chars
         refValue = refValue.substring(2, refValue.length -1);
 
         //get env var
         dataValue = getData(workflow, refValue);
+        if(dataValue === undefined){
+          dataValue = null;
+        }
 
-        //replace env ref with value
-        propStr = propStr.replace(refValues[x], dataValue);
+        if (typeof dataValue === 'string' || dataValue instanceof String) {
+          //literally replace env ref with value
+          propStr = propStr.replace(refValues[x], dataValue);
+        }
+        else {
+          //ok, not a string, so replace quotes wrapping the path and JSON stringify it
+          //in case it's a complete object. i.e. allow the passing of objects.
+          propStr = propStr.replace('"' + refValues[x] + '"', JSON.stringify(dataValue, 2, null));
+        }
+
       }
 
     }

@@ -1,4 +1,6 @@
 {
+  "name": "Demo14",
+  "description": "A demo showing environment variable injected into the workflow.",
   "tasks": {
     "show env": {
       "blocking": true,
