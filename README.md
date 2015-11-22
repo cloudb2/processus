@@ -36,6 +36,8 @@ npm install -g processus
 or clone this repo
 ```
 git clone https://github.com/cloudb2/processus
+cd processus
+npm install
 ```
 
 ### Usage
