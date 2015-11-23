@@ -122,8 +122,6 @@ Options:
 <h2>
 <a id="using-processus" class="anchor" href="#using-processus" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using Processus</h2>
 
-<p>A workflow in Processus is defined using JSON, which should conform to a specific structure. The best way to understand that structure is by looking at examples.</p>
-
 <h3>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
 
@@ -145,6 +143,8 @@ Options:
 
 <h3>
 <a id="workflow" class="anchor" href="#workflow" aria-hidden="true"><span class="octicon octicon-link"></span></a>Workflow</h3>
+
+<p>A workflow in Processus is defined using JSON, which should conform to a specific structure. The best way to understand that structure is by looking at examples.</p>
 
 <p>A workflow, in it's simplest form, is defined as follows.</p>
 
@@ -1009,7 +1009,10 @@ error: ✘ Workflow [test/demo10.json] with id [90727723-da21-46e4-8ac3-b5e132b2
 }
 </code></pre>
 
-<p>executing this demo will result in the request and body objects being populated in the task <code>call github for demo1</code> by the http request to <code>https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json</code></p>
+<p>executing this demo will result in the request and body objects being populated in the task <code>call github for demo1</code> by the http request to</p>
+
+<pre><code>https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json
+</code></pre>
 
 <pre><code>$ ./bin/processus-cli -l debug -f test/demo12.json
 
