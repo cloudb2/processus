@@ -79,8 +79,6 @@ Options:
 
 ## Using Processus
 
-A workflow in Processus is defined using JSON, which should conform to a specific structure. The best way to understand that structure is by looking at examples.
-
 ### Features
 
 1. Define workflow in JSON or YAML
@@ -98,6 +96,8 @@ A workflow in Processus is defined using JSON, which should conform to a specifi
 13. Update in-flight (pending) workflows with async callbacks
 
 ### Workflow
+
+A workflow in Processus is defined using JSON, which should conform to a specific structure. The best way to understand that structure is by looking at examples.
 
 A workflow, in it's simplest form, is defined as follows.
 ```
@@ -921,7 +921,10 @@ This handler wraps the very popular nodejs module request to make HTTP requests.
 }
 ```
 
-executing this demo will result in the request and body objects being populated in the task ```call github for demo1``` by the http request to ```https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json```
+executing this demo will result in the request and body objects being populated in the task ```call github for demo1``` by the http request to
+```
+https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json
+```
 
 ```
 $ ./bin/processus-cli -l debug -f test/demo12.json

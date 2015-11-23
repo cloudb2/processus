@@ -70,8 +70,6 @@ Options:
 
 ## Overview
 
-A workflow in Processus is defined using JSON (or equivalent YAML), which should conform to a specific structure. The best way to understand that structure is by looking at examples.
-
 ### Features
 
 1. Define workflow in JSON or YAML
@@ -89,6 +87,8 @@ A workflow in Processus is defined using JSON (or equivalent YAML), which should
 13. Update in-flight (pending) workflows with async callbacks
 
 ### Workflow
+
+A workflow in Processus is defined using JSON (or equivalent YAML), which should conform to a specific structure. The best way to understand that structure is by looking at examples.
 
 A workflow, in it's simplest form, is defined as follows.
 ```

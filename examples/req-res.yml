@@ -14,5 +14,5 @@
       blocking: true,
       handler: "../taskhandlers/workflowHandler"
       data:
-        file: "$[tasks.call github for demo1.data.options.url]"
-        workflow: "$[tasks.call github for demo1.data.body]"
+        file: $[tasks.call github for demo1.data.options.url]
+        workflow: $[tasks.call github for demo1.data.body]

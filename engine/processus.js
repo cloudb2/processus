@@ -232,35 +232,42 @@ function realExecute(workflow, callback) {
       if (!skip) {
         //No error or skip condition so execute handler
         logger.info("⧖ Starting task [" + n2 + "]");
-        require(t2.handler)(workflow.id, n2, t2, function(err, t2returned){
-          //handler returned, check if there's an error
-          if(err) {
-            //there is, so set it on the task
-            t2returned.errorMsg = err.message;
-            t2returned.status = "error";
-            //Should we ignore the error?
-            if(t2returned.ignoreError === true) {
-              logger.info("ignoring error, as requested for task [" + n2 + "]");
-              t2returned.status = 'executing';
-              //reset err object
-              err = undefined;
+        try {
+          require(t2.handler)(workflow.id, n2, t2, function(err, t2returned){
+            //handler returned, check if there's an error
+            if(err) {
+              //there is, so set it on the task
+              t2returned.errorMsg = err.message;
+              t2returned.status = "error";
+              //Should we ignore the error?
+              if(t2returned.ignoreError === true) {
+                logger.info("ignoring error, as requested for task [" + n2 + "]");
+                t2returned.status = 'executing';
+                //reset err object
+                err = undefined;
+              }
             }
-          }
-          //If the task is executing mark it as completed and update times
-          if(t2returned.status === 'executing'){
-            t2returned.status = 'completed';
-            t2returned.timeCompleted = Date.now();
-            t2returned.handlerDuration = t2returned.timeCompleted - t2returned.timeStarted;
-            t2returned.totalDuration = t2returned.timeCompleted - t2returned.timeOpened;
-          }
-          //If the task is pending (as marked by the hander) then we assume
-          //an async call that will return in the future
-          if(t2returned.status === 'pending'){
-            t2returned.handlerDuration = Date.now() - t2returned.timeStarted;
-          }
-          //callback to Async
-          callback(err, t2returned);
-        }, logger);
+            //If the task is executing mark it as completed and update times
+            if(t2returned.status === 'executing'){
+              t2returned.status = 'completed';
+              t2returned.timeCompleted = Date.now();
+              t2returned.handlerDuration = t2returned.timeCompleted - t2returned.timeStarted;
+              t2returned.totalDuration = t2returned.timeCompleted - t2returned.timeOpened;
+            }
+            //If the task is pending (as marked by the hander) then we assume
+            //an async call that will return in the future
+            if(t2returned.status === 'pending'){
+              t2returned.handlerDuration = Date.now() - t2returned.timeStarted;
+            }
+            //callback to Async
+            callback(err, t2returned);
+          }, logger);
+        }
+        catch(requireError) {
+          t2.errorMsg = requireError.message;
+          t2.status = "error";
+          callback(new Error("Possible missing module! " + requireError), t2);
+        }
       }
       else {
         if(t2.skipIf === true) {
