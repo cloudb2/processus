@@ -60,6 +60,7 @@ workflows.</p>
 <li><a href="#environment-variables">Environment Variables</a></li>
 <li><a href="#workflow-history">Workflow History</a></li>
 <li><a href="#deleting-workflows">Deleting Workflows</a></li>
+<li><a href="#api">API</a></li>
 </ul>
 </li>
 </ul>
@@ -90,7 +91,7 @@ npm install
 </code></pre>
 
 <h3>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
+<a id="usage-cli" class="anchor" href="#usage-cli" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage CLI</h3>
 
 <pre><code>$ ./bin/processus-cli -h
 
@@ -115,6 +116,35 @@ Options:
   -d, --delete STRING    delete a workflow instance
       --deleteALL        delete ALL workflow instances.
   -h, --help             Display help and usage details
+</code></pre>
+
+<h3>
+<a id="usage-api" class="anchor" href="#usage-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage API</h3>
+
+<pre><code>var processus = require('processus');
+
+var wf = {
+  "name": "Example Workflow",
+  "description": "An example workflow using the API.",
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I take 1500msecs.",
+      "blocking": true,
+      "handler" : "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'Congratulations you called a workflow using the API.'"
+      }
+    }
+  }
+};
+
+processus.setLogLevel('info');
+
+processus.execute(wf, function(err, workflow){
+  if(!err) {
+    console.log(workflow);
+  }
+});
 </code></pre>
 
 <hr>
@@ -1360,7 +1390,7 @@ info: ✔ task [say hello again] completed successfully.
 info: ✰ Workflow [./test/ex2.json] with id [2b04f64a-5556-459c-b73b-257f426ae8ea] completed successfully.
 </code></pre>
 
-<p>Using the id (in case 2b04f64a-5556-459c-b73b-257f426ae8ea) you can inspect the workflow by executing <code>2b04f64a-5556-459c-b73b-257f426ae8ea</code></p>
+<p>Using the id (in case 2b04f64a-5556-459c-b73b-257f426ae8ea) you can inspect the workflow by executing:</p>
 
 <pre><code>$ ./bin/processus-cli -l info -i 2b04f64a-5556-459c-b73b-257f426ae8ea
 
@@ -1508,7 +1538,7 @@ info: {
 <p><strong><em>Note</em></strong></p>
 
 <ol>
-<li>The wokflow is <code>open</code> and the last task is <code>waiting</code>
+<li>The workflow is <code>open</code> and the last task is <code>waiting</code>
 </li>
 </ol>
 
@@ -1551,7 +1581,7 @@ info: {
 
 <ol>
 <li>We now see the workflow when it was first opened.</li>
-<li>Any attempt to rewind beyond the inistantiation of the workflow will result in the following warning <code>warn: rewind value [4] is before the workflow started, assuming the oldest [3].</code>
+<li>Any attempt to rewind beyond the instantiation of the workflow will result in the following warning <code>warn: rewind value [4] is before the workflow started, assuming the oldest [3].</code>
 </li>
 </ol>
 
@@ -1584,6 +1614,72 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 <li>It's also possible to deleteALL instances with the <code>--deleteALL</code> flag</li>
 <li>See <code>demo15.json</code> and <code>demo16.json</code> for more examples.</li>
 </ol>
+
+<h2>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h2>
+
+<h3>
+<a id="executeworkflow-callback" class="anchor" href="#executeworkflow-callback" aria-hidden="true"><span class="octicon octicon-link"></span></a>execute(workflow, callback)</h3>
+
+<pre><code>/**
+ * executes the supplied workflow and calls back with the resulting workflow.
+ * @param workflow The workflow definition you wish to execute.
+ * @param callback A function(err, workflow)
+ */
+</code></pre>
+
+<h3>
+<a id="updateworkflowworkflowid-tasks-callback" class="anchor" href="#updateworkflowworkflowid-tasks-callback" aria-hidden="true"><span class="octicon octicon-link"></span></a>updateWorkflow(workflowId, tasks, callback)</h3>
+
+<pre><code>/**
+ * updates an existing workflow with the supplied tasks. i.e. When a an already
+ * instantiated workflow has a task in status pending, this function as a callback
+ * for any async endpoint wishing to respond.
+ * @param workflowId The UUID of the instantiated workflow
+ * @param tasks The updated task(s) to be 'injected' into the instantiated workflow
+ * @param callback A function(err, workflow)
+ */
+</code></pre>
+
+<h3>
+<a id="setloglevellevel" class="anchor" href="#setloglevellevel" aria-hidden="true"><span class="octicon octicon-link"></span></a>setLogLevel(level)</h3>
+
+<pre><code>/**
+ * Sets the log level of the Proessus logger. Default is 'error'
+ * @param level The level [debug|verbose|info|warn|error]
+ */
+</code></pre>
+
+<h3>
+<a id="getworkflowworkflowid-rewind-callback" class="anchor" href="#getworkflowworkflowid-rewind-callback" aria-hidden="true"><span class="octicon octicon-link"></span></a>getWorkflow(workflowId, rewind, callback)</h3>
+
+<pre><code>/**
+ * Gets an existing instance of a workflow
+ * @param workflowId The UUID of the instantiated workflow to get
+ * @param rewind through the history of a workflow. i.e. number from 0 last save
+*  point, 1 previous save point etc. in continuing reverse chronological order.
+ * @param callback A function(err, workflow)
+ */
+</code></pre>
+
+<h3>
+<a id="deleteworkflowworkflowid-callback" class="anchor" href="#deleteworkflowworkflowid-callback" aria-hidden="true"><span class="octicon octicon-link"></span></a>deleteWorkflow(workflowId, callback)</h3>
+
+<pre><code>/**
+ * Delete an existing instance of a workflow
+ * @param workflowId The UUID of the instantiated workflow to delete
+ * @param callback A function(err)
+ */
+</code></pre>
+
+<h3>
+<a id="deleteallcallback" class="anchor" href="#deleteallcallback" aria-hidden="true"><span class="octicon octicon-link"></span></a>deleteALL(callback)</h3>
+
+<pre><code>/**
+ * Deletes ALL workflow instances
+ * @param callback A function(err)
+ */
+</code></pre>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/cloudb2/processus">Processus</a> is maintained by <a href="https://github.com/cloudb2">cloudb2</a>.</span>
