@@ -1,10 +1,10 @@
 
-/* Test Task Handler
- * Simply logs the task and returns in accordance with the supplied data
- * Options are:
- * Set task.data.error = true to raise an error
- * Set task.data.delay to set the time in msecs that the task should delay
- * Set task.data.pedning = true to mimic a pending task
+/* Test Handler
+ * Used to test tasks within a workflow
+ * INPUT
+ * @param task.data.error Set true to simulate an error
+ * @param task.data.delay Set delay time (msecs) to simulate execution before returning
+ * @param task.data.pending Set true to simulate a pending status returned from a module
 */
 module.exports = function(workflowId, taskName, task, callback, logger){
 

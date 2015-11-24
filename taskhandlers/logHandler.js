@@ -1,9 +1,10 @@
 
 /* Log Handler
- *
- * Set task.data.level for log level
- * Set task.data.log for log message
-*/
+ * Logs a the supplied message
+ * INPUT
+ * @param task.data.level The log level
+ * @param task.data.log The message to log
+ */
 module.exports = function(workflowId, taskName, task, callback, logger){
 
   var err;

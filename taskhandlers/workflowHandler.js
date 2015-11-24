@@ -3,10 +3,12 @@ var processus = require('../engine/processus');
 var store = require('../engine/persistence/store');
 
 /* Workflow Handler
- * using the parameter data.file, this handler will attempt to load the corresponding file
- * execute it and save the resulting workflow output in data.workflow.
- * as with the CLI add data.id to update an existing workflow.
- * Set task.data.workflow to execute that workflow directly
+ * This handle will attempt to load supplied file or execute the supplied workflow
+ * INPUT
+ * @param task.data.file The workflow definition file name (if no workflow supplied)
+ * @param task.data.workflow A workflow object to execute
+ * OUTPUT
+ * @param task.data.workflow The resulting workflow object
  */
 module.exports = function(workflowId, taskName, task, callback, logger){
 

@@ -1,9 +1,15 @@
 var exec = require('child_process').exec;
 
-/* Shell Task Handler
+/* Exec Handler
  * Using the Task's data.cmd property, this handler will attempt to execute that
  * command as a child process.
  * output is stored in data.stdout and data.stderr
+ * INPUT
+ * @param task.data.cmd The command to execute
+ * OUTPUT
+ * @param task.data.stdout The stdout (if any)
+ * @param task.data.stderr The stderr (if any)
+ *
  */
 module.exports = function(workflowId, taskName, task, callback, logger){
 
