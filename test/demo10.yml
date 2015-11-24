@@ -8,7 +8,7 @@
       handler: "../taskhandlers/execHandler"
       data:
         cmd: "echo Processus"
-        skip me: "true"
+        skip me: true
     task 2:
       description: "I am the task 2, I will be skipped"
       blocking: true

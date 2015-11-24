@@ -277,6 +277,8 @@ function realExecute(workflow, callback) {
         var err = null;
         if (t2.errorIf === true) {
           err = new Error("Task [" + n2 + "] has error condition set.");
+          t2.errorMsg = err.message;
+          t2.status = "error";
         }
         //If it's exeucuting but has no handler (i.e. it could just be a parent place holder task),
         //mark it completed.
