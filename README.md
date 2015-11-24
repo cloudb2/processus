@@ -20,7 +20,7 @@ workflows.
 
 <hr>
 
-#Getting Started
+# Getting Started
 
 ## Installation
 
@@ -41,7 +41,7 @@ cd processus
 npm install
 ```
 
-### Usage
+### Usage CLI
 ```
 $ ./bin/processus-cli -h
 
@@ -66,6 +66,34 @@ Options:
   -d, --delete STRING    delete a workflow instance
       --deleteALL        delete ALL workflow instances.
   -h, --help             Display help and usage details
+```
+
+### Usage API
+```
+var processus = require('processus');
+
+var wf = {
+  "name": "Example Workflow",
+  "description": "An example workflow using the API.",
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I take 1500msecs.",
+      "blocking": true,
+      "handler" : "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'Congratulations you called a workflow using the API.'"
+      }
+    }
+  }
+};
+
+processus.setLogLevel('info');
+
+processus.execute(wf, function(err, workflow){
+  if(!err) {
+    console.log(workflow);
+  }
+});
 ```
 
 ## Overview

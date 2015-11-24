@@ -24,6 +24,7 @@ workflows.
   * [Environment Variables](#environment-variables)
   * [Workflow History](#workflow-history)
   * [Deleting Workflows](#deleting-workflows)
+  * [API](#api)
 
 <hr>
 
@@ -48,7 +49,7 @@ cd processus
 npm install
 ```
 
-### Usage
+### Usage CLI
 ```
 $ ./bin/processus-cli -h
 
@@ -73,6 +74,34 @@ Options:
   -d, --delete STRING    delete a workflow instance
       --deleteALL        delete ALL workflow instances.
   -h, --help             Display help and usage details
+```
+
+### Usage API
+```
+var processus = require('processus');
+
+var wf = {
+  "name": "Example Workflow",
+  "description": "An example workflow using the API.",
+  "tasks":{
+    "task 1": {
+      "description": "I am the task 1, I take 1500msecs.",
+      "blocking": true,
+      "handler" : "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "echo 'Congratulations you called a workflow using the API.'"
+      }
+    }
+  }
+};
+
+processus.setLogLevel('info');
+
+processus.execute(wf, function(err, workflow){
+  if(!err) {
+    console.log(workflow);
+  }
+});
 ```
 
 <hr>
@@ -1268,7 +1297,7 @@ info: ✔ task [say hello again] completed successfully.
 info: ✰ Workflow [./test/ex2.json] with id [2b04f64a-5556-459c-b73b-257f426ae8ea] completed successfully.
 ```
 
-Using the id (in case 2b04f64a-5556-459c-b73b-257f426ae8ea) you can inspect the workflow by executing ```2b04f64a-5556-459c-b73b-257f426ae8ea```
+Using the id (in case 2b04f64a-5556-459c-b73b-257f426ae8ea) you can inspect the workflow by executing:
 
 ```
 $ ./bin/processus-cli -l info -i 2b04f64a-5556-459c-b73b-257f426ae8ea
@@ -1415,7 +1444,7 @@ info: {
 
 ***Note***
 
-1. The wokflow is ```open``` and the last task is ```waiting```
+1. The workflow is ```open``` and the last task is ```waiting```
 
 remind further
 
@@ -1456,7 +1485,7 @@ info: {
 ***Note***
 
 1. We now see the workflow when it was first opened.
-2. Any attempt to rewind beyond the inistantiation of the workflow will result in the following warning ```warn: rewind value [4] is before the workflow started, assuming the oldest [3].```
+2. Any attempt to rewind beyond the instantiation of the workflow will result in the following warning ```warn: rewind value [4] is before the workflow started, assuming the oldest [3].```
 
 ### Deleting Workflows
 
@@ -1484,3 +1513,62 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 1. Any instance matching the supplied UUID and associated history is deleted.
 2. It's also possible to deleteALL instances with the ```--deleteALL``` flag
 3. See ```demo15.json``` and ```demo16.json``` for more examples.
+
+## API
+
+### execute(workflow, callback)
+```
+/**
+ * executes the supplied workflow and calls back with the resulting workflow.
+ * @param workflow The workflow definition you wish to execute.
+ * @param callback A function(err, workflow)
+ */
+```
+
+### updateWorkflow(workflowId, tasks, callback)
+```
+/**
+ * updates an existing workflow with the supplied tasks. i.e. When a an already
+ * instantiated workflow has a task in status pending, this function as a callback
+ * for any async endpoint wishing to respond.
+ * @param workflowId The UUID of the instantiated workflow
+ * @param tasks The updated task(s) to be 'injected' into the instantiated workflow
+ * @param callback A function(err, workflow)
+ */
+```
+
+### setLogLevel(level)
+```
+/**
+ * Sets the log level of the Proessus logger. Default is 'error'
+ * @param level The level [debug|verbose|info|warn|error]
+ */
+```
+
+### getWorkflow(workflowId, rewind, callback)
+```
+/**
+ * Gets an existing instance of a workflow
+ * @param workflowId The UUID of the instantiated workflow to get
+ * @param rewind through the history of a workflow. i.e. number from 0 last save
+*  point, 1 previous save point etc. in continuing reverse chronological order.
+ * @param callback A function(err, workflow)
+ */
+```
+
+### deleteWorkflow(workflowId, callback)
+```
+/**
+ * Delete an existing instance of a workflow
+ * @param workflowId The UUID of the instantiated workflow to delete
+ * @param callback A function(err)
+ */
+```
+
+### deleteALL(callback)
+```
+/**
+ * Deletes ALL workflow instances
+ * @param callback A function(err)
+ */
+```
