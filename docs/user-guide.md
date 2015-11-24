@@ -23,6 +23,9 @@ workflows.
   * [Deleting Workflows](#deleting-workflows)
   * [API](#api)
   * [Handlers](#handlers)
+    * [execHandler](#execHandle)
+    * [logHandler](#logHandle)
+    * [testHandler](#testHandler)
     * [requestHandler](#requestHandler)
     * [workflowHandler](#workflowHandler)
 
