@@ -87,13 +87,12 @@ var wf = {
   }
 };
 
-processus.setLogLevel('info');
-
 processus.execute(wf, function(err, workflow){
   if(!err) {
-    console.log(workflow);
+    console.log(workflow.tasks['task 1'].data.stdout);
   }
 });
+
 ```
 
 ## Overview

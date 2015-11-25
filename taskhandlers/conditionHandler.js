@@ -13,7 +13,7 @@
  * "GREATER THAN", ">",
  * "LESS THAN", "<",
  * "GREATER OR EQUALS", ">=",
- * "LESS OR EQUALGS", "<="
+ * "LESS OR EQUALS", "<="
  * (note case is ignored)
  * OUTPUT
  * @param task.data.conditions each condition is updated to include a result e.g.

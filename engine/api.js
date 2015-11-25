@@ -6,7 +6,7 @@ logger.level = 'error';
 
 module.exports = {
   execute: execute,
-  updateTasks: updateTasks,
+  updateWorkflow: updateWorkflow,
   setLogLevel: setLogLevel,
   getWorkflow: getWorkflow,
   deleteWorkflow: deleteWorkflow,
@@ -19,7 +19,7 @@ module.exports = {
  * @param callback A function(err, workflow)
  */
 function execute(workflow, callback){
-  p.execute(workflowJSON, callback);
+  p.execute(workflow, callback);
 }
 
 /**
@@ -66,6 +66,6 @@ function deleteWorkflow(workflowId, callback) {
  * Deletes ALL workflow instances
  * @param callback A function(err)
  */
-function deleteALL(callback){
+function deleteAll(callback){
   store.deleteAll(callback);
 }

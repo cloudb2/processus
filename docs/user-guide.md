@@ -84,7 +84,7 @@ Options:
 [top](#processus)
 ### Usage API
 ```
-var processus = require('processus');
+vvar processus = require('processus');
 
 var wf = {
   "name": "Example Workflow",
@@ -101,13 +101,12 @@ var wf = {
   }
 };
 
-processus.setLogLevel('info');
-
 processus.execute(wf, function(err, workflow){
   if(!err) {
-    console.log(workflow);
+    console.log(workflow.tasks['task 1'].data.stdout);
   }
 });
+
 ```
 
 <hr>
