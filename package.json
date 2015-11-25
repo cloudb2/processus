@@ -1,6 +1,6 @@
 {
   "name": "processus",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "A simple node workflow engine",
   "homepage": "http://cloudb2.github.io/processus/",
   "engine": {

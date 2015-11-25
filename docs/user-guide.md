@@ -124,12 +124,13 @@ processus.execute(wf, function(err, workflow){
 5. Reference data from workflow to tasks
 6. Call a workflow from a workflow
 7. Extensible task handlers
-8. Task handlers included for
-  * testing
-  * executing local commands
-  * calling other workflows
-  * making HTTP requests
-  * evaluating conditional statements
+8. Task handlers included
+  * testHandler: testing Processus workflows
+  * execHandler: executing local commands
+  * workflowHandler: for calling other workflows
+  * requestHandler: making HTTP requests
+  * conditionHandler: evaluating conditional statements
+  * expectHandler: testing assertions with expect
 9. Built in persistence (file based)
 10. Inject workflow with additional tasks
 11. Support for environment variables
