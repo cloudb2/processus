@@ -77,7 +77,7 @@ var wf = {
   "description": "An example workflow using the API.",
   "tasks":{
     "task 1": {
-      "description": "I am the task 1, I take 1500msecs.",
+      "description": "Demo task to execute echo command.",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
       "data": {

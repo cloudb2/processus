@@ -84,14 +84,14 @@ Options:
 [top](#processus)
 ### Usage API
 ```
-vvar processus = require('processus');
+var processus = require('processus');
 
 var wf = {
   "name": "Example Workflow",
   "description": "An example workflow using the API.",
   "tasks":{
     "task 1": {
-      "description": "I am the task 1, I take 1500msecs.",
+      "description": "Demo task to execute echo command.",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
       "data": {
