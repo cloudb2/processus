@@ -23,7 +23,8 @@
     "test14": "./bin/processus-cli -l info -f ./test/demo14.json",
     "test15": "./bin/processus-cli -l info -f ./test/demo15.json",
     "test17": "./bin/processus-cli -l info -f ./test/demo17.json",
-    "testDelete": "./bin/processus-cli -l info -f ./test/demoDelete.json"
+    "testDelete": "./bin/processus-cli -l info -f ./test/demoDelete.json",
+    "testExpectations": "./bin/processus-cli -l info -f ./test/expectations.json"
   },
   "tasks":{
     "Test Demo 1": {
@@ -195,6 +196,14 @@
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test17]"
+      }
+    },
+    "Test Expect Handler": {
+      "description": "Test Expect Handler",
+      "blocking": $env[TEST_TASKS_BLOCKING],
+      "handler" : "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "$[static.testExpectations]"
       }
     },
     "wait for tests": {

@@ -29,6 +29,7 @@ workflows.
     * [requestHandler](#requesthandler)
     * [workflowHandler](#workflowhandler)
     * [conditionHandler](#conditionhandler)
+    * [expectHandler](#expecthandler)
 
 <hr>
 
@@ -1708,3 +1709,37 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
 
 See ```demo17``` for an example of how the ```conditionHandler``` and it's results are used
 for driving the ```skipIf``` property of subsequent tasks, thus controlling execution flow.
+
+[top](#processus)
+#### expectHandler
+
+```
+/* Expect Handler
+ * A wraper for node expect module
+ * see https://github.com/mjackson/expect for usage
+ * supported expect names are:
+ * toExist
+   toNotExist
+   toBe
+   toNotBe
+   toEqual
+   toNotEqual
+   toBeA
+   toNotBeA
+   toMatch
+   toBeLessThan
+   toBeGreaterThan
+   toInclude
+   toExclude
+ *
+ * INPUT
+ * @param task.data.expectations is an object consisting of expects. e.g.
+     [expect name]{
+       "object": [object to test],
+       "value":  [value to expect],
+       "message": [A message to return upon failure]
+     }
+ */
+```
+
+See ```expectations.json``` for an example of how the use the ```expectHandler```
