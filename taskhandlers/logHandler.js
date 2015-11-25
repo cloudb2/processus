@@ -32,7 +32,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
       logger.warn(task.data.log);
       break;
     default:
-      logger.warn("logHander failed to find loglevel " + task.data.level);
+      logger.warn("logHander failed to find loglevel [" + task.data.level + "] in task ["+ taskName + "]");
   }
 
   callback(null, task);

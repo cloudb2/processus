@@ -229,6 +229,7 @@ function realExecute(workflow, callback) {
                   t2.errorIf === true ||
                   t2.handler === '' ||
                   t2.handler === undefined);
+
       if (!skip) {
         //No error or skip condition so execute handler
         logger.info("⧖ Starting task [" + n2 + "]");
@@ -271,7 +272,7 @@ function realExecute(workflow, callback) {
       }
       else {
         if(t2.skipIf === true) {
-          logger.info("skipping [" + n2 + "]");
+          logger.debug("skipping handler for task [" + n2 + "]");
         }
         //Ok, we're skipping the handler is that because errorIf is true?
         var err = null;

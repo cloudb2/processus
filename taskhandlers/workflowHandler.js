@@ -33,7 +33,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
       }
     });
     if(workflowTaskJSON === undefined){
-      callback(new Error("Unable to find workflow definition [" + task.data.file + "]"), task);
+      callback(new Error("Unable to find workflow definition [" + task.data.file + "] in task ["+ taskName + "]"), task);
       return;
     }
   }

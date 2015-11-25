@@ -23,11 +23,12 @@ workflows.
   * [Deleting Workflows](#deleting-workflows)
   * [API](#api)
   * [Handlers](#handlers)
-    * [execHandler](#execHandle)
-    * [logHandler](#logHandle)
-    * [testHandler](#testHandler)
-    * [requestHandler](#requestHandler)
-    * [workflowHandler](#workflowHandler)
+    * [execHandler](#exechandler)
+    * [logHandler](#loghandler)
+    * [testHandler](#testhandler)
+    * [requestHandler](#requesthandler)
+    * [workflowHandler](#workflowhandler)
+    * [conditionHandler](#conditionhandler)
 
 <hr>
 
@@ -1510,7 +1511,7 @@ debug: {
 info: ✰ Workflow [test/demo12.json] with id [60946ca2-af30-4a78-babb-3b1d80a09ed2] completed successfully.
 ```
 
-### workflowHandler
+#### workflowHandler
 ```
 /* Workflow Handler
  * This handle will attempt to load supplied file or execute the supplied workflow
@@ -1633,3 +1634,44 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
 ***Note***
 
 1.  the parent workflow contains one task ```call demo1 workflow``` which contains the ```data.workflow``` property which contains the resulting ```demo1.json``` workflow.
+
+#### workflowHandler
+
+```
+/* Condition Handler
+ * A very simple condition evaluation handler for non programmers
+ * INPUT
+ * @param task.data.conditions Condition objects consisting of
+  "[condition name]"{
+    "valueA":[ValueA],
+    "operator":[operator],
+    "valueB":[valueB]
+  }
+ * where [operator] must be one of the following:
+ * "IS", "EQUALS", "=", "MATCH"
+ * "IS NOT", "NOT EQUALS", "!=", "NOT MATCH",
+ * "GREATER THAN", ">",
+ * "LESS THAN", "<",
+ * "GREATER OR EQUALS", ">=",
+ * "LESS OR EQUALGS", "<="
+ * (note case is ignored)
+ * OUTPUT
+ * @param task.data.conditions each condition is updated to include a result e.g.
+ "[condition name]"{
+   "valueA":[ValueA],
+   "operator":[operator],
+   "valueB":[valueB],
+   "valid": [true if condition is valid],
+   "invalid": [true if condition is invalid]
+ }
+ * @param task.data.anyValid true if ANY condition evaluates to true
+ * @param task.data.allValid true if ALL conditions evaluate to true
+ * @param task.data.anyInvalid convenience property to show !anyValid
+ * @param task.data.allInvalid convenience property to show !allValid
+ */
+```
+
+***Note***
+
+See ```demo17``` for an example of how the ```conditionHandler``` and it's results are used
+for driving the ```skipIf``` property of subsequent tasks, thus controlling execution flow.
