@@ -53,6 +53,7 @@ cd processus
 npm install
 ```
 
+[top](#processus)
 ### Usage CLI
 ```
 $ ./bin/processus-cli -h
@@ -80,6 +81,7 @@ Options:
   -h, --help             Display help and usage details
 ```
 
+[top](#processus)
 ### Usage API
 ```
 var processus = require('processus');
@@ -110,6 +112,7 @@ processus.execute(wf, function(err, workflow){
 
 <hr>
 
+[top](#processus)
 ## Using Processus
 
 ### Features
@@ -128,6 +131,7 @@ processus.execute(wf, function(err, workflow){
 12. Inspect executed workflows and look back through their history
 13. Update in-flight (pending) workflows with async callbacks
 
+[top](#processus)
 ### Workflow
 
 A workflow in Processus is defined using JSON, which should conform to a specific structure. The best way to understand that structure is by looking at examples.
@@ -202,6 +206,7 @@ info: ✰ Workflow [./test/ex1.json] with id [307e7633-c820-4f78-b739-9af50d7a56
 1. The status and id have been added by Processus
 2. The workflow remains open as there are NO tasks to execute
 
+[top](#processus)
 ### Tasks
 
 Consider the following workflow.
@@ -334,6 +339,7 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
   * ```pending``` A handler has finished executing but a response is pending. i.e. it is expected that the workflow will be updated at some point in the future from an async callback.
   * ```error``` An error occured during execution of the handler
 
+[top](#processus)
 ### Testing Tasks
 
 Processus comes with a ```testHandler``` that mimics a task by waiting for a specific period of time and then returning.
@@ -395,6 +401,7 @@ info: ✔ task task 3 completed successfully.
 info: ✰ Workflow [./test/demo1.json] with id [79893dc3-7bcd-4596-bfc4-3c4380b04775] completed successfully.
 ```
 
+[top](#processus)
 ### Parallel Tasks
 
 Above, the tasks were executed in series (i.e. one after the other). It's possible to execute tasks in parallel by setting the ```blocking``` property of a task to ```false```.
@@ -459,6 +466,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
 1. All 3 tasks started before any had finished
 2. The task completed in reverse order because the time difference
 
+[top](#processus)
 ### Nested Tasks
 
 Tasks can be nested as shown in ```demo3.json```
@@ -556,6 +564,7 @@ info: ✰ Workflow [./test/demo3.json] with id [7e1a009b-024b-4cd9-84f2-0c1fb3fc
 
 **Notice** that task ```task 2-1``` and ```task 2-2``` are completed before the parent task ```task 2``` is executed.
 
+[top](#processus)
 ### Passing Data Between Tasks
 
 Processus supports a very simple mechanism for referencing data between tasks.
@@ -670,6 +679,7 @@ debug: {
 info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f979689f6] completed successfully.
 ```
 
+[top](#processus)
 ### Passing Static Data
 
 As with the earlier example, it's also possible to pass static data from the parent workflow to each task.
@@ -714,6 +724,7 @@ Consider demo7.json
 ```
 In this case each task's ```delay``` property will be substituted with the ```global-delay``` property of the workflow.
 
+[top](#processus)
 ### Handling Errors
 
 The ```testHandler``` can force an error. To see the affect this has on the workflow consider demo8.json
@@ -821,6 +832,7 @@ debug: {
 2.  The workflow is also in the ```error``` state.
 3.  Task 3 is in the ```waiting``` state.
 
+[top](#processus)
 #### ignoreError Property
 
 It's possible for a task to have an ignoreError property. If set to true, any errors for a task will be logged in the ```errorMsg``` property and the task state will be set to ```completed```.
@@ -848,6 +860,7 @@ info: ✰ Workflow [./test/demo8a.json] with id [0f7033d7-3edf-4a8b-a4af-a0bc32c
 
 ```
 
+[top](#processus)
 ### Task Conditions - skipIf and errorIf
 
 Tasks can have the extra properties ```skipIf``` and ```errorIf```.
@@ -915,6 +928,7 @@ error: ✘ Task [task 3] has error condition set.
 error: ✘ Workflow [test/demo10.json] with id [90727723-da21-46e4-8ac3-b5e132b2bab8] exited with error!
 ```
 
+[top](#processus)
 ### Environment Variables
 
 It's possible to 'inject' environment variables into your workflow.
@@ -969,6 +983,7 @@ info: TEST_ENV = HELLO, WORLD
 info: ✰ Workflow [test/demo14.json] with id [f8442a63-dffd-4247-9eb7-44fac3a4df34] completed successfully.
 ```
 
+[top](#processus)
 ### Workflow History
 
 Processus supports the ability to inspect existing workflows and walk back through the history.
@@ -1183,6 +1198,7 @@ info: {
 1. We now see the workflow when it was first opened.
 2. Any attempt to rewind beyond the instantiation of the workflow will result in the following warning ```warn: rewind value [4] is before the workflow started, assuming the oldest [3].```
 
+[top](#processus)
 ### Deleting Workflows
 
 It's possible to delete workflow instances and it's associated history.
@@ -1212,6 +1228,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 
 ## API
 
+[top](#processus)
 ### execute(workflow, callback)
 ```
 /**
@@ -1221,6 +1238,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
  */
 ```
 
+[top](#processus)
 ### updateWorkflow(workflowId, tasks, callback)
 ```
 /**
@@ -1233,6 +1251,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
  */
 ```
 
+[top](#processus)
 ### setLogLevel(level)
 ```
 /**
@@ -1241,6 +1260,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
  */
 ```
 
+[top](#processus)
 ### getWorkflow(workflowId, rewind, callback)
 ```
 /**
@@ -1252,6 +1272,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
  */
 ```
 
+[top](#processus)
 ### deleteWorkflow(workflowId, callback)
 ```
 /**
@@ -1261,6 +1282,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
  */
 ```
 
+[top](#processus)
 ### deleteALL(callback)
 ```
 /**
@@ -1269,6 +1291,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
  */
 ```
 
+[top](#processus)
 ### Handlers
 
 Handlers are where the real work gets done in Processus and follow a simple interface.
@@ -1286,6 +1309,7 @@ function(workflowId, taskName, task, callback, logger)
 
 Processus comes with a number of task handlers. It's recommended that you study these, should you wish to write or extend your own.
 
+[top](#processus)
 #### execHandler
 ```
 /* Exec Handler
@@ -1301,6 +1325,7 @@ Processus comes with a number of task handlers. It's recommended that you study 
  */
 ```
 
+[top](#processus)
 #### logHandler
 ```
 /* Log Handler
@@ -1311,6 +1336,7 @@ Processus comes with a number of task handlers. It's recommended that you study 
  */
 ```
 
+[top](#processus)
 #### testHandler
 ```
 /* Test Handler
@@ -1322,6 +1348,7 @@ Processus comes with a number of task handlers. It's recommended that you study 
 */
 ```
 
+[top](#processus)
 #### requestHandler
 ```
 /* Request Handler
@@ -1511,6 +1538,7 @@ debug: {
 info: ✰ Workflow [test/demo12.json] with id [60946ca2-af30-4a78-babb-3b1d80a09ed2] completed successfully.
 ```
 
+[top](#processus)
 #### workflowHandler
 ```
 /* Workflow Handler
@@ -1635,7 +1663,8 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
 
 1.  the parent workflow contains one task ```call demo1 workflow``` which contains the ```data.workflow``` property which contains the resulting ```demo1.json``` workflow.
 
-#### workflowHandler
+[top](#processus)
+#### conditionHandler
 
 ```
 /* Condition Handler
