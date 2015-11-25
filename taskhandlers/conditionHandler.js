@@ -26,8 +26,8 @@
  }
  * @param task.data.anyValid true if ANY condition evaluates to true
  * @param task.data.allValid true if ALL conditions evaluate to true
- * @param task.data.anyInvalid convenience property to show !anyValid
- * @param task.data.allInvalid convenience property to show !allValid
+ * @param task.data.notAnyValid convenience property to show !anyValid
+ * @param task.data.notAllValid convenience property to show !allValid
  */
 module.exports = function(workflowId, taskName, task, callback, logger){
 
@@ -132,7 +132,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
   }
 
   task.data.notAllValid = !task.data.allValid;
-  task.data.notAnyResult = !task.data.anyValid;
+  task.data.notAnyValid = !task.data.anyValid;
 
   //logger.info("✔ task [" + taskName + "] completed successfully.");
   callback(null, task);

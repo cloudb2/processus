@@ -24,7 +24,7 @@ function execute(workflow, callback){
 
 /**
  * updates an existing workflow with the supplied tasks. i.e. When a an already
- * instantiated workflow has a task in status pending, this function as a callback
+ * instantiated workflow has a task in status paused, this function as a callback
  * for any async endpoint wishing to respond.
  * @param workflowId The UUID of the instantiated workflow
  * @param tasks The updated task(s) to be 'injected' into the instantiated workflow

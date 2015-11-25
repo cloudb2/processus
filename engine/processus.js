@@ -197,11 +197,11 @@ function realExecute(workflow, callback) {
     }
   });
 
-  //Check there's any pending tasks, if so we assume Async and exit current workflow
-  var pendingTasks = getTasksByStatus(workflow, 'pending', true);
-  var pendingTaskNames = Object.keys(pendingTasks);
-  if(pendingTaskNames.length > 0) {
-    logger.debug("found pending task(s) so returning immediately");
+  //Check there's any paused tasks, if so we assume Async and exit current workflow
+  var pausedTasks = getTasksByStatus(workflow, 'paused', true);
+  var pausedTaskNames = Object.keys(pausedTasks);
+  if(pausedTaskNames.length > 0) {
+    logger.debug("found paused task(s) so returning immediately");
     callback(null, workflow);
     return;
   }
@@ -255,9 +255,9 @@ function realExecute(workflow, callback) {
               t2returned.handlerDuration = t2returned.timeCompleted - t2returned.timeStarted;
               t2returned.totalDuration = t2returned.timeCompleted - t2returned.timeOpened;
             }
-            //If the task is pending (as marked by the hander) then we assume
+            //If the task is paused (as marked by the hander) then we assume
             //an async call that will return in the future
-            if(t2returned.status === 'pending'){
+            if(t2returned.status === 'paused'){
               t2returned.handlerDuration = Date.now() - t2returned.timeStarted;
             }
             //callback to Async

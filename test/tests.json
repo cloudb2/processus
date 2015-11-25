@@ -22,7 +22,8 @@
     "test13a": "./bin/processus-cli -l info -f ./test/demo13a.json",
     "test14": "./bin/processus-cli -l info -f ./test/demo14.json",
     "test15": "./bin/processus-cli -l info -f ./test/demo15.json",
-    "test16": "./bin/processus-cli -l info -f ./test/demo16.json"
+    "test17": "./bin/processus-cli -l info -f ./test/demo17.json",
+    "testDelete": "./bin/processus-cli -l info -f ./test/demoDelete.json"
   },
   "tasks":{
     "Test Demo 1": {
@@ -188,15 +189,23 @@
         "cmd": "$[static.test15]"
       }
     },
+    "Test Demo 17": {
+      "description": "Test Demo 17",
+      "blocking": $env[TEST_TASKS_BLOCKING],
+      "handler" : "../taskhandlers/execHandler",
+      "data": {
+        "cmd": "$[static.test17]"
+      }
+    },
     "wait for tests": {
       "blocking": true
     },
-    "Test Demo 16": {
+    "Test Demo Delete": {
       "description": "Test Demo 16",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test16]"
+        "cmd": "$[static.testDelete]"
       }
     },
     "run jshint": {

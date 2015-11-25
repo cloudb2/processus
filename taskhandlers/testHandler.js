@@ -4,7 +4,7 @@
  * INPUT
  * @param task.data.error Set true to simulate an error
  * @param task.data.delay Set delay time (msecs) to simulate execution before returning
- * @param task.data.pending Set true to simulate a pending status returned from a module
+ * @param task.data.paused Set true to simulate a paused status returned from a module
 */
 module.exports = function(workflowId, taskName, task, callback, logger){
 
@@ -21,9 +21,9 @@ module.exports = function(workflowId, taskName, task, callback, logger){
     err = new Error("task [" + taskName + "] is raising a deliberate error");
   }
 
-  //mimic a pending status if asked?
-  if(task.data.pending === true){
-    task.status = "pending";
+  //mimic a paused status if asked?
+  if(task.data.paused === true){
+    task.status = "paused";
   }
 
   //Get time out and wait accordingly

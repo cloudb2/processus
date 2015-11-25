@@ -12,7 +12,7 @@
       data:
         cmd: "$[static.test1]"
     run jshint for taskhandlers:
-      description: "run jshint for engine"
+      description: "run jshint for taskhandlers"
       blocking: true
       handler: "../taskhandlers/execHandler"
       data:

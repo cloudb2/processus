@@ -116,7 +116,7 @@ processus.execute(wf, function(err, workflow){
 10. Inject workflow with additional tasks
 11. Support for environment variables
 12. Inspect executed workflows and look back through their history
-13. Update in-flight (pending) workflows with async callbacks
+13. Update in-flight (paused) workflows with async callbacks
 
 ### Workflow
 
@@ -322,7 +322,7 @@ info: ✰ Workflow [./test/ex2.json] with id [e83de778-d64b-403f-b29d-c305c9f854
   * ```open``` It is opened by Processus
   * ```executing``` The handler associated with this task is currently executing
   * ```completed``` The task has completed successfully
-  * ```pending``` A handler has finished executing but a response is pending. i.e. it is expected that the workflow will be updated at some point in the future from an async callback.
+  * ```paused``` A handler has finished executing but a response is paused. i.e. it is expected that the workflow will be updated at some point in the future from an async callback.
   * ```error``` An error occured during execution of the handler
 
 See the [User Guide](http://cloudb2.github.io/processus/) for much more!
@@ -331,7 +331,7 @@ See the [User Guide](http://cloudb2.github.io/processus/) for much more!
 
 Yes, please.
 
-Make a pull requests and ensure you can run ```./runtests.sh``` successfully. Please add additional tests for any new features/mods you make.
+Make a pull requests and ensure you can run ```./rundemos.sh``` successfully. Please add additional tests for any new features/mods you make.
 
 ### Roadmap
 * Workflow Persistence Plugin Architecture

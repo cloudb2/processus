@@ -133,7 +133,7 @@ processus.execute(wf, function(err, workflow){
 10. Inject workflow with additional tasks
 11. Support for environment variables
 12. Inspect executed workflows and look back through their history
-13. Update in-flight (pending) workflows with async callbacks
+13. Update in-flight (paused) workflows with async callbacks
 
 [top](#processus)
 ### Workflow
@@ -340,8 +340,8 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
   * ```open``` It is opened by Processus
   * ```executing``` The handler associated with this task is currently executing
   * ```completed``` The task has completed successfully
-  * ```pending``` A handler has finished executing but a response is pending. i.e. it is expected that the workflow will be updated at some point in the future from an async callback.
-  * ```error``` An error occured during execution of the handler
+  * ```paused``` A handler has finished executing but a response is pending. i.e. it is expected that the workflow will be updated at some point in the future from an async callback.
+  * ```error``` An error occurred during execution of the handler
 
 [top](#processus)
 ### Testing Tasks
@@ -1228,7 +1228,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 
 1. Any instance matching the supplied UUID and associated history is deleted.
 2. It's also possible to deleteALL instances with the ```--deleteALL``` flag
-3. See ```demo15.json``` and ```demo16.json``` for more examples.
+3. See ```demo15.json``` and ```demoDelete.json``` for more examples.
 
 ## API
 
@@ -1247,7 +1247,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 ```
 /**
  * updates an existing workflow with the supplied tasks. i.e. When a an already
- * instantiated workflow has a task in status pending, this function as a callback
+ * instantiated workflow has a task in status paused, this function as a callback
  * for any async endpoint wishing to respond.
  * @param workflowId The UUID of the instantiated workflow
  * @param tasks The updated task(s) to be 'injected' into the instantiated workflow
@@ -1348,7 +1348,7 @@ Processus comes with a number of task handlers. It's recommended that you study 
  * INPUT
  * @param task.data.error Set true to simulate an error
  * @param task.data.delay Set delay time (msecs) to simulate execution before returning
- * @param task.data.pending Set true to simulate a pending status returned from a module
+ * @param task.data.paused Set true to simulate a paused status returned from a module
 */
 ```
 
@@ -1686,7 +1686,7 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
  * "GREATER THAN", ">",
  * "LESS THAN", "<",
  * "GREATER OR EQUALS", ">=",
- * "LESS OR EQUALGS", "<="
+ * "LESS OR EQUALS", "<="
  * (note case is ignored)
  * OUTPUT
  * @param task.data.conditions each condition is updated to include a result e.g.
@@ -1699,8 +1699,8 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
  }
  * @param task.data.anyValid true if ANY condition evaluates to true
  * @param task.data.allValid true if ALL conditions evaluate to true
- * @param task.data.anyInvalid convenience property to show !anyValid
- * @param task.data.allInvalid convenience property to show !allValid
+ * @param task.data.notAnyValid convenience property to show !anyValid
+ * @param task.data.notAllValid convenience property to show !allValid
  */
 ```
 
