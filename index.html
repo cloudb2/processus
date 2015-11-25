@@ -1,25 +1,37 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>Processus by cloudb2</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Processus by cloudb2</title>
   </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Processus</h1>
-      <h2 class="project-tagline">A simple lightweight nodejs workflow engine designed to help orchestrate multiple tasks.</h2>
-      <a href="https://github.com/cloudb2/processus" class="btn">View on GitHub</a>
-      <a href="https://github.com/cloudb2/processus/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/cloudb2/processus/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
 
-    <section class="main-content">
-      <h1>
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Processus</h1>
+          <h2>A simple lightweight nodejs workflow engine designed to help orchestrate multiple tasks.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/cloudb2/processus/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/cloudb2/processus/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/cloudb2/processus" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
 <a id="processus" class="anchor" href="#processus" aria-hidden="true"><span class="octicon octicon-link"></span></a>Processus</h1>
 
 <p>Processus is a simple lightweight workflow engine designed to help orchestrate multiple tasks.</p>
@@ -186,7 +198,7 @@ processus.execute(wf, function(err, workflow){
 <li>Inject workflow with additional tasks</li>
 <li>Support for environment variables</li>
 <li>Inspect executed workflows and look back through their history</li>
-<li>Update in-flight (pending) workflows with async callbacks</li>
+<li>Update in-flight (paused) workflows with async callbacks</li>
 </ol>
 
 <p><a href="#processus">top</a></p>
@@ -419,9 +431,9 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
 <li>
 <code>completed</code> The task has completed successfully</li>
 <li>
-<code>pending</code> A handler has finished executing but a response is pending. i.e. it is expected that the workflow will be updated at some point in the future from an async callback.</li>
+<code>paused</code> A handler has finished executing but a response is pending. i.e. it is expected that the workflow will be updated at some point in the future from an async callback.</li>
 <li>
-<code>error</code> An error occured during execution of the handler</li>
+<code>error</code> An error occurred during execution of the handler</li>
 </ul>
 </li>
 </ol>
@@ -1346,7 +1358,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 <ol>
 <li>Any instance matching the supplied UUID and associated history is deleted.</li>
 <li>It's also possible to deleteALL instances with the <code>--deleteALL</code> flag</li>
-<li>See <code>demo15.json</code> and <code>demo16.json</code> for more examples.</li>
+<li>See <code>demo15.json</code> and <code>demoDelete.json</code> for more examples.</li>
 </ol>
 
 <h2>
@@ -1371,7 +1383,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 
 <pre><code>/**
  * updates an existing workflow with the supplied tasks. i.e. When a an already
- * instantiated workflow has a task in status pending, this function as a callback
+ * instantiated workflow has a task in status paused, this function as a callback
  * for any async endpoint wishing to respond.
  * @param workflowId The UUID of the instantiated workflow
  * @param tasks The updated task(s) to be 'injected' into the instantiated workflow
@@ -1489,7 +1501,7 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
  * INPUT
  * @param task.data.error Set true to simulate an error
  * @param task.data.delay Set delay time (msecs) to simulate execution before returning
- * @param task.data.pending Set true to simulate a pending status returned from a module
+ * @param task.data.paused Set true to simulate a paused status returned from a module
 */
 </code></pre>
 
@@ -1830,7 +1842,7 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
  * "GREATER THAN", "&gt;",
  * "LESS THAN", "&lt;",
  * "GREATER OR EQUALS", "&gt;=",
- * "LESS OR EQUALGS", "&lt;="
+ * "LESS OR EQUALS", "&lt;="
  * (note case is ignored)
  * OUTPUT
  * @param task.data.conditions each condition is updated to include a result e.g.
@@ -1843,8 +1855,8 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
  }
  * @param task.data.anyValid true if ANY condition evaluates to true
  * @param task.data.allValid true if ALL conditions evaluate to true
- * @param task.data.anyInvalid convenience property to show !anyValid
- * @param task.data.allInvalid convenience property to show !allValid
+ * @param task.data.notAnyValid convenience property to show !anyValid
+ * @param task.data.notAllValid convenience property to show !allValid
  */
 </code></pre>
 
@@ -1852,15 +1864,15 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
 
 <p>See <code>demo17</code> for an example of how the <code>conditionHandler</code> and it's results are used
 for driving the <code>skipIf</code> property of subsequent tasks, thus controlling execution flow.</p>
+        </section>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/cloudb2/processus">Processus</a> is maintained by <a href="https://github.com/cloudb2">cloudb2</a>.</span>
+        <footer>
+          Processus is maintained by <a href="https://github.com/cloudb2">cloudb2</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
-
-    </section>
-
-  
+        
+      </div>
+    </div>
   </body>
 </html>
