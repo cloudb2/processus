@@ -75,6 +75,7 @@ workflows.</p>
 <li><a href="#requesthandler">requestHandler</a></li>
 <li><a href="#workflowhandler">workflowHandler</a></li>
 <li><a href="#conditionhandler">conditionHandler</a></li>
+<li><a href="#expecthandler">expectHandler</a></li>
 </ul>
 </li>
 </ul>
@@ -184,14 +185,15 @@ processus.execute(wf, function(err, workflow){
 <li>Reference data from workflow to tasks</li>
 <li>Call a workflow from a workflow</li>
 <li>Extensible task handlers</li>
-<li>Task handlers included for
+<li>Task handlers included
 
 <ul>
-<li>testing</li>
-<li>executing local commands</li>
-<li>calling other workflows</li>
-<li>making HTTP requests</li>
-<li>evaluating conditional statements</li>
+<li>testHandler: testing Processus workflows</li>
+<li>execHandler: executing local commands</li>
+<li>workflowHandler: for calling other workflows</li>
+<li>requestHandler: making HTTP requests</li>
+<li>conditionHandler: evaluating conditional statements</li>
+<li>expectHandler: testing assertions with expect</li>
 </ul>
 </li>
 <li>Built in persistence (file based)</li>
@@ -1864,6 +1866,41 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
 
 <p>See <code>demo17</code> for an example of how the <code>conditionHandler</code> and it's results are used
 for driving the <code>skipIf</code> property of subsequent tasks, thus controlling execution flow.</p>
+
+<p><a href="#processus">top</a></p>
+
+<h4>
+<a id="expecthandler" class="anchor" href="#expecthandler" aria-hidden="true"><span class="octicon octicon-link"></span></a>expectHandler</h4>
+
+<pre><code>/* Expect Handler
+ * A wraper for node expect module
+ * see https://github.com/mjackson/expect for usage
+ * supported expect names are:
+ * toExist
+   toNotExist
+   toBe
+   toNotBe
+   toEqual
+   toNotEqual
+   toBeA
+   toNotBeA
+   toMatch
+   toBeLessThan
+   toBeGreaterThan
+   toInclude
+   toExclude
+ *
+ * INPUT
+ * @param task.data.expectations is an object consisting of expects. e.g.
+     [expect name]{
+       "object": [object to test],
+       "value":  [value to expect],
+       "message": [A message to return upon failure]
+     }
+ */
+</code></pre>
+
+<p>See <code>expectations.json</code> for an example of how the use the <code>expectHandler</code></p>
         </section>
 
         <footer>
