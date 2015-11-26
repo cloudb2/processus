@@ -23,7 +23,7 @@
     test15: "./bin/processus-cli -l info -f ./test/demo15.yml"
     test17: "./bin/processus-cli -l info -f ./test/demo17.yml"
     testDelete: "./bin/processus-cli -l info -f ./test/demoDelete.yml"
-    testExpectations: "./bin/processus-cli -l info -f ./test/expectations.json"
+    testExpectations: "./bin/processus-cli -l info -f ./test/expectations.yml"
   tasks:
     Test Demo 1:
       description: "Test Demo 1"

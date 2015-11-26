@@ -1,11 +1,12 @@
 {
-  "name": "Expectations",
-  "description": "Test the expectat handler",
+  "name": "Test The Expect Module",
+  "description": "Test the expect handler",
   "tasks":{
     "Great Expectations": {
       "description": "Test the expect Handler",
       "blocking": true,
       "handler" : "../taskhandlers/expectHandler",
+      "ignoreError": false,
       "data": {
         "expectations": {
           "toExist": {
@@ -17,7 +18,7 @@
             "message": "toNotExist failed!"
           },
           "toBe": {
-            "object": 42,
+            "object": 142,
             "value": 42,
             "message": "toBe failed!"
           },
@@ -81,7 +82,6 @@
             "value": "[orl]",
             "message": "toMatch failed!"
           }
-
         }
       }
     }

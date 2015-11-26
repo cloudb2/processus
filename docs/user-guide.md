@@ -1718,27 +1718,39 @@ for driving the ```skipIf``` property of subsequent tasks, thus controlling exec
 /* Expect Handler
  * A wraper for node expect module
  * see https://github.com/mjackson/expect for usage
- * supported expect names are:
+ * supported expect functions are:
  * toExist
-   toNotExist
-   toBe
-   toNotBe
-   toEqual
-   toNotEqual
-   toBeA
-   toNotBeA
-   toMatch
-   toBeLessThan
-   toBeGreaterThan
-   toInclude
-   toExclude
+ * toNotExist
+ * toBe
+ * toNotBe
+ * toEqual
+ * toNotEqual
+ * toBeA
+ * toNotBeA
+ * toMatch
+ * toBeLessThan
+ * toBeGreaterThan
+ * toInclude
+ * toExclude
  *
  * INPUT
  * @param task.data.expectations is an object consisting of expects. e.g.
-     [expect name]{
+     [expect function]{
        "object": [object to test],
        "value":  [value to expect],
        "message": [A message to return upon failure]
+     }
+ * OUTPUT
+ * if task.ignoreError = false
+ *    Each expect object is furnished with an assertion true or an error
+ * if task.ignoreError = true
+ *    Each expect object is furnished with an assertion true or false (errors are suppressed)
+ *
+     [expect function]{
+       "object": [object to test],
+       "value":  [value to expect],
+       "message": [A message to return upon failure]
+       "assertion": [true | false]
      }
  */
 ```

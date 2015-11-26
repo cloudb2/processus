@@ -1,0 +1,74 @@
+---
+  name: "Test The Expect Module"
+  description: "Test the expect handler"
+  tasks:
+    Great Expectations:
+      description: "Test the expect Handler"
+      blocking: true
+      handler: "../taskhandlers/expectHandler"
+      data:
+        expectations:
+          toExist:
+            object: "something truthy"
+            message: "toExist failed!"
+          toNotExist:
+            object: null
+            message: "toNotExist failed!"
+          toBe:
+            object: 42
+            value: 42
+            message: "toBe failed!"
+          toNotBe:
+            object: 42
+            value: 0
+            message: "toNotBe failed!"
+          toEqual:
+            object:
+              someobject: "equal"
+            value:
+              someobject: "equal"
+            message: "toEqual failed!"
+          toNotEqual:
+            object:
+              someobject: "equal"
+            value:
+              someobject: "notequal"
+            message: "toNotEqual failed!"
+          toBeA:
+            object:
+              someobject: "equal"
+            value: "object"
+            message: "toBeA failed!"
+          toNotBeA:
+            object:
+              someobject: "equal"
+            value: "string"
+            message: "toNotBeA failed!"
+          toBeLessThan:
+            object: 2
+            value: 42
+            message: "toBeLessThan failed!"
+          toBeGreaterThan:
+            object: 42
+            value: 2
+            message: "toBeGreaterThan failed!"
+          toInclude:
+            object:
+              - 1
+              - 2
+              - 3
+              - 4
+            value: 2
+            message: "toInclude failed!"
+          toExclude:
+            object:
+              - 1
+              - 2
+              - 3
+              - 4
+            value: 5
+            message: "toExclude failed!"
+          toMatch:
+            object: "hello world"
+            value: "[orl]"
+            message: "toMatch failed!"
