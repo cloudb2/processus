@@ -4,10 +4,10 @@ var store = require('../engine/persistence/store');
 
 /* Workflow Handler
  * This handle will attempt to load supplied file or execute the supplied workflow
- * INPUT
+ * Task INPUT
  * @param task.data.file The workflow definition file name (if no workflow supplied)
  * @param task.data.workflow A workflow object to execute
- * OUTPUT
+ * Task OUTPUT
  * @param task.data.workflow The resulting workflow object
  */
 module.exports = function(workflowId, taskName, task, callback, logger){

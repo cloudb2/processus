@@ -1,6 +1,6 @@
 {
   "name": "processus",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "A simple node workflow engine",
   "homepage": "http://cloudb2.github.io/processus/",
   "engine": {
@@ -40,6 +40,7 @@
     "js-yaml": "^3.4.3",
     "node-uuid": "^1.4.3",
     "request": "^2.66.0",
+    "underscore": "^1.8.3",
     "winston": "^1.1.0"
   }
 }

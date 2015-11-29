@@ -1,7 +1,7 @@
 
 /* Test Handler
  * Used to test tasks within a workflow
- * INPUT
+ * Task INPUT
  * @param task.data.error Set true to simulate an error
  * @param task.data.delay Set delay time (msecs) to simulate execution before returning
  * @param task.data.paused Set true to simulate a paused status returned from a module

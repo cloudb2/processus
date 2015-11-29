@@ -18,14 +18,14 @@ var expect = require('expect');
  * toInclude
  * toExclude
  *
- * INPUT
+ * Task INPUT
  * @param task.data.expectations is an object consisting of expects. e.g.
      [expect function]{
        "object": [object to test],
        "value":  [value to expect],
        "message": [A message to return upon failure]
      }
- * OUTPUT
+ * Task OUTPUT
  * if task.ignoreError = false
  *    Each expect object is furnished with an assertion true or an error
  * if task.ignoreError = true

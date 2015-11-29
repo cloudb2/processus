@@ -1,6 +1,6 @@
 /* Condition Handler
  * A very simple condition evaluation handler for non programmers
- * INPUT
+ * Task INPUT
  * @param task.data.conditions Condition objects consisting of
   "[condition name]"{
     "valueA":[ValueA],
@@ -15,7 +15,7 @@
  * "GREATER OR EQUALS", ">=",
  * "LESS OR EQUALS", "<="
  * (note case is ignored)
- * OUTPUT
+ * Task OUTPUT
  * @param task.data.conditions each condition is updated to include a result e.g.
  "[condition name]"{
    "valueA":[ValueA],

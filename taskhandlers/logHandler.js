@@ -1,7 +1,7 @@
 
 /* Log Handler
  * Logs a the supplied message
- * INPUT
+ * Task INPUT
  * @param task.data.level The log level
  * @param task.data.log The message to log
  */

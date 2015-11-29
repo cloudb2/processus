@@ -30,7 +30,7 @@ var async = require("async");
 var uuid = require("node-uuid");
 var logger = require('./logger');
 var store = require('./persistence/store');
-
+var _ = require("underscore");
 
 module.exports = {
   execute: execute,
@@ -478,7 +478,7 @@ function openTasks(tasks) {
       }
       //if the task is blocking return false to signify to scanAllTasks that we don't
       //to continue scanning
-      return !task.blocking;
+      return !isBlocking(task);
     }
 
     //the task is waiting, so let's open it and check its children (if any)
@@ -490,7 +490,7 @@ function openTasks(tasks) {
         openTasks(task.tasks);
       }
       //if the task is blocking, then don't continue
-      return !task.blocking;
+      return !isBlocking(task);
     }
 
     //carry on!
@@ -544,49 +544,26 @@ function getData(workflow, path){
 function setConditionValues(task){
   //now evaluate any conditions (if any)
   if(task.skipIf !== undefined) {
-    task.skipIf = evalCondition(task.skipIf);
+    task.skipIf = getBoolean(task.skipIf);
   }
   if(task.errorIf !== undefined) {
-    task.errorIf = evalCondition(task.errorIf);
+    task.errorIf = getBoolean(task.errorIf);
   }
 }
 
-/*
-function setRefValue(workflow, ref) {
-  if(typeof ref === "string"){
-    startDelim = ref.indexOf("$[");
-    endDelim = ref.indexOf("]");
-    if (startDelim > -1){
-      var path = ref.substring(startDelim +2, endDelim);
-      var newValue = ref.substring(0, startDelim) + getData(workflow, path) + ref.substring(endDelim + 1, ref.length);
-      logger.debug(ref + " has ref: " + path);
-      logger.debug(ref + " de-referenced value is: " + newValue);
-      return newValue;
-    }
-  }
-
-  //can't convert it, so just return the ref(if it was a ref at all) supplied
-  return ref;
-}
-*/
-
-//evaluate string conidition, but don't not in an eval() way
-function evalCondition(condition) {
-  logger.debug("evaluating condition " + condition);
-  if(condition  === undefined) {
-    return condition;
-  }
-  //check if the condition is a string, if not, just return it.
-  if(!isString(condition)) {
-    return condition;
-  }
-
-  //is it the string 'true'?
-  return (/^true$/i).test(condition.trim().toLowerCase());
-
+function isBlocking(task) {
+  var blocking = getBoolean(task.blocking);
+  return blocking;
 }
 
-//is it a string literal or a String object (yeah, it's a javascript thing)
-function isString(s) {
-  return typeof(s) === 'string' || s instanceof String;
+
+function getBoolean(value) {
+  //Is it a boolean anyway?
+  if(_.isBoolean(value)) {
+    return value;
+  }
+  if(_.isString(value)) {
+    return (value.toLowerCase() === "true");
+  }
+  return false;
 }

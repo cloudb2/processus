@@ -29,7 +29,7 @@
   "tasks":{
     "Test Demo 1": {
       "description": "Test Demo 1",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test1]"
@@ -45,7 +45,7 @@
     },
     "Test Demo 3": {
       "description": "Test Demo 3",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test3]"
@@ -53,7 +53,7 @@
     },
     "Test Demo 3a": {
       "description": "Test Demo 3a",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test3a]"
@@ -61,7 +61,7 @@
     },
     "Test Demo 4": {
       "description": "Test Demo 4",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test4]"
@@ -69,7 +69,7 @@
     },
     "Test Demo 5": {
       "description": "Test Demo 5",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test5]"
@@ -77,7 +77,7 @@
     },
     "Test Demo 6": {
       "description": "Test Demo 6",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test6]"
@@ -85,7 +85,7 @@
     },
     "Test Demo 7": {
       "description": "Test Demo 7",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test7]"
@@ -93,7 +93,7 @@
     },
     "Test Demo 8": {
       "description": "Test Demo 8",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test8]"
@@ -102,7 +102,7 @@
     },
     "Test Demo 8a": {
       "description": "Test Demo 8a",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test8a]"
@@ -111,7 +111,7 @@
     },
     "Test Demo 9": {
       "description": "Test Demo 9",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test9]"
@@ -120,7 +120,7 @@
     },
     "Test Demo 10": {
       "description": "Test Demo 10",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test10]"
@@ -129,7 +129,7 @@
     },
     "Test Demo 11": {
       "description": "Test Demo 11",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "tasks": {
         "Test Demo 11a": {
           "description": "Test Demo 11a",
@@ -152,7 +152,7 @@
     },
     "Test Demo 12": {
       "description": "Test Demo 12",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test12]"
@@ -160,7 +160,7 @@
     },
     "Test Demo 13": {
       "description": "Test Demo 13",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test13]"
@@ -168,7 +168,7 @@
     },
     "Test Demo 13a": {
       "description": "Test Demo 13a",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test13a]"
@@ -176,7 +176,7 @@
     },
     "Test Demo 14": {
       "description": "Test Demo 14",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test14]"
@@ -184,7 +184,7 @@
     },
     "Test Demo 15": {
       "description": "Test Demo 15",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test15]"
@@ -192,7 +192,7 @@
     },
     "Test Demo 17": {
       "description": "Test Demo 17",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.test17]"
@@ -200,7 +200,7 @@
     },
     "Test Expect Handler": {
       "description": "Test Expect Handler",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
         "cmd": "$[static.testExpectations]"

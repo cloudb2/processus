@@ -1,3 +1,6 @@
+var expect = require('expect');
+var _ = require('underscore');
+
 module.exports = {
   parse: parse
 };
@@ -20,11 +23,7 @@ function parse(rawWorkflow){
       //get env var
       envValue = process.env[envKey];
       str = str.replace(envs[x], envValue);
-      
     }
-
-
   }
-
   return str;
 }

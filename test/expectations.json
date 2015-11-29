@@ -18,7 +18,7 @@
             "message": "toNotExist failed!"
           },
           "toBe": {
-            "object": 142,
+            "object": 42,
             "value": 42,
             "message": "toBe failed!"
           },
