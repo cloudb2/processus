@@ -6,7 +6,7 @@
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -15,7 +15,7 @@
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": false
       }
@@ -24,7 +24,7 @@
       "description": "I am the task 3, I take 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 500,
         "error": false
       }
