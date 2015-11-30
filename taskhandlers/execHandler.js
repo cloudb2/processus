@@ -42,7 +42,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
       callback(new Error("exec failed with: [" + stderr + "] in task ["+ taskName + "]"), task);
     }
     else {
-      logger.info("✔ task [" + taskName + "] completed successfully.");
+      //logger.info("✔ task [" + taskName + "] completed successfully.");
       callback(null, task);
     }
 

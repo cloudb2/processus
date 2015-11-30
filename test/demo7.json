@@ -1,7 +1,7 @@
 {
   "name": "Demo7",
-  "description": "A demo showing static data shared from workflow to tasks.",
-  "static":{
+  "description": "A demo showing parameters data shared from workflow to tasks.",
+  "parameters":{
     "global-delay":500,
     "global-error":false
   },
@@ -11,8 +11,8 @@
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
       "data": {
-        "delay": "$[static.global-delay]",
-        "error": "$[static.global-error]"
+        "delay": "$[parameters.global-delay]",
+        "error": "$[parameters.global-error]"
       }
     },
     "task 2": {
@@ -20,8 +20,8 @@
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
       "data": {
-        "delay": "$[static.global-delay]",
-        "error": "$[static.global-error]"
+        "delay": "$[parameters.global-delay]",
+        "error": "$[parameters.global-error]"
       }
     },
     "task 3": {
@@ -29,8 +29,8 @@
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
       "data": {
-        "delay": "$[static.global-delay]",
-        "error": "$[static.global-error]"
+        "delay": "$[parameters.global-delay]",
+        "error": "$[parameters.global-error]"
       }
     }
   }

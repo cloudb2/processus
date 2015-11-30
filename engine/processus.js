@@ -248,6 +248,9 @@ function realExecute(workflow, callback) {
                 err = undefined;
               }
             }
+            else {
+              logger.info("✔ task " + n2 + " completed successfully.");
+            }
             //If the task is executing mark it as completed and update times
             if(t2returned.status === 'executing'){
               t2returned.status = 'completed';

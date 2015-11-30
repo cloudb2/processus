@@ -1,7 +1,7 @@
 ---
   name: Demo7
-  description: A demo showing static data shared from workflow to tasks.
-  static:
+  description: A demo showing parameters data shared from workflow to tasks.
+  parameters:
     global-delay: 500
     global-error: false
   tasks:
@@ -10,19 +10,19 @@
       blocking: true
       handler: "../taskhandlers/testHandler"
       data:
-        delay: "$[static.global-delay]"
-        error: "$[static.global-error]"
+        delay: "$[parameters.global-delay]"
+        error: "$[parameters.global-error]"
     task 2:
       description: "I am the task 2, I take global-delay msecs, which is 500msecs."
       blocking: true
       handler: "../taskhandlers/testHandler"
       data:
-        delay: "$[static.global-delay]"
-        error: "$[static.global-error]"
+        delay: "$[parameters.global-delay]"
+        error: "$[parameters.global-error]"
     task 3:
       description: "I am the task 3, I take global-delay msecs, which is 500msecs."
       blocking: true
       handler: "../taskhandlers/testHandler"
       data:
-        delay: "$[static.global-delay]"
-        error: "$[static.global-error]"
+        delay: "$[parameters.global-delay]"
+        error: "$[parameters.global-error]"

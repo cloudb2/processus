@@ -13,8 +13,8 @@ workflows.
   * [Testing Tasks](#testing-tasks)
   * [Parallel Tasks](#parallel-tasks)
   * [Nested Tasks](#nested-tasks)
-  * [Passing Data Between Tasks](#passing-data-between-tasks)
-  * [Passing Static Data](#passing-static-data)
+  * [Referencing Task Parameters](#referencing-task-parameters)
+  * [Referencing Workflow Parameters](#referencing-workflow-parameters)
   * [Handling Errors](#handling-errors)
     * [ignoreError Property](#ignoreerror-property)
   * [Task Conditions - skipIf and errorIf](#task-conditions---skipif-and-errorif)
@@ -571,7 +571,7 @@ info: ✰ Workflow [./test/demo3.json] with id [7e1a009b-024b-4cd9-84f2-0c1fb3fc
 **Notice** that task ```task 2-1``` and ```task 2-2``` are completed before the parent task ```task 2``` is executed.
 
 [top](#processus)
-### Passing Data Between Tasks
+### referencing Task Parameters
 
 Processus supports a very simple mechanism for referencing data between tasks.
 
@@ -686,14 +686,14 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
 ```
 
 [top](#processus)
-### Passing Static Data
+### Referencing Workflow Parameters
 
-As with the earlier example, it's also possible to pass static data from the parent workflow to each task.
+As with the earlier example, it's also possible to pass parameters from the parent workflow to each task.
 
 Consider demo7.json
 ```
 {
-  "static":{
+  "parameters":{
     "global-delay":500,
     "global-error":false
   },
@@ -703,8 +703,8 @@ Consider demo7.json
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
       "data": {
-        "delay": "$[static.global-delay]",
-        "error": "$[static.global-error]"
+        "delay": "$[parameters.global-delay]",
+        "error": "$[parameters.global-error]"
       }
     },
     "task 2": {
@@ -712,8 +712,8 @@ Consider demo7.json
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
       "data": {
-        "delay": "$[static.global-delay]",
-        "error": "$[static.global-error]"
+        "delay": "$[parameters.global-delay]",
+        "error": "$[parameters.global-error]"
       }
     },
     "task 3": {
@@ -721,8 +721,8 @@ Consider demo7.json
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
       "data": {
-        "delay": "$[static.global-delay]",
-        "error": "$[static.global-error]"
+        "delay": "$[parameters.global-delay]",
+        "error": "$[parameters.global-error]"
       }
     }
   }

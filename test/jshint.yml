@@ -1,7 +1,7 @@
 ---
   name: "jshint testing workflow"
   description: "A workflow that jshint for Processus directories"
-  static:
+  parameters:
     test1: "./node_modules/jshint/bin/jshint ./engine"
     test2: "./node_modules/jshint/bin/jshint ./taskhandlers"
   tasks:
@@ -10,10 +10,10 @@
       blocking: true
       handler: "../taskhandlers/execHandler"
       data:
-        cmd: "$[static.test1]"
+        cmd: "$[parameters.test1]"
     run jshint for taskhandlers:
       description: "run jshint for taskhandlers"
       blocking: true
       handler: "../taskhandlers/execHandler"
       data:
-        cmd: "$[static.test2]"
+        cmd: "$[parameters.test2]"

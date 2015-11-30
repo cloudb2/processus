@@ -1,7 +1,7 @@
 ---
   name: Get Weather Example
   description: Example of calling an API endpoint and getting the response body. Visit http://openweathermap.org/ for an API key.
-  static:
+  parameters:
     api-key: $env[OPENWEATHER_API_KEY]
     city: london
   tasks:
@@ -10,7 +10,7 @@
       handler: "../taskhandlers/requestHandler"
       data:
         options:
-          url: "http://api.openweathermap.org/data/2.5/weather?q=$[static.city]&units=imperial&APPID=$[static.api-key]"
+          url: "http://api.openweathermap.org/data/2.5/weather?q=$[parameters.city]&units=imperial&APPID=$[parameters.api-key]"
           method: "GET"
           json: true
     Report Weather:
@@ -18,4 +18,4 @@
       handler: "../taskhandlers/logHandler"
       data:
         level: info
-        log: "The weather in $[static.city] is $[tasks.Call Weather API.data.body.weather.0.description]"
+        log: "The weather in $[parameters.city] is $[tasks.Call Weather API.data.body.weather.0.description]"

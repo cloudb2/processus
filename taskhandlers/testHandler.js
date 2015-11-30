@@ -32,7 +32,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
     timeout=task.data.delay;
   }
   setTimeout(function(){
-    logger.info("✔ task " + taskName + " completed successfully.");
+    //logger.info("✔ task " + taskName + " completed successfully.");
     callback(err, task);
   }, timeout);
 

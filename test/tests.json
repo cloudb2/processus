@@ -1,7 +1,7 @@
 {
   "name": "processus testing workflow",
   "description": "A workflow that calls all other workflows to test processus. Think inception!",
-  "static" : {
+  "parameters" : {
     "test1": "./bin/processus-cli -l info -f ./test/demo1.json",
     "test2": "./bin/processus-cli -l info -f ./test/demo2.json",
     "test3": "./bin/processus-cli -l info -f ./test/demo3.json",
@@ -32,7 +32,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test1]"
+        "cmd": "$[parameters.test1]"
       }
     },
     "Test Demo 2": {
@@ -40,7 +40,7 @@
       "blocking": $env[TEST_TASKS_BLOCKING],
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test2]"
+        "cmd": "$[parameters.test2]"
       }
     },
     "Test Demo 3": {
@@ -48,7 +48,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test3]"
+        "cmd": "$[parameters.test3]"
       }
     },
     "Test Demo 3a": {
@@ -56,7 +56,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test3a]"
+        "cmd": "$[parameters.test3a]"
       }
     },
     "Test Demo 4": {
@@ -64,7 +64,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test4]"
+        "cmd": "$[parameters.test4]"
       }
     },
     "Test Demo 5": {
@@ -72,7 +72,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test5]"
+        "cmd": "$[parameters.test5]"
       }
     },
     "Test Demo 6": {
@@ -80,7 +80,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test6]"
+        "cmd": "$[parameters.test6]"
       }
     },
     "Test Demo 7": {
@@ -88,7 +88,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test7]"
+        "cmd": "$[parameters.test7]"
       }
     },
     "Test Demo 8": {
@@ -96,7 +96,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test8]"
+        "cmd": "$[parameters.test8]"
       },
       "ignoreError": true
     },
@@ -105,7 +105,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test8a]"
+        "cmd": "$[parameters.test8a]"
       },
       "ignoreError": true
     },
@@ -114,7 +114,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test9]"
+        "cmd": "$[parameters.test9]"
       },
       "ignoreError": true
     },
@@ -123,7 +123,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test10]"
+        "cmd": "$[parameters.test10]"
       },
       "ignoreError": true
     },
@@ -136,7 +136,7 @@
           "blocking": true,
           "handler" : "../taskhandlers/workflowHandler",
           "data": {
-            "file": "$[static.test11a]"
+            "file": "$[parameters.test11a]"
           }
         },
         "Test Demo 11b": {
@@ -144,7 +144,7 @@
           "blocking": true,
           "handler" : "../taskhandlers/workflowHandler",
           "data": {
-            "file": "$[static.test11b]",
+            "file": "$[parameters.test11b]",
             "id": "$[tasks.Test Demo 11.tasks.Test Demo 11a.data.workflow.id]"
           }
         }
@@ -155,7 +155,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test12]"
+        "cmd": "$[parameters.test12]"
       }
     },
     "Test Demo 13": {
@@ -163,7 +163,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test13]"
+        "cmd": "$[parameters.test13]"
       }
     },
     "Test Demo 13a": {
@@ -171,7 +171,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test13a]"
+        "cmd": "$[parameters.test13a]"
       }
     },
     "Test Demo 14": {
@@ -179,7 +179,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test14]"
+        "cmd": "$[parameters.test14]"
       }
     },
     "Test Demo 15": {
@@ -187,7 +187,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test15]"
+        "cmd": "$[parameters.test15]"
       }
     },
     "Test Demo 17": {
@@ -195,7 +195,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.test17]"
+        "cmd": "$[parameters.test17]"
       }
     },
     "Test Expect Handler": {
@@ -203,7 +203,7 @@
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.testExpectations]"
+        "cmd": "$[parameters.testExpectations]"
       }
     },
     "wait for tests": {
@@ -214,7 +214,7 @@
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
       "data": {
-        "cmd": "$[static.testDelete]"
+        "cmd": "$[parameters.testDelete]"
       }
     },
     "run jshint": {
@@ -222,7 +222,7 @@
       "blocking": true,
       "handler" : "../taskhandlers/workflowHandler",
       "data": {
-        "file": "$[static.jshint]"
+        "file": "$[parameters.jshint]"
       }
     },
     "show success": {
