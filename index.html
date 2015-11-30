@@ -1,37 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta charset="UTF-8">
     <title>Processus by cloudb2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
-    <div id="container">
-      <div class="inner">
+    <section class="page-header">
+      <h1 class="project-name">Processus</h1>
+      <h2 class="project-tagline">A simple lightweight nodejs workflow engine designed to help orchestrate multiple tasks.</h2>
+      <a href="https://github.com/cloudb2/processus" class="btn">View on GitHub</a>
+      <a href="https://github.com/cloudb2/processus/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/cloudb2/processus/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-        <header>
-          <h1>Processus</h1>
-          <h2>A simple lightweight nodejs workflow engine designed to help orchestrate multiple tasks.</h2>
-        </header>
-
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/cloudb2/processus/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/cloudb2/processus/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/cloudb2/processus" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
-
-        <hr>
-
-        <section id="main_content">
-          <h1>
+    <section class="main-content">
+      <h1>
 <a id="processus" class="anchor" href="#processus" aria-hidden="true"><span class="octicon octicon-link"></span></a>Processus</h1>
 
 <p>Processus is a simple lightweight workflow engine designed to help orchestrate multiple tasks.</p>
@@ -51,8 +39,8 @@ workflows.</p>
 <li><a href="#testing-tasks">Testing Tasks</a></li>
 <li><a href="#parallel-tasks">Parallel Tasks</a></li>
 <li><a href="#nested-tasks">Nested Tasks</a></li>
-<li><a href="#passing-data-between-tasks">Passing Data Between Tasks</a></li>
-<li><a href="#passing-static-data">Passing Static Data</a></li>
+<li><a href="#referencing-task-parameters">Referencing Task Parameters</a></li>
+<li><a href="#referencing-workflow-parameters">Referencing Workflow Parameters</a></li>
 <li>
 <a href="#handling-errors">Handling Errors</a>
 
@@ -152,7 +140,7 @@ var wf = {
       "description": "Demo task to execute echo command.",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'Congratulations you called a workflow using the API.'"
       }
     }
@@ -161,7 +149,7 @@ var wf = {
 
 processus.execute(wf, function(err, workflow){
   if(!err) {
-    console.log(workflow.tasks['task 1'].data.stdout);
+    console.log(workflow.tasks['task 1']parameters.stdout);
   }
 });
 
@@ -299,14 +287,14 @@ info: ✰ Workflow [./test/ex1.json] with id [307e7633-c820-4f78-b739-9af50d7a56
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'"
       }
     },
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'"
       }
     }
@@ -318,7 +306,7 @@ info: ✰ Workflow [./test/ex1.json] with id [307e7633-c820-4f78-b739-9af50d7a56
 
 <ol>
 <li>The above workflow has 2 tasks <code>say hello</code> and <code>say hello again</code>.</li>
-<li>Each task uses a handler called <code>execHandler</code> which executed the command identified in the data property of the task by <code>data.cmd</code>.</li>
+<li>Each task uses a handler called <code>execHandler</code> which executed the command identified in the prameters property of the task by <code>parameters.cmd</code>.</li>
 <li>
 <strong>See .yml versions in the test directory for a YAML equivalent workflows.</strong> e.g.</li>
 </ol>
@@ -328,12 +316,12 @@ info: ✰ Workflow [./test/ex1.json] with id [307e7633-c820-4f78-b739-9af50d7a56
     say hello:
       blocking: true
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "echo 'hello, world'"
     say hello again:
       blocking: true
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "echo 'hello, world again'"
 </code></pre>
 
@@ -380,7 +368,7 @@ debug: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'",
         "stdout": "hello, world\n",
         "stderr": ""
@@ -395,7 +383,7 @@ debug: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'",
         "stdout": "hello, world again\n",
         "stderr": ""
@@ -417,7 +405,7 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
 <p><strong><em>Note</em></strong></p>
 
 <ol>
-<li>The handler has added <code>stdout</code> and <code>stderr</code> to each task's <code>data</code> property.</li>
+<li>The handler has added <code>stdout</code> and <code>stderr</code> to each task's <code>parameters</code> property.</li>
 <li>The status of each task and the overall workflow is shown as <code>completed</code>
 </li>
 <li>Processus has added additional timing information to each task.</li>
@@ -455,7 +443,7 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -464,7 +452,7 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": false
       }
@@ -473,7 +461,7 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
       "description": "I am the task 3, I take 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 500,
         "error": false
       }
@@ -518,7 +506,7 @@ info: ✰ Workflow [./test/demo1.json] with id [79893dc3-7bcd-4596-bfc4-3c4380b0
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": false,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -527,7 +515,7 @@ info: ✰ Workflow [./test/demo1.json] with id [79893dc3-7bcd-4596-bfc4-3c4380b0
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": false,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": false
       }
@@ -536,7 +524,7 @@ info: ✰ Workflow [./test/demo1.json] with id [79893dc3-7bcd-4596-bfc4-3c4380b0
       "description": "I am the task 3, I take 500msecs.",
       "blocking": false,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 500,
         "error": false
       }
@@ -586,7 +574,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -595,7 +583,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": false
       },
@@ -604,7 +592,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
           "description": "I am the task 2-1, I take 1000msecs.",
           "blocking": true,
           "handler" : "../taskhandlers/testHandler",
-          "data": {
+          "parameters": {
             "delay": 1000,
             "error": false
           }
@@ -613,7 +601,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
           "description": "I am the task 2-2, I take 1000msecs.",
           "blocking": true,
           "handler" : "../taskhandlers/testHandler",
-          "data": {
+          "parameters": {
             "delay": 1000,
             "error": false
           }
@@ -624,7 +612,7 @@ info: ✰ Workflow [./test/demo2.json] with id [5aac5cff-e2a3-421a-abb8-7d01d564
       "description": "I am the task 3, I take 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 500,
         "error": false
       }
@@ -677,13 +665,13 @@ info: ✰ Workflow [./test/demo3.json] with id [7e1a009b-024b-4cd9-84f2-0c1fb3fc
 <p><a href="#processus">top</a></p>
 
 <h3>
-<a id="passing-data-between-tasks" class="anchor" href="#passing-data-between-tasks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Passing Data Between Tasks</h3>
+<a id="referencing-task-parameters" class="anchor" href="#referencing-task-parameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>referencing Task Parameters</h3>
 
 <p>Processus supports a very simple mechanism for referencing data between tasks.</p>
 
 <p>The format is <code>$[&lt;path.to.reference&gt;]</code></p>
 
-<p>For example, if a task has a data value of <code>$[tasks.task 1.data.delay]</code> this value will be substituted, at execution time, with the value stored in the delay data property of task 1.</p>
+<p>For example, if a task has a data value of <code>$[tasks.task 1.parameters.delay]</code> this value will be substituted, at execution time, with the value stored in the delay parameters property of task 1.</p>
 
 <p>Consider demo6.json</p>
 
@@ -693,7 +681,7 @@ info: ✰ Workflow [./test/demo3.json] with id [7e1a009b-024b-4cd9-84f2-0c1fb3fc
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -702,8 +690,8 @@ info: ✰ Workflow [./test/demo3.json] with id [7e1a009b-024b-4cd9-84f2-0c1fb3fc
       "description": "I am the task 2, I take as long as task1.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
-        "delay": "$[tasks.task 1.data.delay]",
+      "parameters": {
+        "delay": "$[tasks.task 1parameters.delay]",
         "error": false
       }
     },
@@ -711,8 +699,8 @@ info: ✰ Workflow [./test/demo3.json] with id [7e1a009b-024b-4cd9-84f2-0c1fb3fc
       "description": "I am the task 3, I take as long as task1.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
-        "delay": "$[tasks.task 1.data.delay]",
+      "parameters": {
+        "delay": "$[tasks.task 1parameters.delay]",
         "error": false
       }
     }
@@ -742,7 +730,7 @@ debug: {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       },
@@ -757,7 +745,7 @@ debug: {
       "description": "I am the task 2, I take as long as task1.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": "1500",
         "error": false
       },
@@ -772,7 +760,7 @@ debug: {
       "description": "I am the task 3, I take as long as task1.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": "1500",
         "error": false
       },
@@ -793,14 +781,14 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
 <p><a href="#processus">top</a></p>
 
 <h3>
-<a id="passing-static-data" class="anchor" href="#passing-static-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Passing Static Data</h3>
+<a id="referencing-workflow-parameters" class="anchor" href="#referencing-workflow-parameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Referencing Workflow Parameters</h3>
 
-<p>As with the earlier example, it's also possible to pass static data from the parent workflow to each task.</p>
+<p>As with the earlier example, it's also possible to pass parameters from the parent workflow to each task.</p>
 
 <p>Consider demo7.json</p>
 
 <pre><code>{
-  "static":{
+  "parameters":{
     "global-delay":500,
     "global-error":false
   },
@@ -809,27 +797,27 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
       "description": "I am the task 1, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
-        "delay": "$[static.global-delay]",
-        "error": "$[static.global-error]"
+      "parameters": {
+        "delay": "$[parameters.global-delay]",
+        "error": "$[parameters.global-error]"
       }
     },
     "task 2": {
       "description": "I am the task 2, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
-        "delay": "$[static.global-delay]",
-        "error": "$[static.global-error]"
+      "parameters": {
+        "delay": "$[parameters.global-delay]",
+        "error": "$[parameters.global-error]"
       }
     },
     "task 3": {
       "description": "I am the task 3, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
-        "delay": "$[static.global-delay]",
-        "error": "$[static.global-error]"
+      "parameters": {
+        "delay": "$[parameters.global-delay]",
+        "error": "$[parameters.global-error]"
       }
     }
   }
@@ -851,7 +839,7 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -860,7 +848,7 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": true
       }
@@ -869,7 +857,7 @@ info: ✰ Workflow [./test/demo6.json] with id [008bebca-a264-4e7e-9bb4-376f9796
       "description": "I am the task 3, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -902,7 +890,7 @@ debug: {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       },
@@ -917,7 +905,7 @@ debug: {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": true
       },
@@ -930,7 +918,7 @@ debug: {
       "description": "I am the task 3, I take 1500msecs.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       },
@@ -999,7 +987,7 @@ info: ✰ Workflow [./test/demo8a.json] with id [0f7033d7-3edf-4a8b-a4af-a0bc32c
       "description": "I am the task 1, I echo Processus",
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Processus",
         "skip me": "true"
       }
@@ -1007,9 +995,9 @@ info: ✰ Workflow [./test/demo8a.json] with id [0f7033d7-3edf-4a8b-a4af-a0bc32c
     "task 2": {
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
-      "skipIf":"$[tasks.task 1.data.skip me]",
+      "skipIf":"$[tasks.task 1parameters.skip me]",
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Simple"
       }
     },
@@ -1018,7 +1006,7 @@ info: ✰ Workflow [./test/demo8a.json] with id [0f7033d7-3edf-4a8b-a4af-a0bc32c
       "blocking": true,
       "errorIf": "$[tasks.task 2.skipIf]",
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Workflow"
       }
     }
@@ -1064,7 +1052,7 @@ error: ✘ Workflow [test/demo10.json] with id [90727723-da21-46e4-8ac3-b5e132b2
     "show env": {
       "blocking": true,
       "handler" : "../taskhandlers/logHandler",
-      "data": {
+      "parameters": {
         "level": "info",
         "log": "TEST_ENV = $env[TEST_ENV]"
       }
@@ -1152,7 +1140,7 @@ info: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'",
         "stdout": "hello, world\n",
         "stderr": ""
@@ -1167,7 +1155,7 @@ info: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'",
         "stdout": "hello, world again\n",
         "stderr": ""
@@ -1206,7 +1194,7 @@ info: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'",
         "stdout": "hello, world\n",
         "stderr": ""
@@ -1221,7 +1209,7 @@ info: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'",
         "stdout": "hello, world again\n",
         "stderr": ""
@@ -1255,7 +1243,7 @@ info: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'",
         "stdout": "hello, world\n",
         "stderr": ""
@@ -1270,7 +1258,7 @@ info: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'"
       },
       "status": "waiting"
@@ -1304,7 +1292,7 @@ info: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'"
       },
       "status": "waiting"
@@ -1312,7 +1300,7 @@ info: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'"
       },
       "status": "waiting"
@@ -1468,14 +1456,14 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 <a id="exechandler" class="anchor" href="#exechandler" aria-hidden="true"><span class="octicon octicon-link"></span></a>execHandler</h4>
 
 <pre><code>/* Exec Handler
- * Using the Task's data.cmd property, this handler will attempt to execute that
+ * Using the Task's parameters.cmd property, this handler will attempt to execute that
  * command as a child process.
- * output is stored in data.stdout and data.stderr
+ * output is stored in parameters.stdout and parameters.stderr
  * INPUT
- * @param task.data.cmd The command to execute
+ * @param task.parameters.cmd The command to execute
  * OUTPUT
- * @param task.data.stdout The stdout (if any)
- * @param task.data.stderr The stderr (if any)
+ * @param task.parameters.stdout The stdout (if any)
+ * @param task.parameters.stderr The stderr (if any)
  *
  */
 </code></pre>
@@ -1488,8 +1476,8 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 <pre><code>/* Log Handler
  * Logs a the supplied message
  * INPUT
- * @param task.data.level The log level
- * @param task.data.log The message to log
+ * @param task.parameters.level The log level
+ * @param task.parameters.log The message to log
  */
 </code></pre>
 
@@ -1501,9 +1489,9 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 <pre><code>/* Test Handler
  * Used to test tasks within a workflow
  * INPUT
- * @param task.data.error Set true to simulate an error
- * @param task.data.delay Set delay time (msecs) to simulate execution before returning
- * @param task.data.paused Set true to simulate a paused status returned from a module
+ * @param task.parameters.error Set true to simulate an error
+ * @param task.parameters.delay Set delay time (msecs) to simulate execution before returning
+ * @param task.parameters.paused Set true to simulate a paused status returned from a module
 */
 </code></pre>
 
@@ -1514,24 +1502,24 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 
 <pre><code>/* Request Handler
  * A processus wrapper for the amazing module request.
- * See https://github.com/request/request#requestoptions-callback for data.options
+ * See https://github.com/request/request#requestoptions-callback for parameters.options
  * INPUT
- * @param task.data.options The options object used by the request module
+ * @param task.parameters.options The options object used by the request module
  * OUTPUT
- * @param task.data.response The response object returned from the request
- * @param task.data.body The body object returned from the request
+ * @param task.parameters.response The response object returned from the request
+ * @param task.parameters.body The body object returned from the request
  *
  */
 </code></pre>
 
-<p>This handler wraps the very popular nodejs module request to make HTTP requests. Simply supply a <code>data.options</code> property to the task to see the resulting HTTP request made. <code>demo12.json</code> is an example of this.</p>
+<p>This handler wraps the very popular nodejs module request to make HTTP requests. Simply supply a <code>parameters.options</code> property to the task to see the resulting HTTP request made. <code>demo12.json</code> is an example of this.</p>
 
 <pre><code>{
   "tasks": {
     "call github for demo1": {
       "blocking": true,
       "handler": "../taskhandlers/requestHandler",
-      "data": {
+      "parameters": {
         "options": {
             "url": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json",
             "method": "GET",
@@ -1567,7 +1555,7 @@ debug: {
     "call github for demo1": {
       "blocking": true,
       "handler": "../taskhandlers/requestHandler",
-      "data": {
+      "parameters": {
         "options": {
           "url": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json",
           "method": "GET",
@@ -1581,7 +1569,7 @@ debug: {
                 "description": "I am the task 1, I take 1500msecs.",
                 "blocking": true,
                 "handler": "../taskhandlers/testHandler",
-                "data": {
+                "parameters": {
                   "delay": 1500,
                   "error": false
                 }
@@ -1590,7 +1578,7 @@ debug: {
                 "description": "I am the task 2, I take 1000msecs.",
                 "blocking": true,
                 "handler": "../taskhandlers/testHandler",
-                "data": {
+                "parameters": {
                   "delay": 1000,
                   "error": false
                 }
@@ -1599,7 +1587,7 @@ debug: {
                 "description": "I am the task 3, I take 500msecs.",
                 "blocking": true,
                 "handler": "../taskhandlers/testHandler",
-                "data": {
+                "parameters": {
                   "delay": 500,
                   "error": false
                 }
@@ -1657,7 +1645,7 @@ debug: {
               "description": "I am the task 1, I take 1500msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 1500,
                 "error": false
               }
@@ -1666,7 +1654,7 @@ debug: {
               "description": "I am the task 2, I take 1000msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 1000,
                 "error": false
               }
@@ -1675,7 +1663,7 @@ debug: {
               "description": "I am the task 3, I take 500msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 500,
                 "error": false
               }
@@ -1705,10 +1693,10 @@ info: ✰ Workflow [test/demo12.json] with id [60946ca2-af30-4a78-babb-3b1d80a09
 <pre><code>/* Workflow Handler
  * This handle will attempt to load supplied file or execute the supplied workflow
  * INPUT
- * @param task.data.file The workflow definition file name (if no workflow supplied)
- * @param task.data.workflow A workflow object to execute
+ * @param task.parameters.file The workflow definition file name (if no workflow supplied)
+ * @param task.parameters.workflow A workflow object to execute
  * OUTPUT
- * @param task.data.workflow The resulting workflow object
+ * @param task.parameters.workflow The resulting workflow object
  */
 </code></pre>
 
@@ -1720,7 +1708,7 @@ info: ✰ Workflow [test/demo12.json] with id [60946ca2-af30-4a78-babb-3b1d80a09
       "description": "calls the workflow in the file demo1",
       "blocking": true,
       "handler" : "../taskhandlers/workflowHandler",
-      "data": {
+      "parameters": {
         "file": "./test/demo1.json"
       }
     }
@@ -1750,7 +1738,7 @@ debug: {
       "description": "calls the workflow in the file demo1",
       "blocking": true,
       "handler": "../taskhandlers/workflowHandler",
-      "data": {
+      "parameters": {
         "file": "./test/demo1.json",
         "workflow": {
           "tasks": {
@@ -1758,7 +1746,7 @@ debug: {
               "description": "I am the task 1, I take 1500msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 1500,
                 "error": false
               },
@@ -1773,7 +1761,7 @@ debug: {
               "description": "I am the task 2, I take 1000msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 1000,
                 "error": false
               },
@@ -1788,7 +1776,7 @@ debug: {
               "description": "I am the task 3, I take 500msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 500,
                 "error": false
               },
@@ -1821,7 +1809,7 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
 <p><strong><em>Note</em></strong></p>
 
 <ol>
-<li> the parent workflow contains one task <code>call demo1 workflow</code> which contains the <code>data.workflow</code> property which contains the resulting <code>demo1.json</code> workflow.</li>
+<li> the parent workflow contains one task <code>call demo1 workflow</code> which contains the <code>parameters.workflow</code> property which contains the resulting <code>demo1.json</code> workflow.</li>
 </ol>
 
 <p><a href="#processus">top</a></p>
@@ -1832,7 +1820,7 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
 <pre><code>/* Condition Handler
  * A very simple condition evaluation handler for non programmers
  * INPUT
- * @param task.data.conditions Condition objects consisting of
+ * @param task.parameters.conditions Condition objects consisting of
   "[condition name]"{
     "valueA":[ValueA],
     "operator":[operator],
@@ -1847,7 +1835,7 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
  * "LESS OR EQUALS", "&lt;="
  * (note case is ignored)
  * OUTPUT
- * @param task.data.conditions each condition is updated to include a result e.g.
+ * @param task.parameters.conditions each condition is updated to include a result e.g.
  "[condition name]"{
    "valueA":[ValueA],
    "operator":[operator],
@@ -1855,10 +1843,10 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
    "valid": [true if condition is valid],
    "invalid": [true if condition is invalid]
  }
- * @param task.data.anyValid true if ANY condition evaluates to true
- * @param task.data.allValid true if ALL conditions evaluate to true
- * @param task.data.notAnyValid convenience property to show !anyValid
- * @param task.data.notAllValid convenience property to show !allValid
+ * @param task.parameters.anyValid true if ANY condition evaluates to true
+ * @param task.parameters.allValid true if ALL conditions evaluate to true
+ * @param task.parameters.notAnyValid convenience property to show !anyValid
+ * @param task.parameters.notAllValid convenience property to show !allValid
  */
 </code></pre>
 
@@ -1891,7 +1879,7 @@ for driving the <code>skipIf</code> property of subsequent tasks, thus controlli
  * toExclude
  *
  * INPUT
- * @param task.data.expectations is an object consisting of expects. e.g.
+ * @param task.parameters.expectations is an object consisting of expects. e.g.
      [expect function]{
        "object": [object to test],
        "value":  [value to expect],
@@ -1913,15 +1901,15 @@ for driving the <code>skipIf</code> property of subsequent tasks, thus controlli
 </code></pre>
 
 <p>See <code>expectations.json</code> for an example of how the use the <code>expectHandler</code></p>
-        </section>
 
-        <footer>
-          Processus is maintained by <a href="https://github.com/cloudb2">cloudb2</a><br>
-          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/cloudb2/processus">Processus</a> is maintained by <a href="https://github.com/cloudb2">cloudb2</a>.</span>
 
-        
-      </div>
-    </div>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
   </body>
 </html>
