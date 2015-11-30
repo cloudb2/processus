@@ -19,7 +19,7 @@ var expect = require('expect');
  * toExclude
  *
  * Task INPUT
- * @param task.data.expectations is an object consisting of expects. e.g.
+ * @param task.parameters.expectations is an object consisting of expects. e.g.
      [expect function]{
        "object": [object to test],
        "value":  [value to expect],
@@ -41,26 +41,26 @@ var expect = require('expect');
 module.exports = function(workflowId, taskName, task, callback, logger){
 
   //validate that task data element exists
-  if(!task.data) {
+  if(!task.parameters) {
     logger.debug("No task data property!");
-    callback(new Error("Task [" + taskName + "] has no task data property!"), task);
+    callback(new Error("Task [" + taskName + "] has no task parameters property!"), task);
     return;
   }
 
   //Validate that the data cmd property has been set
-  if(!task.data.expectations) {
-    callback(new Error("Task [" + taskName + "] has no data.expectations property set!"), task);
+  if(!task.parameters.expectations) {
+    callback(new Error("Task [" + taskName + "] has no parameters.expectations property set!"), task);
     return;
   }
 
   //get the expect names
-  var expectNames = Object.keys(task.data.expectations);
+  var expectNames = Object.keys(task.parameters.expectations);
 
   for(var x=0; x<expectNames.length; x++){
 
     try {
       var expectName = expectNames[x];
-      var expectDef = task.data.expectations[expectName];
+      var expectDef = task.parameters.expectations[expectName];
 
       logger.debug("testing the assertions:  " + expectName);
       logger.debug("supplied expect object:  " + JSON.stringify(expectDef.object));
@@ -93,7 +93,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
           callback(new Error("Unknown or unsupported expect function [" + expectName + "] in task [" + taskName + "]"), task);
           return;
       }
-      task.data.expectations[expectName].assertion = true;
+      task.parameters.expectations[expectName].assertion = true;
     }
     catch(expectError){
       if(task.ignoreError === false) {
@@ -102,7 +102,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
       }
       else {
         task.errorMsg = expectError.message;
-        task.data.expectations[expectName].assertion = false;
+        task.parameters.expectations[expectName].assertion = false;
       }
     }
   }

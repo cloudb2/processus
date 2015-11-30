@@ -5,7 +5,7 @@
     "A Fake Task": {
       "description": "An example Task with made up data to test the condition handler. Notice the absence of a handler.",
       "blocking": true,
-      "data": {
+      "parameters": {
         "null value": null,
         "number": 42,
         "string": "hello, world",
@@ -21,76 +21,76 @@
       "description": "Task to reference the previous task and test the condition handler",
       "blocking": true,
       "handler" : "../taskhandlers/conditionHandler",
-      "data": {
+      "parameters": {
         "conditions": {
           "is the null value null?": {
-            "valueA": "$[tasks.A Fake Task.data.null value]",
+            "valueA": "$[tasks.A Fake task.parameters.null value]",
             "operator": "IS",
             "valueB": null
           },
           "is the null value not null?": {
-            "valueA": "$[tasks.A Fake Task.data.null value]",
+            "valueA": "$[tasks.A Fake task.parameters.null value]",
             "operator": "IS NOT",
             "valueB": null
           },
           "is number 42?": {
-            "valueA": "$[tasks.A Fake Task.data.number]",
+            "valueA": "$[tasks.A Fake task.parameters.number]",
             "operator": "IS",
             "valueB": 42
           },
           "is number not 42?": {
-            "valueA": "$[tasks.A Fake Task.data.number]",
+            "valueA": "$[tasks.A Fake task.parameters.number]",
             "operator": "IS NOT",
             "valueB": 42
           },
           "is number greater than 42?": {
-            "valueA": "$[tasks.A Fake Task.data.number]",
+            "valueA": "$[tasks.A Fake task.parameters.number]",
             "operator": "greater than",
             "valueB": 42
           },
           "is number greater than or equals 42?": {
-            "valueA": "$[tasks.A Fake Task.data.number]",
+            "valueA": "$[tasks.A Fake task.parameters.number]",
             "operator": "greater or equals",
             "valueB": 42
           },
           "is number less than 42?": {
-            "valueA": "$[tasks.A Fake Task.data.number]",
+            "valueA": "$[tasks.A Fake task.parameters.number]",
             "operator": "less than",
             "valueB": 42
           },
           "is number less than or equals 42?": {
-            "valueA": "$[tasks.A Fake Task.data.number]",
+            "valueA": "$[tasks.A Fake task.parameters.number]",
             "operator": "less or equals",
             "valueB": 42
           },
           "is the string hello, world?": {
-            "valueA": "$[tasks.A Fake Task.data.string]",
+            "valueA": "$[tasks.A Fake task.parameters.string]",
             "operator": "equals",
             "valueB": "hello, world"
           },
           "is the string not hello, world?": {
-            "valueA": "$[tasks.A Fake Task.data.string]",
+            "valueA": "$[tasks.A Fake task.parameters.string]",
             "operator": "IS NOT",
             "valueB": "hello, world"
           },
           "does the objectA match objectB?": {
-            "valueA": "$[tasks.A Fake Task.data.objectA]",
+            "valueA": "$[tasks.A Fake task.parameters.objectA]",
             "operator": "match",
-            "valueB": "$[tasks.A Fake Task.data.objectB]"
+            "valueB": "$[tasks.A Fake task.parameters.objectB]"
           },
           "does the objectA not match objectB?": {
-            "valueA": "$[tasks.A Fake Task.data.objectA]",
+            "valueA": "$[tasks.A Fake task.parameters.objectA]",
             "operator": "!=",
-            "valueB": "$[tasks.A Fake Task.data.objectB]"
+            "valueB": "$[tasks.A Fake task.parameters.objectB]"
           },
           "does the objectA match valueB?": {
-            "valueA": "$[tasks.A Fake Task.data.objectA]",
+            "valueA": "$[tasks.A Fake task.parameters.objectA]",
             "operator": "match",
             "valueB": {
               "description": "there's another object just like me"
             }
           },"is the non existing property null?": {
-            "valueA": "$[tasks.A Fake Task.data.invalid property of data]",
+            "valueA": "$[tasks.A Fake task.parameters.invalid property of data]",
             "operator": "match",
             "valueB": null
           }
@@ -100,8 +100,8 @@
     "is the null value null?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is the null value null?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is the null value null?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis the null value null? if you see this, the answer's YES\n"
       }
@@ -109,8 +109,8 @@
     "is the null value not null?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is the null value not null?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is the null value not null?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis the null value not null? if you see this, the answer's YES\n"
       }
@@ -118,8 +118,8 @@
     "is number 42?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is number 42?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is number 42?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis number 42? if you see this, the answer's YES\n"
       }
@@ -127,8 +127,8 @@
     "is number not 42?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is number not 42?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is number not 42?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis number not 42? if you see this, the answer's YES\n"
       }
@@ -136,8 +136,8 @@
     "is number greater than 42?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is number greater than 42?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is number greater than 42?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis number greater than 42? if you see this, the answer's YES\n"
       }
@@ -145,8 +145,8 @@
     "is number greater than or equals 42?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is number greater than or equals 42?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is number greater than or equals 42?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis number greater than or equals 42? if you see this, the answer's YES\n"
       }
@@ -154,8 +154,8 @@
     "is number less than 42?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is number less than 42?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is number less than 42?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis number less than 42? if you see this, the answer's YES\n"
       }
@@ -163,8 +163,8 @@
     "is number less than or equals 42?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is number less than or equals 42?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is number less than or equals 42?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis number less than or equals 42? if you see this, the answer's YES\n"
       }
@@ -172,8 +172,8 @@
     "is the string hello, world?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is the string hello, world?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is the string hello, world?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis the string hello, world? if you see this, the answer's YES\n"
       }
@@ -181,8 +181,8 @@
     "is the string not hello, world?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is the string not hello, world?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is the string not hello, world?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis the string not hello, world? if you see this, the answer's YES\n"
       }
@@ -190,8 +190,8 @@
     "does the objectA match objectB?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.does the objectA match objectB?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.does the objectA match objectB?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\ndoes the objectA match objectB? if you see this, the answer's YES\n"
       }
@@ -199,8 +199,8 @@
     "does the objectA not match objectB?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.does the objectA not match objectB?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.does the objectA not match objectB?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\ndoes the objectA not match objectB? if you see this, the answer's YES\n"
       }
@@ -208,8 +208,8 @@
     "does the objectA match valueB?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.does the objectA match valueB?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.does the objectA match valueB?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\ndoes the objectA match valueB? if you see this, the answer's YES\n"
       }
@@ -217,8 +217,8 @@
     "is the non existing property null?": {
       "blocking": true,
       "handler": "../taskhandlers/logHandler",
-      "skipIf": "$[tasks.Test Condition Handler.data.conditions.is the non existing property null?.invalid]",
-      "data": {
+      "skipIf": "$[tasks.Test Condition Handlerparameters.conditions.is the non existing property null?.invalid]",
+      "parameters": {
         "level": "info",
         "log": "\n\nis the non existing property null? if you see this, the answer's YES\n"
       }

@@ -95,7 +95,7 @@ var wf = {
       "description": "Demo task to execute echo command.",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'Congratulations you called a workflow using the API.'"
       }
     }
@@ -104,7 +104,7 @@ var wf = {
 
 processus.execute(wf, function(err, workflow){
   if(!err) {
-    console.log(workflow.tasks['task 1'].data.stdout);
+    console.log(workflow.tasks['task 1']parameters.stdout);
   }
 });
 
@@ -222,14 +222,14 @@ Consider the following workflow.
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'"
       }
     },
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'"
       }
     }
@@ -239,7 +239,7 @@ Consider the following workflow.
 ***Note***
 
 1. The above workflow has 2 tasks ```say hello``` and ```say hello again```.
-2. Each task uses a handler called ```execHandler``` which executed the command identified in the data property of the task by ```data.cmd```.
+2. Each task uses a handler called ```execHandler``` which executed the command identified in the prameters property of the task by ```parameters.cmd```.
 3. **See .yml versions in the test directory for a YAML equivalent workflows.** e.g.
 ```
 ---
@@ -247,12 +247,12 @@ Consider the following workflow.
     say hello:
       blocking: true
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "echo 'hello, world'"
     say hello again:
       blocking: true
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "echo 'hello, world again'"
 ```
 
@@ -299,7 +299,7 @@ debug: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'",
         "stdout": "hello, world\n",
         "stderr": ""
@@ -314,7 +314,7 @@ debug: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'",
         "stdout": "hello, world again\n",
         "stderr": ""
@@ -334,7 +334,7 @@ info: ✰ Workflow [./test/ex2.json] with id [baccbfbd-3c9e-48f4-981a-c3461b8d2f
 ```
 ***Note***
 
-1. The handler has added ```stdout``` and ```stderr``` to each task's ```data``` property.
+1. The handler has added ```stdout``` and ```stderr``` to each task's ```parameters``` property.
 2. The status of each task and the overall workflow is shown as ```completed```
 3. Processus has added additional timing information to each task.
 4. The status of a task can be one of the following
@@ -358,7 +358,7 @@ Consider demo1.json
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -367,7 +367,7 @@ Consider demo1.json
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": false
       }
@@ -376,7 +376,7 @@ Consider demo1.json
       "description": "I am the task 3, I take 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 500,
         "error": false
       }
@@ -420,7 +420,7 @@ Consider demo2.json
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": false,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -429,7 +429,7 @@ Consider demo2.json
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": false,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": false
       }
@@ -438,7 +438,7 @@ Consider demo2.json
       "description": "I am the task 3, I take 500msecs.",
       "blocking": false,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 500,
         "error": false
       }
@@ -484,7 +484,7 @@ Tasks can be nested as shown in ```demo3.json```
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -493,7 +493,7 @@ Tasks can be nested as shown in ```demo3.json```
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": false
       },
@@ -502,7 +502,7 @@ Tasks can be nested as shown in ```demo3.json```
           "description": "I am the task 2-1, I take 1000msecs.",
           "blocking": true,
           "handler" : "../taskhandlers/testHandler",
-          "data": {
+          "parameters": {
             "delay": 1000,
             "error": false
           }
@@ -511,7 +511,7 @@ Tasks can be nested as shown in ```demo3.json```
           "description": "I am the task 2-2, I take 1000msecs.",
           "blocking": true,
           "handler" : "../taskhandlers/testHandler",
-          "data": {
+          "parameters": {
             "delay": 1000,
             "error": false
           }
@@ -522,7 +522,7 @@ Tasks can be nested as shown in ```demo3.json```
       "description": "I am the task 3, I take 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 500,
         "error": false
       }
@@ -577,7 +577,7 @@ Processus supports a very simple mechanism for referencing data between tasks.
 
 The format is ```$[<path.to.reference>]```
 
-For example, if a task has a data value of ```$[tasks.task 1.data.delay]``` this value will be substituted, at execution time, with the value stored in the delay data property of task 1.
+For example, if a task has a data value of ```$[tasks.task 1.parameters.delay]``` this value will be substituted, at execution time, with the value stored in the delay parameters property of task 1.
 
 Consider demo6.json
 ```
@@ -587,7 +587,7 @@ Consider demo6.json
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -596,8 +596,8 @@ Consider demo6.json
       "description": "I am the task 2, I take as long as task1.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
-        "delay": "$[tasks.task 1.data.delay]",
+      "parameters": {
+        "delay": "$[tasks.task 1parameters.delay]",
         "error": false
       }
     },
@@ -605,8 +605,8 @@ Consider demo6.json
       "description": "I am the task 3, I take as long as task1.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
-        "delay": "$[tasks.task 1.data.delay]",
+      "parameters": {
+        "delay": "$[tasks.task 1parameters.delay]",
         "error": false
       }
     }
@@ -637,7 +637,7 @@ debug: {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       },
@@ -652,7 +652,7 @@ debug: {
       "description": "I am the task 2, I take as long as task1.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": "1500",
         "error": false
       },
@@ -667,7 +667,7 @@ debug: {
       "description": "I am the task 3, I take as long as task1.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": "1500",
         "error": false
       },
@@ -702,7 +702,7 @@ Consider demo7.json
       "description": "I am the task 1, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": "$[parameters.global-delay]",
         "error": "$[parameters.global-error]"
       }
@@ -711,7 +711,7 @@ Consider demo7.json
       "description": "I am the task 2, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": "$[parameters.global-delay]",
         "error": "$[parameters.global-error]"
       }
@@ -720,7 +720,7 @@ Consider demo7.json
       "description": "I am the task 3, I take global-delay msecs, which is 500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": "$[parameters.global-delay]",
         "error": "$[parameters.global-error]"
       }
@@ -742,7 +742,7 @@ The ```testHandler``` can force an error. To see the affect this has on the work
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -751,7 +751,7 @@ The ```testHandler``` can force an error. To see the affect this has on the work
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": true
       }
@@ -760,7 +760,7 @@ The ```testHandler``` can force an error. To see the affect this has on the work
       "description": "I am the task 3, I take 1500msecs.",
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       }
@@ -793,7 +793,7 @@ debug: {
       "description": "I am the task 1, I take 1500msecs.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       },
@@ -808,7 +808,7 @@ debug: {
       "description": "I am the task 2, I take 1000msecs.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1000,
         "error": true
       },
@@ -821,7 +821,7 @@ debug: {
       "description": "I am the task 3, I take 1500msecs.",
       "blocking": true,
       "handler": "../taskhandlers/testHandler",
-      "data": {
+      "parameters": {
         "delay": 1500,
         "error": false
       },
@@ -884,7 +884,7 @@ Look at demo10 to see an example of ```skipIf``` and ```errorIf``` in action.
       "description": "I am the task 1, I echo Processus",
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Processus",
         "skip me": "true"
       }
@@ -892,9 +892,9 @@ Look at demo10 to see an example of ```skipIf``` and ```errorIf``` in action.
     "task 2": {
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
-      "skipIf":"$[tasks.task 1.data.skip me]",
+      "skipIf":"$[tasks.task 1parameters.skip me]",
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Simple"
       }
     },
@@ -903,7 +903,7 @@ Look at demo10 to see an example of ```skipIf``` and ```errorIf``` in action.
       "blocking": true,
       "errorIf": "$[tasks.task 2.skipIf]",
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Workflow"
       }
     }
@@ -946,7 +946,7 @@ Consider ```demo14.json```
     "show env": {
       "blocking": true,
       "handler" : "../taskhandlers/logHandler",
-      "data": {
+      "parameters": {
         "level": "info",
         "log": "TEST_ENV = $env[TEST_ENV]"
       }
@@ -1031,7 +1031,7 @@ info: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'",
         "stdout": "hello, world\n",
         "stderr": ""
@@ -1046,7 +1046,7 @@ info: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'",
         "stdout": "hello, world again\n",
         "stderr": ""
@@ -1083,7 +1083,7 @@ info: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'",
         "stdout": "hello, world\n",
         "stderr": ""
@@ -1098,7 +1098,7 @@ info: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'",
         "stdout": "hello, world again\n",
         "stderr": ""
@@ -1133,7 +1133,7 @@ info: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'",
         "stdout": "hello, world\n",
         "stderr": ""
@@ -1148,7 +1148,7 @@ info: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'"
       },
       "status": "waiting"
@@ -1180,7 +1180,7 @@ info: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'"
       },
       "status": "waiting"
@@ -1188,7 +1188,7 @@ info: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'"
       },
       "status": "waiting"
@@ -1319,14 +1319,14 @@ Processus comes with a number of task handlers. It's recommended that you study 
 #### execHandler
 ```
 /* Exec Handler
- * Using the Task's data.cmd property, this handler will attempt to execute that
+ * Using the Task's parameters.cmd property, this handler will attempt to execute that
  * command as a child process.
- * output is stored in data.stdout and data.stderr
+ * output is stored in parameters.stdout and parameters.stderr
  * INPUT
- * @param task.data.cmd The command to execute
+ * @param task.parameters.cmd The command to execute
  * OUTPUT
- * @param task.data.stdout The stdout (if any)
- * @param task.data.stderr The stderr (if any)
+ * @param task.parameters.stdout The stdout (if any)
+ * @param task.parameters.stderr The stderr (if any)
  *
  */
 ```
@@ -1337,8 +1337,8 @@ Processus comes with a number of task handlers. It's recommended that you study 
 /* Log Handler
  * Logs a the supplied message
  * INPUT
- * @param task.data.level The log level
- * @param task.data.log The message to log
+ * @param task.parameters.level The log level
+ * @param task.parameters.log The message to log
  */
 ```
 
@@ -1348,9 +1348,9 @@ Processus comes with a number of task handlers. It's recommended that you study 
 /* Test Handler
  * Used to test tasks within a workflow
  * INPUT
- * @param task.data.error Set true to simulate an error
- * @param task.data.delay Set delay time (msecs) to simulate execution before returning
- * @param task.data.paused Set true to simulate a paused status returned from a module
+ * @param task.parameters.error Set true to simulate an error
+ * @param task.parameters.delay Set delay time (msecs) to simulate execution before returning
+ * @param task.parameters.paused Set true to simulate a paused status returned from a module
 */
 ```
 
@@ -1359,17 +1359,17 @@ Processus comes with a number of task handlers. It's recommended that you study 
 ```
 /* Request Handler
  * A processus wrapper for the amazing module request.
- * See https://github.com/request/request#requestoptions-callback for data.options
+ * See https://github.com/request/request#requestoptions-callback for parameters.options
  * INPUT
- * @param task.data.options The options object used by the request module
+ * @param task.parameters.options The options object used by the request module
  * OUTPUT
- * @param task.data.response The response object returned from the request
- * @param task.data.body The body object returned from the request
+ * @param task.parameters.response The response object returned from the request
+ * @param task.parameters.body The body object returned from the request
  *
  */
 ```
 
-This handler wraps the very popular nodejs module request to make HTTP requests. Simply supply a ```data.options``` property to the task to see the resulting HTTP request made. ```demo12.json``` is an example of this.
+This handler wraps the very popular nodejs module request to make HTTP requests. Simply supply a ```parameters.options``` property to the task to see the resulting HTTP request made. ```demo12.json``` is an example of this.
 
 ```
 {
@@ -1377,7 +1377,7 @@ This handler wraps the very popular nodejs module request to make HTTP requests.
     "call github for demo1": {
       "blocking": true,
       "handler": "../taskhandlers/requestHandler",
-      "data": {
+      "parameters": {
         "options": {
             "url": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json",
             "method": "GET",
@@ -1414,7 +1414,7 @@ debug: {
     "call github for demo1": {
       "blocking": true,
       "handler": "../taskhandlers/requestHandler",
-      "data": {
+      "parameters": {
         "options": {
           "url": "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json",
           "method": "GET",
@@ -1428,7 +1428,7 @@ debug: {
                 "description": "I am the task 1, I take 1500msecs.",
                 "blocking": true,
                 "handler": "../taskhandlers/testHandler",
-                "data": {
+                "parameters": {
                   "delay": 1500,
                   "error": false
                 }
@@ -1437,7 +1437,7 @@ debug: {
                 "description": "I am the task 2, I take 1000msecs.",
                 "blocking": true,
                 "handler": "../taskhandlers/testHandler",
-                "data": {
+                "parameters": {
                   "delay": 1000,
                   "error": false
                 }
@@ -1446,7 +1446,7 @@ debug: {
                 "description": "I am the task 3, I take 500msecs.",
                 "blocking": true,
                 "handler": "../taskhandlers/testHandler",
-                "data": {
+                "parameters": {
                   "delay": 500,
                   "error": false
                 }
@@ -1504,7 +1504,7 @@ debug: {
               "description": "I am the task 1, I take 1500msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 1500,
                 "error": false
               }
@@ -1513,7 +1513,7 @@ debug: {
               "description": "I am the task 2, I take 1000msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 1000,
                 "error": false
               }
@@ -1522,7 +1522,7 @@ debug: {
               "description": "I am the task 3, I take 500msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 500,
                 "error": false
               }
@@ -1550,10 +1550,10 @@ info: ✰ Workflow [test/demo12.json] with id [60946ca2-af30-4a78-babb-3b1d80a09
 /* Workflow Handler
  * This handle will attempt to load supplied file or execute the supplied workflow
  * INPUT
- * @param task.data.file The workflow definition file name (if no workflow supplied)
- * @param task.data.workflow A workflow object to execute
+ * @param task.parameters.file The workflow definition file name (if no workflow supplied)
+ * @param task.parameters.workflow A workflow object to execute
  * OUTPUT
- * @param task.data.workflow The resulting workflow object
+ * @param task.parameters.workflow The resulting workflow object
  */
 ```
 
@@ -1566,7 +1566,7 @@ The workflowHandler allows a task to call another workflow. ```demo13.json``` sh
       "description": "calls the workflow in the file demo1",
       "blocking": true,
       "handler" : "../taskhandlers/workflowHandler",
-      "data": {
+      "parameters": {
         "file": "./test/demo1.json"
       }
     }
@@ -1597,7 +1597,7 @@ debug: {
       "description": "calls the workflow in the file demo1",
       "blocking": true,
       "handler": "../taskhandlers/workflowHandler",
-      "data": {
+      "parameters": {
         "file": "./test/demo1.json",
         "workflow": {
           "tasks": {
@@ -1605,7 +1605,7 @@ debug: {
               "description": "I am the task 1, I take 1500msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 1500,
                 "error": false
               },
@@ -1620,7 +1620,7 @@ debug: {
               "description": "I am the task 2, I take 1000msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 1000,
                 "error": false
               },
@@ -1635,7 +1635,7 @@ debug: {
               "description": "I am the task 3, I take 500msecs.",
               "blocking": true,
               "handler": "../taskhandlers/testHandler",
-              "data": {
+              "parameters": {
                 "delay": 500,
                 "error": false
               },
@@ -1667,7 +1667,7 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
 
 ***Note***
 
-1.  the parent workflow contains one task ```call demo1 workflow``` which contains the ```data.workflow``` property which contains the resulting ```demo1.json``` workflow.
+1.  the parent workflow contains one task ```call demo1 workflow``` which contains the ```parameters.workflow``` property which contains the resulting ```demo1.json``` workflow.
 
 [top](#processus)
 #### conditionHandler
@@ -1676,7 +1676,7 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
 /* Condition Handler
  * A very simple condition evaluation handler for non programmers
  * INPUT
- * @param task.data.conditions Condition objects consisting of
+ * @param task.parameters.conditions Condition objects consisting of
   "[condition name]"{
     "valueA":[ValueA],
     "operator":[operator],
@@ -1691,7 +1691,7 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
  * "LESS OR EQUALS", "<="
  * (note case is ignored)
  * OUTPUT
- * @param task.data.conditions each condition is updated to include a result e.g.
+ * @param task.parameters.conditions each condition is updated to include a result e.g.
  "[condition name]"{
    "valueA":[ValueA],
    "operator":[operator],
@@ -1699,10 +1699,10 @@ info: ✰ Workflow [test/demo13.json] with id [e9898256-b00d-47ca-bcea-2ed314296
    "valid": [true if condition is valid],
    "invalid": [true if condition is invalid]
  }
- * @param task.data.anyValid true if ANY condition evaluates to true
- * @param task.data.allValid true if ALL conditions evaluate to true
- * @param task.data.notAnyValid convenience property to show !anyValid
- * @param task.data.notAllValid convenience property to show !allValid
+ * @param task.parameters.anyValid true if ANY condition evaluates to true
+ * @param task.parameters.allValid true if ALL conditions evaluate to true
+ * @param task.parameters.notAnyValid convenience property to show !anyValid
+ * @param task.parameters.notAllValid convenience property to show !allValid
  */
 ```
 
@@ -1734,7 +1734,7 @@ for driving the ```skipIf``` property of subsequent tasks, thus controlling exec
  * toExclude
  *
  * INPUT
- * @param task.data.expectations is an object consisting of expects. e.g.
+ * @param task.parameters.expectations is an object consisting of expects. e.g.
      [expect function]{
        "object": [object to test],
        "value":  [value to expect],

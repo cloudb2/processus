@@ -31,15 +31,15 @@
       "description": "Test Demo 1",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test1]"
       }
     },
     "Test Demo 2": {
       "description": "Test Demo 2",
-      "blocking": $env[TEST_TASKS_BLOCKING],
+      "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test2]"
       }
     },
@@ -47,7 +47,7 @@
       "description": "Test Demo 3",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test3]"
       }
     },
@@ -55,7 +55,7 @@
       "description": "Test Demo 3a",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test3a]"
       }
     },
@@ -63,7 +63,7 @@
       "description": "Test Demo 4",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test4]"
       }
     },
@@ -71,7 +71,7 @@
       "description": "Test Demo 5",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test5]"
       }
     },
@@ -79,7 +79,7 @@
       "description": "Test Demo 6",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test6]"
       }
     },
@@ -87,7 +87,7 @@
       "description": "Test Demo 7",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test7]"
       }
     },
@@ -95,7 +95,7 @@
       "description": "Test Demo 8",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test8]"
       },
       "ignoreError": true
@@ -104,7 +104,7 @@
       "description": "Test Demo 8a",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test8a]"
       },
       "ignoreError": true
@@ -113,7 +113,7 @@
       "description": "Test Demo 9",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test9]"
       },
       "ignoreError": true
@@ -122,7 +122,7 @@
       "description": "Test Demo 10",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test10]"
       },
       "ignoreError": true
@@ -135,7 +135,7 @@
           "description": "Test Demo 11a",
           "blocking": true,
           "handler" : "../taskhandlers/workflowHandler",
-          "data": {
+          "parameters": {
             "file": "$[parameters.test11a]"
           }
         },
@@ -143,9 +143,9 @@
           "description": "Test Demo 11b",
           "blocking": true,
           "handler" : "../taskhandlers/workflowHandler",
-          "data": {
+          "parameters": {
             "file": "$[parameters.test11b]",
-            "id": "$[tasks.Test Demo 11.tasks.Test Demo 11a.data.workflow.id]"
+            "id": "$[tasks.Test Demo 11.tasks.Test Demo 11a.parameters.workflow.id]"
           }
         }
       }
@@ -154,7 +154,7 @@
       "description": "Test Demo 12",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test12]"
       }
     },
@@ -162,7 +162,7 @@
       "description": "Test Demo 13",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test13]"
       }
     },
@@ -170,7 +170,7 @@
       "description": "Test Demo 13a",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test13a]"
       }
     },
@@ -178,7 +178,7 @@
       "description": "Test Demo 14",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test14]"
       }
     },
@@ -186,7 +186,7 @@
       "description": "Test Demo 15",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test15]"
       }
     },
@@ -194,7 +194,7 @@
       "description": "Test Demo 17",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.test17]"
       }
     },
@@ -202,7 +202,7 @@
       "description": "Test Expect Handler",
       "blocking": "$env[TEST_TASKS_BLOCKING]",
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.testExpectations]"
       }
     },
@@ -213,7 +213,7 @@
       "description": "Test Demo 16",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "$[parameters.testDelete]"
       }
     },
@@ -221,14 +221,14 @@
       "description": "run jshint",
       "blocking": true,
       "handler" : "../taskhandlers/workflowHandler",
-      "data": {
+      "parameters": {
         "file": "$[parameters.jshint]"
       }
     },
     "show success": {
       "blocking": true,
       "handler" : "../taskhandlers/logHandler",
-      "data": {
+      "parameters": {
         "level": "info",
         "log": "\n\n\nSUCCESS ¯\\_(ツ)_/¯\n\n"
       }

@@ -5,44 +5,44 @@ var store = require('../engine/persistence/store');
 /* Workflow Handler
  * This handle will attempt to load supplied file or execute the supplied workflow
  * Task INPUT
- * @param task.data.file The workflow definition file name (if no workflow supplied)
- * @param task.data.workflow A workflow object to execute
+ * @param task.parameters.file The workflow definition file name (if no workflow supplied)
+ * @param task.parameters.workflow A workflow object to execute
  * Task OUTPUT
- * @param task.data.workflow The resulting workflow object
+ * @param task.parameters.workflow The resulting workflow object
  */
 module.exports = function(workflowId, taskName, task, callback, logger){
 
   var err;
-  if(!task.data) {
-    callback(new Error("Task [" + taskName + "] has no data property!"), task);
+  if(!task.parameters) {
+    callback(new Error("Task [" + taskName + "] has no parameters property!"), task);
     return;
   }
 
   //Validate that the data cmd property has been set
-  if(!task.data.file) {
-    callback(new Error("Task [" + taskName + "] has no data.file property set!"), task);
+  if(!task.parameters.file) {
+    callback(new Error("Task [" + taskName + "] has no parameters.file property set!"), task);
     return;
   }
 
   var workflowTaskJSON;
 
-  if(task.data.workflow === undefined) {
-    store.loadDefinition(task.data.file, function(err, workflowFile){
+  if(task.parameters.workflow === undefined) {
+    store.loadDefinition(task.parameters.file, function(err, workflowFile){
       if(!err){
         workflowTaskJSON = workflowFile;
       }
     });
     if(workflowTaskJSON === undefined){
-      callback(new Error("Unable to find workflow definition [" + task.data.file + "] in task ["+ taskName + "]"), task);
+      callback(new Error("Unable to find workflow definition [" + task.parameters.file + "] in task ["+ taskName + "]"), task);
       return;
     }
   }
   else {
-    workflowTaskJSON = task.data.workflow;
+    workflowTaskJSON = task.parameters.workflow;
   }
 
-  processus.runWorkflow(task.data.file, task.data.id, workflowTaskJSON, function(err, workflow){
-    task.data.workflow = workflow;
+  processus.runWorkflow(task.parameters.file, task.parameters.id, workflowTaskJSON, function(err, workflow){
+    task.parameters.workflow = workflow;
     callback(err, task);
   });
 

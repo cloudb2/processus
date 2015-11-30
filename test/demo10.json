@@ -6,7 +6,7 @@
       "description": "I am the task 1, I echo Processus",
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Processus",
         "skip me": true
       }
@@ -14,9 +14,9 @@
     "task 2": {
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
-      "skipIf":"$[tasks.task 1.data.skip me]",
+      "skipIf":"$[tasks.task 1parameters.skip me]",
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Simple"
       }
     },
@@ -25,7 +25,7 @@
       "blocking": true,
       "errorIf": "$[tasks.task 2.skipIf]",
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Workflow"
       }
     }

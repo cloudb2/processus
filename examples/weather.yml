@@ -8,7 +8,7 @@
     Call Weather API:
       blocking: true
       handler: "../taskhandlers/requestHandler"
-      data:
+      parameters:
         options:
           url: "http://api.openweathermap.org/data/2.5/weather?q=$[parameters.city]&units=imperial&APPID=$[parameters.api-key]"
           method: "GET"
@@ -16,6 +16,6 @@
     Report Weather:
       blocking: true
       handler: "../taskhandlers/logHandler"
-      data:
+      parameters:
         level: info
-        log: "The weather in $[parameters.city] is $[tasks.Call Weather API.data.body.weather.0.description]"
+        log: "The weather in $[parameters.city] is $[tasks.Call Weather APIparameters.body.weather.0.description]"

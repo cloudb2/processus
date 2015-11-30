@@ -29,76 +29,76 @@
       description: "Test Demo 1"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test1]"
     Test Demo 2:
       description: "Test Demo 2"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test2]"
     Test Demo 3:
       description: "Test Demo 3"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test3]"
     Test Demo 3a:
       description: "Test Demo 3a"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test3a]"
     Test Demo 4:
       description: "Test Demo 4"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test4]"
     Test Demo 5:
       description: "Test Demo 5"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test5]"
     Test Demo 6:
       description: "Test Demo 6"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test6]"
     Test Demo 7:
       description: "Test Demo 7"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test7]"
     Test Demo 8:
       description: "Test Demo 8"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test8]"
       ignoreError: true
     Test Demo 8a:
       description: "Test Demo 8a"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test8a]"
       ignoreError: true
     Test Demo 9:
       description: "Test Demo 9"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test9]"
       ignoreError: true
     Test Demo 10:
       description: "Test Demo 10"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test10]"
       ignoreError: true
     Test Demo 11:
@@ -109,50 +109,50 @@
           description: "Test Demo 11a"
           blocking: true
           handler: "../taskhandlers/workflowHandler"
-          data:
+          parameters:
             file: "$[parameters.test11a]"
         Test Demo 11b:
           description: "Test Demo 11b"
           blocking: true
           handler: "../taskhandlers/workflowHandler"
-          data:
+          parameters:
             file: "$[parameters.test11b]"
-            id: "$[tasks.Test Demo 11.tasks.Test Demo 11a.data.workflow.id]"
+            id: "$[tasks.Test Demo 11.tasks.Test Demo 11a.parameters.workflow.id]"
     Test Demo 12:
       description: "Test Demo 12"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test12]"
     Test Demo 13:
       description: "Test Demo 13"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test13]"
     Test Demo 14:
       description: "Test Demo 14"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test14]"
     Test Demo 15:
       description: "Test Demo 15"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test15]"
     Test Demo 17:
       description: "Test Demo 17"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test17]"
     Test Expect Handler:
       description: "Test Expect Handler"
       blocking: $env[TEST_TASKS_BLOCKING]
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.testExpectations]"
     wait for tests:
       blocking: true
@@ -160,17 +160,17 @@
       description: "Test Demo Delete"
       blocking: true
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.testDelete]"
     run jshint:
       description: "run jshint"
       blocking: true
       handler: "../taskhandlers/workflowHandler"
-      data:
+      parameters:
         file: "$[parameters.jshint]"
     show success:
       blocking: true
       handler: "../taskhandlers/logHandler"
-      data:
+      parameters:
         level: "info"
         log: "\n\n\nSUCCESS ¯\\_(ツ)_/¯\n\n"

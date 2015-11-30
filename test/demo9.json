@@ -6,7 +6,7 @@
       "description": "I am the task 1, I echo Processus",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Processus"
       }
     },
@@ -14,7 +14,7 @@
       "description": "I am the task 2, I echo Simple",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Simple"
       }
     },
@@ -22,7 +22,7 @@
       "description": "I am the task 3, I echo Workflow",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo Workflow"
       }
     }

@@ -6,14 +6,14 @@
       description: "I am the task 1, I take 1500msecs."
       blocking: true
       handler: "../taskhandlers/testHandler"
-      data:
+      parameters:
         delay: 1500
         error: false
     task 2:
       description: "I am the task 2, I take 1000msecs."
       blocking: true
       handler: "../taskhandlers/testHandler"
-      data:
+      parameters:
         delay: 1000
         error: false
       tasks:
@@ -21,20 +21,20 @@
           description: "I am the task 2-1, I take 1000msecs."
           blocking: true
           handler: "../taskhandlers/testHandler"
-          data:
+          parameters:
             delay: 1000
             error: false
         task 2-2:
           description: "I am the task 2-2, I take 1000msecs."
           blocking: true
           handler: "../taskhandlers/testHandler"
-          data:
+          parameters:
             delay: 1000
             error: false
     task 3:
       description: "I am the task 3, I take 500msecs."
       blocking: true
       handler: "../taskhandlers/testHandler"
-      data:
+      parameters:
         delay: 500
         error: false

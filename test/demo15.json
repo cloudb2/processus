@@ -6,7 +6,7 @@
       "description": "create an example workflow of demo1",
       "blocking": true,
       "handler" : "../taskhandlers/workflowHandler",
-      "data": {
+      "parameters": {
         "file": "./test/demo1.json"
       }
     },
@@ -14,8 +14,8 @@
       "description": "Delete the previously created workflow and its history",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
-      "data": {
-        "cmd": "./bin/processus-cli -l info -d $[tasks.Create Workflow.data.workflow.id]"
+      "parameters": {
+        "cmd": "./bin/processus-cli -l info -d $[tasks.Create Workflow.parameters.workflow.id]"
       }
     }
   }

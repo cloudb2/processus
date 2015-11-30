@@ -116,7 +116,7 @@ function mergeTasks(workflow, tasks) {
 
 function mergeTask(originalTask, newTask){
   //A Handler can only change the data status, conditions and any sub tasks.
-  originalTask.data = newTask.data;
+  originalTask.parameters = newTask.parameters;
   originalTask.status = newTask.status;
   originalTask.errorIf = newTask.errorIf;
   originalTask.skipIf = newTask.skipIf;
@@ -538,7 +538,7 @@ function getData(workflow, path){
 
   if(obj === undefined){
     //it's undefined, so we can't get the data, that may be valid.... or not!
-    logger.warn("Unable to get value for path " + path +". Did you set the path correctly?");
+    logger.warn("Unable to get value for path " + path + " in workflow. Did you set the path correctly?");
   }
   return obj;
 }

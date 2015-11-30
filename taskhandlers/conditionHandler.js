@@ -1,7 +1,7 @@
 /* Condition Handler
  * A very simple condition evaluation handler for non programmers
  * Task INPUT
- * @param task.data.conditions Condition objects consisting of
+ * @param task.parameters.conditions Condition objects consisting of
   "[condition name]"{
     "valueA":[ValueA],
     "operator":[operator],
@@ -16,7 +16,7 @@
  * "LESS OR EQUALS", "<="
  * (note case is ignored)
  * Task OUTPUT
- * @param task.data.conditions each condition is updated to include a result e.g.
+ * @param task.parameters.conditions each condition is updated to include a result e.g.
  "[condition name]"{
    "valueA":[ValueA],
    "operator":[operator],
@@ -24,41 +24,41 @@
    "valid": [true if condition is valid],
    "invalid": [true if condition is invalid]
  }
- * @param task.data.anyValid true if ANY condition evaluates to true
- * @param task.data.allValid true if ALL conditions evaluate to true
- * @param task.data.notAnyValid convenience property to show !anyValid
- * @param task.data.notAllValid convenience property to show !allValid
+ * @param task.parameters.anyValid true if ANY condition evaluates to true
+ * @param task.parameters.allValid true if ALL conditions evaluate to true
+ * @param task.parameters.notAnyValid convenience property to show !anyValid
+ * @param task.parameters.notAllValid convenience property to show !allValid
  */
 module.exports = function(workflowId, taskName, task, callback, logger){
 
   //validate that task data element exists
-  if(!task.data) {
+  if(!task.parameters) {
     logger.debug("No task data property!");
-    callback(new Error("Task [" + taskName + "] has no data property!"), task);
+    callback(new Error("Task [" + taskName + "] has no parameters property!"), task);
     return;
   }
 
   //Validate that the data cmd property has been set
-  if(!task.data.conditions) {
-    callback(new Error("Task [" + taskName + "] has no data.conditions property set!"), task);
+  if(!task.parameters.conditions) {
+    callback(new Error("Task [" + taskName + "] has no parameters.conditions property set!"), task);
     return;
   }
 
   //get the conditions
-  conditionNames = Object.keys(task.data.conditions);
+  conditionNames = Object.keys(task.parameters.conditions);
 
-  task.data.andResult = false;
-  task.data.orResult = false;
+  task.parameters.andResult = false;
+  task.parameters.orResult = false;
 
-  if(conditionNames.length > 0) { task.data.andResult = true; }
+  if(conditionNames.length > 0) { task.parameters.andResult = true; }
 
   for(var x=0; x<conditionNames.length; x++) {
     var condition = conditionNames[x];
 
     //break out the condition
-    var valA = task.data.conditions[condition].valueA;
-    var valB = task.data.conditions[condition].valueB;
-    var op = task.data.conditions[condition].operator;
+    var valA = task.parameters.conditions[condition].valueA;
+    var valB = task.parameters.conditions[condition].valueB;
+    var op = task.parameters.conditions[condition].operator;
 
     if(valA === undefined) {
       callback(new Error("Task [" + taskName + "] condition [" + condition + "] has no valueA property set!"), task);
@@ -84,55 +84,55 @@ module.exports = function(workflowId, taskName, task, callback, logger){
        op.toLowerCase() === "=" ||
        op.toLowerCase() === "match") {
       logger.debug("testing condition is " + valA + " is " + valB + " = " + (valA === valB));
-      task.data.conditions[condition].valid = (valA === valB);
+      task.parameters.conditions[condition].valid = (valA === valB);
     }
     else if(op.toLowerCase() === "is not" ||
        op.toLowerCase() === "not equals" ||
        op.toLowerCase() === "!="||
        op.toLowerCase() === "not match") {
-      task.data.conditions[condition].valid = (valA !== valB);
+      task.parameters.conditions[condition].valid = (valA !== valB);
     }
     else if(op.toLowerCase() === "greater than" ||
        op.toLowerCase() === "greater" ||
        op.toLowerCase() === ">") {
-      task.data.conditions[condition].valid = (valA > valB);
+      task.parameters.conditions[condition].valid = (valA > valB);
     }
     else if(op.toLowerCase() === "less than" ||
        op.toLowerCase() === "less" ||
        op.toLowerCase() === "<") {
-      task.data.conditions[condition].valid = (valA < valB);
+      task.parameters.conditions[condition].valid = (valA < valB);
     }
     else if(op.toLowerCase() === "greater or equals" ||
        op.toLowerCase() === ">=") {
-      task.data.conditions[condition].valid = (valA >= valB);
+      task.parameters.conditions[condition].valid = (valA >= valB);
     }
     else if(op.toLowerCase() === "less or equals" ||
        op.toLowerCase() === "<=") {
-      task.data.conditions[condition].valid = (valA <= valB);
+      task.parameters.conditions[condition].valid = (valA <= valB);
     }
     else {
       callback(new Error("Unknown conditional operator [" + op + "] in task [" + taskName + "]"), task);
       return;
     }
 
-    task.data.conditions[condition].invalid = !task.data.conditions[condition].valid;
+    task.parameters.conditions[condition].invalid = !task.parameters.conditions[condition].valid;
 
     //update orResult and andResult
-    if(task.data.conditions[condition].valid === true) {
+    if(task.parameters.conditions[condition].valid === true) {
       //at least 1 or more condition is true so set orResult accordingly
-      task.data.anyValid = true;
+      task.parameters.anyValid = true;
     }
 
-    if(task.data.allValid === true && task.data.conditions[condition].valid === true){
-      task.data.allValid = true;
+    if(task.parameters.allValid === true && task.parameters.conditions[condition].valid === true){
+      task.parameters.allValid = true;
     }
     else {
-      task.data.allValid = false;
+      task.parameters.allValid = false;
     }
   }
 
-  task.data.notAllValid = !task.data.allValid;
-  task.data.notAnyValid = !task.data.anyValid;
+  task.parameters.notAllValid = !task.parameters.allValid;
+  task.parameters.notAnyValid = !task.parameters.anyValid;
 
   //logger.info("✔ task [" + taskName + "] completed successfully.");
   callback(null, task);

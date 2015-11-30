@@ -80,7 +80,7 @@ var wf = {
       "description": "Demo task to execute echo command.",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'Congratulations you called a workflow using the API.'"
       }
     }
@@ -89,7 +89,7 @@ var wf = {
 
 processus.execute(wf, function(err, workflow){
   if(!err) {
-    console.log(workflow.tasks['task 1'].data.stdout);
+    console.log(workflow.tasks['task 1']parameters.stdout);
   }
 });
 
@@ -202,14 +202,14 @@ Consider the following workflow.
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'"
       }
     },
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'"
       }
     }
@@ -219,7 +219,7 @@ Consider the following workflow.
 ***Note***
 
 1. The above workflow has 2 tasks ```say hello``` and ```say hello again```.
-2. Each task uses a handler called ```execHandler``` which executed the command identified in the data property of the task by ```data.cmd```.
+2. Each task uses a handler called ```execHandler``` which executed the command identified in the data property of the task by ```parameters.cmd```.
 3. **See .yml versions in the test directory for a YAML equivalent workflows.** e.g.
 ```
 ---
@@ -227,12 +227,12 @@ Consider the following workflow.
     say hello:
       blocking: true
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "echo 'hello, world'"
     say hello again:
       blocking: true
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "echo 'hello, world again'"
 ```
 
@@ -280,7 +280,7 @@ debug: {
     "say hello": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world'",
         "stdout": "hello, world\n",
         "stderr": ""
@@ -295,7 +295,7 @@ debug: {
     "say hello again": {
       "blocking": true,
       "handler": "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "echo 'hello, world again'",
         "stdout": "hello, world again\n",
         "stderr": ""
@@ -315,7 +315,7 @@ info: ✰ Workflow [./test/ex2.json] with id [e83de778-d64b-403f-b29d-c305c9f854
 ```
 ***Note***
 
-1. The handler has added ```stdout``` and ```stderr``` to each task's ```data``` property.
+1. The handler has added ```stdout``` and ```stderr``` to each task's ```parameters``` property.
 2. The status of each task and the overall workflow is shown as ```completed```
 3. Processus has added additional timing information to each task.
 4. The status of a task can be one of the following

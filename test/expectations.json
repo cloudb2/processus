@@ -7,7 +7,7 @@
       "blocking": true,
       "handler" : "../taskhandlers/expectHandler",
       "ignoreError": false,
-      "data": {
+      "parameters": {
         "expectations": {
           "toExist": {
             "object": "something truthy",

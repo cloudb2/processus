@@ -6,7 +6,7 @@
       "description": "calls the workflow in the file demo1",
       "blocking": true,
       "handler" : "../taskhandlers/workflowHandler",
-      "data": {
+      "parameters": {
         "file": "./test/demo1.json"
       }
     }

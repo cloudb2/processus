@@ -3,7 +3,7 @@
     description: "I am the task 2, I am calling back (async)."
     blocking: true
     handler: "../taskhandlers/testHandler"
-    data:
+    parameters:
       delay: 1000
       error: false
     status: "completed"

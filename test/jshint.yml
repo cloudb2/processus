@@ -9,11 +9,11 @@
       description: "run jshint for engine"
       blocking: true
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test1]"
     run jshint for taskhandlers:
       description: "run jshint for taskhandlers"
       blocking: true
       handler: "../taskhandlers/execHandler"
-      data:
+      parameters:
         cmd: "$[parameters.test2]"

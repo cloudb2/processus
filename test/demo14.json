@@ -5,7 +5,7 @@
     "show env": {
       "blocking": true,
       "handler" : "../taskhandlers/logHandler",
-      "data": {
+      "parameters": {
         "level": "info",
         "log": "TEST_ENV = $env[TEST_ENV]"
       }

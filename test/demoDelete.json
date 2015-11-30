@@ -6,7 +6,7 @@
       "description": "Delete all workflows, except this one of course :-)",
       "blocking": true,
       "handler" : "../taskhandlers/execHandler",
-      "data": {
+      "parameters": {
         "cmd": "./bin/processus-cli --deleteALL -l info"
       }
     }

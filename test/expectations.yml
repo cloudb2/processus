@@ -6,7 +6,7 @@
       description: "Test the expect Handler"
       blocking: true
       handler: "../taskhandlers/expectHandler"
-      data:
+      parameters:
         expectations:
           toExist:
             object: "something truthy"

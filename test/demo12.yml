@@ -5,7 +5,7 @@
     call github for demo1:
       blocking: true
       handler: "../taskhandlers/requestHandler"
-      data:
+      parameters:
         options:
           url: "https://raw.githubusercontent.com/cloudb2/processus/master/test/demo1.json"
           method: "GET"
