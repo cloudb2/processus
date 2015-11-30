@@ -14,7 +14,7 @@
     "task 2": {
       "description": "I am the task 2, I will be skipped",
       "blocking": true,
-      "skipIf":"$[tasks.task 1parameters.skip me]",
+      "skipIf":"$[tasks.task 1.parameters.skip me]",
       "handler": "../taskhandlers/execHandler",
       "parameters": {
         "cmd": "echo Simple"

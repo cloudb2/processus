@@ -137,17 +137,66 @@ function execute(workflow, callback){
   store.initStore(function(err){
     if(!err){
       logger.debug("init complete without error.");
-
     }
     else {
       callback(err, workflow);
     }
   });
+
+  //Validate workflow
   workflow = validateWorkflow(workflow);
-  realExecute(workflow, callback);
 
-
+  //Do pre-workflow Task
+  doPre(workflow, function(err, workflow){
+      if(!err) {
+        realExecute(workflow, function(err, workflow){
+          if(!err){
+            doPost(workflow, function(err, workflow){
+              callback(err, workflow);
+            });
+          }
+          else {
+            //execute workflow failed, so callback
+            callback(err, workflow);
+            return;
+          }
+        });
+      }
+      else {
+        //pre workflow failed, so callback
+        callback(err, workflow);
+        return;
+      }
+  });
   //return workflow;
+}
+
+function doPre(workflow, callback){
+
+  var task = workflow['pre workflow'];
+  executePrePost(workflow, "pre workflow", task, callback);
+
+}
+
+function doPost(workflow, callback){
+  var task = workflow['post workflow'];
+  executePrePost(workflow, "post workflow", task, callback);
+}
+
+function executePrePost(workflow, taskName, task, callback){
+  if(task !== undefined && task !== null) {
+    logger.info("⧖ starting [" + taskName + "] task.");
+    setTaskDataValues(workflow, task);
+    setConditionValues(task);
+    task.status = "executing";
+    executeTask(workflow.id, taskName, task, function(err, taskObject){
+      callback(err, workflow);
+    });
+  }
+  else {
+    //Nothing to do, so carry on
+    callback(null, workflow);
+  }
 }
 
 //Validate the supplied workflow and remove any non-JSON things, like functions!
@@ -186,6 +235,84 @@ function getTasksByStatus(parent, status, deep) {
 
 }
 
+function executeTask(workflowId, taskName, taskObject, callback){
+
+    taskObject.timeStarted = Date.now();
+    logger.debug("task.skipIf = " + taskObject.skipIf);
+    logger.debug("task.errorIf = " + taskObject.errorIf);
+    var skip = (taskObject.skipIf === true ||
+                taskObject.errorIf === true ||
+                taskObject.handler === '' ||
+                taskObject.handler === undefined);
+
+    if (!skip) {
+      //No error or skip condition so execute handler
+      logger.info("⧖ Starting task [" + taskName + "]");
+      try {
+        require(taskObject.handler)(workflowId, taskName, taskObject, function(err, taskObjectreturned){
+          //handler returned, check if there's an error
+          if(err) {
+            //there is, so set it on the task
+            taskObjectreturned.errorMsg = err.message;
+            taskObjectreturned.status = "error";
+            //Should we ignore the error?
+            if(taskObjectreturned.ignoreError === true) {
+              logger.info("ignoring error, as requested for task [" + taskName + "]");
+              taskObjectreturned.status = 'executing';
+              //reset err object
+              err = undefined;
+            }
+          }
+          else {
+            logger.info("✔ task " + taskName + " completed successfully.");
+          }
+          //If the task is executing mark it as completed and update times
+          if(taskObjectreturned.status === 'executing'){
+            taskObjectreturned.status = 'completed';
+            taskObjectreturned.timeCompleted = Date.now();
+            taskObjectreturned.handlerDuration = taskObjectreturned.timeCompleted - taskObjectreturned.timeStarted;
+            taskObjectreturned.totalDuration = taskObjectreturned.timeCompleted - taskObjectreturned.timeOpened;
+          }
+          //If the task is paused (as marked by the hander) then we assume
+          //an async call that will return in the future
+          if(taskObjectreturned.status === 'paused'){
+            taskObjectreturned.handlerDuration = Date.now() - taskObjectreturned.timeStarted;
+          }
+          //callback to Async
+          callback(err, taskObjectreturned);
+        }, logger);
+      }
+      catch(requireError) {
+        taskObject.errorMsg = requireError.message;
+        taskObject.status = "error";
+        callback(new Error("Possible missing module or other unexpected error! " + requireError), taskObject);
+      }
+    }
+    else {
+      if(taskObject.skipIf === true) {
+        logger.debug("skipping handler for task [" + taskName + "]");
+      }
+      //Ok, we're skipping the handler is that because errorIf is true?
+      var err = null;
+      if (taskObject.errorIf === true) {
+        err = new Error("Task [" + taskName + "] has error condition set.");
+        taskObject.errorMsg = err.message;
+        taskObject.status = "error";
+      }
+      //If it's exeucuting but has no handler (i.e. it could just be a parent place holder task),
+      //mark it completed.
+      if(taskObject.status === 'executing'){
+        taskObject.status = 'completed';
+        taskObject.timeCompleted = Date.now();
+        taskObject.handlerDuration = taskObject.timeCompleted - taskObject.timeStarted;
+        taskObject.totalDuration = taskObject.timeCompleted - taskObject.timeOpened;
+      }
+      //call back to Async, with error if necessary.
+      callback(err, taskObject);
+    }
+
+}
+
 //Execute the resulting workflow asynchronously recursing for each next set of tasks
 function realExecute(workflow, callback) {
 
@@ -220,81 +347,9 @@ function realExecute(workflow, callback) {
   //appopriate handler (as defined by the task)
   function makeTaskExecutionFunction(x){
     return function(callback){
-      var n2 = taskNames[x];
-      var t2 = openTasks[taskNames[x]];
-      t2.timeStarted = Date.now();
-      logger.debug("task.skipIf = " + t2.skipIf);
-      logger.debug("task.errorIf = " + t2.errorIf);
-      var skip = (t2.skipIf === true ||
-                  t2.errorIf === true ||
-                  t2.handler === '' ||
-                  t2.handler === undefined);
-
-      if (!skip) {
-        //No error or skip condition so execute handler
-        logger.info("⧖ Starting task [" + n2 + "]");
-        try {
-          require(t2.handler)(workflow.id, n2, t2, function(err, t2returned){
-            //handler returned, check if there's an error
-            if(err) {
-              //there is, so set it on the task
-              t2returned.errorMsg = err.message;
-              t2returned.status = "error";
-              //Should we ignore the error?
-              if(t2returned.ignoreError === true) {
-                logger.info("ignoring error, as requested for task [" + n2 + "]");
-                t2returned.status = 'executing';
-                //reset err object
-                err = undefined;
-              }
-            }
-            else {
-              logger.info("✔ task " + n2 + " completed successfully.");
-            }
-            //If the task is executing mark it as completed and update times
-            if(t2returned.status === 'executing'){
-              t2returned.status = 'completed';
-              t2returned.timeCompleted = Date.now();
-              t2returned.handlerDuration = t2returned.timeCompleted - t2returned.timeStarted;
-              t2returned.totalDuration = t2returned.timeCompleted - t2returned.timeOpened;
-            }
-            //If the task is paused (as marked by the hander) then we assume
-            //an async call that will return in the future
-            if(t2returned.status === 'paused'){
-              t2returned.handlerDuration = Date.now() - t2returned.timeStarted;
-            }
-            //callback to Async
-            callback(err, t2returned);
-          }, logger);
-        }
-        catch(requireError) {
-          t2.errorMsg = requireError.message;
-          t2.status = "error";
-          callback(new Error("Possible missing module! " + requireError), t2);
-        }
-      }
-      else {
-        if(t2.skipIf === true) {
-          logger.debug("skipping handler for task [" + n2 + "]");
-        }
-        //Ok, we're skipping the handler is that because errorIf is true?
-        var err = null;
-        if (t2.errorIf === true) {
-          err = new Error("Task [" + n2 + "] has error condition set.");
-          t2.errorMsg = err.message;
-          t2.status = "error";
-        }
-        //If it's exeucuting but has no handler (i.e. it could just be a parent place holder task),
-        //mark it completed.
-        if(t2.status === 'executing'){
-          t2.status = 'completed';
-          t2.timeCompleted = Date.now();
-          t2.handlerDuration = t2.timeCompleted - t2.timeStarted;
-          t2.totalDuration = t2.timeCompleted - t2.timeOpened;
-        }
-        //call back to Async, with error if necessary.
-        callback(err, t2);
-      }
+      var taskName = taskNames[x];
+      var taskObject = openTasks[taskNames[x]];
+      executeTask(workflow.Id, taskName, taskObject, callback);
     };
   }
 

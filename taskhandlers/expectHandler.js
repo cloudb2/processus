@@ -20,7 +20,8 @@ var expect = require('expect');
  *
  * Task INPUT
  * @param task.parameters.expectations is an object consisting of expects. e.g.
-     [expect function]{
+     [expect name]{
+       "assertion" [expect function]
        "object": [object to test],
        "value":  [value to expect],
        "message": [A message to return upon failure]
@@ -31,7 +32,8 @@ var expect = require('expect');
  * if task.ignoreError = true
  *    Each expect object is furnished with an assertion true or false (errors are suppressed)
  *
-     [expect function]{
+     [expect name]{
+       "assertion" [expect function]
        "object": [object to test],
        "value":  [value to expect],
        "message": [A message to return upon failure]
@@ -61,48 +63,49 @@ module.exports = function(workflowId, taskName, task, callback, logger){
     try {
       var expectName = expectNames[x];
       var expectDef = task.parameters.expectations[expectName];
+      var assertion = expectDef.assertion;
 
-      logger.debug("testing the assertions:  " + expectName);
+      logger.debug("testing the assertions:  " + assertion);
       logger.debug("supplied expect object:  " + JSON.stringify(expectDef.object));
       logger.debug("supplied expect message: " + expectDef.message);
       logger.debug("supplied expect value:   " + JSON.stringify(expectDef.value));
 
-      if(expectName === "toExist" ||
-         expectName === "toNotExist") {
-        expect(expectDef.object)[expectName](expectDef.message);
+      if(assertion === "toExist" ||
+         assertion === "toNotExist") {
+        expect(expectDef.object)[assertion](expectDef.message);
       }
-      else if (expectName === "toBe" ||
-               expectName === "toNotBe" ||
-               expectName === "toEqual" ||
-               expectName === "toNotEqual" ||
-               expectName === "toBeA" ||
-               expectName === "toNotBeA" ||
-               expectName === "toMatch" ||
-               expectName === "toBeLessThan" ||
-               expectName === "toBeGreaterThan" ||
-               expectName === "toInclude" ||
-               expectName === "toExclude") {
+      else if (assertion === "toBe" ||
+               assertion === "toNotBe" ||
+               assertion === "toEqual" ||
+               assertion === "toNotEqual" ||
+               assertion === "toBeA" ||
+               assertion === "toNotBeA" ||
+               assertion === "toMatch" ||
+               assertion === "toBeLessThan" ||
+               assertion === "toBeGreaterThan" ||
+               assertion === "toInclude" ||
+               assertion === "toExclude") {
 
-        if(expectName === "toMatch"){
+        if(assertion === "toMatch"){
           //toMatch expects a regular expression, so convert string accordingly
           expectDef.value = new RegExp(expectDef.value);
         }
-        expect(expectDef.object)[expectName](expectDef.value, expectDef.message);
+        expect(expectDef.object)[assertion](expectDef.value, expectDef.message);
       }
       else {
-          callback(new Error("Unknown or unsupported expect function [" + expectName + "] in task [" + taskName + "]"), task);
+          callback(new Error("Unknown or unsupported expect function [" + assertion + "] in task [" + taskName + "]"), task);
           return;
       }
-      task.parameters.expectations[expectName].assertion = true;
+      task.parameters.expectations[expectName].result = true;
     }
     catch(expectError){
-      if(task.ignoreError === false) {
-        callback(expectError, task);
-        return;
+      if(task.ignoreError === true) {
+        task.errorMsg = expectError.message;
+        task.parameters.expectations[expectName].result = false;
       }
       else {
-        task.errorMsg = expectError.message;
-        task.parameters.expectations[expectName].assertion = false;
+        callback(expectError, task);
+        return;
       }
     }
   }

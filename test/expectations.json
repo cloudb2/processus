@@ -10,74 +10,89 @@
       "parameters": {
         "expectations": {
           "toExist": {
+            "assertion":"toExist",
             "object": "something truthy",
             "message": "toExist failed!"
           },
           "toNotExist": {
+            "assertion":"toNotExist",
             "object": null,
             "message": "toNotExist failed!"
           },
           "toBe": {
+            "assertion":"toBe",
             "object": 42,
             "value": 42,
             "message": "toBe failed!"
           },
           "toNotBe": {
+            "assertion":"toNotBe",
             "object": 42,
             "value": 0,
             "message": "toNotBe failed!"
           },
           "toEqual": {
+            "assertion":"toEqual",
             "object": {"someobject":"equal"},
             "value": {"someobject":"equal"},
             "message": "toEqual failed!"
           },
           "toNotEqual": {
+            "assertion":"toNotEqual",
             "object": {"someobject":"equal"},
             "value": {"someobject":"notequal"},
             "message": "toNotEqual failed!"
           },
           "toBeA": {
+            "assertion":"toBeA",
             "object": {"someobject":"equal"},
             "value": "object",
             "message": "toBeA failed!"
           },
           "toNotBeA": {
+            "assertion":"toNotBeA",
             "object": {"someobject":"equal"},
             "value": "string",
             "message": "toNotBeA failed!"
           },
           "toBeLessThan": {
+            "assertion":"toBeLessThan",
             "object": 2,
             "value": 42,
             "message": "toBeLessThan failed!"
           },
           "toBeGreaterThan": {
+            "assertion":"toBeGreaterThan",
             "object": 42,
             "value": 2,
             "message": "toBeGreaterThan failed!"
           },
           "toInclude": {
+            "assertion":"toInclude",
             "object": "hello, world",
             "value": "world",
             "message": "toInclude failed!"
           },
           "toInclude": {
+            "assertion":"toInclude",
             "object": [1,2,3,4],
             "value": 2,
             "message": "toInclude failed!"
           },
           "toExclude": {
+            "assertion":"toExclude",
             "object": "hello, world",
             "value": "moon",
             "message": "toExclude failed!"
           },
           "toExclude": {
+            "assertion":"toExclude",
             "object": [1,2,3,4],
             "value": 5,
             "message": "toExclude failed!"
           },
           "toMatch": {
+            "assertion":"toMatch",
             "object": "hello world",
             "value": "[orl]",
             "message": "toMatch failed!"
