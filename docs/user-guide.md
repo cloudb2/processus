@@ -1398,17 +1398,48 @@ Processus comes with a number of task handlers. It's recommended that you study 
 #### execHandler
 ```
 /* Exec Handler
- * Using the Task's parameters.cmd property, this handler will attempt to execute that
- * command as a child process.
- * output is stored in parameters.stdout and parameters.stderr
- * INPUT
+ * Using the Task's parameters.cmd property, this handler will attempt to execute that command as a child process. To spawn a detached command use background = true and arguments parameters described below.
+ output is stored in parameters.stdout and parameters.stderr (unless background = true)
+
+ * Task INPUT
  * @param task.parameters.cmd The command to execute
- * OUTPUT
+ * @param task.parameters.background Set true to spawn and detach the process
+    Note: detached processes will write stdout and stderr to [workflowId].logger
+ * @param task.parameters.arguments Set to an array of arguments
+    Note: arguments are only required for background (spawned) commands
+ * Task OUTPUT
  * @param task.parameters.stdout The stdout (if any)
  * @param task.parameters.stderr The stderr (if any)
+ * @param task.parameters.pid The child process (if background is true)
  *
  */
 ```
+
+Above, you've already seen the execHandler in action. Consider the ```background.yml``` file as an example of executing a background workflow.
+
+```
+---
+  name: background example
+  description: A demo execHandler spawning a detached process.
+  tasks:
+    task 1:
+      description: "exec background process"
+      blocking: true
+      handler: "../taskhandlers/execHandler"
+      parameters:
+        background: true
+        cmd: "./bin/processus-cli"
+        arguments:
+          - -f
+          - ./test/demo1.yml
+          - -l
+          - info
+```
+***Note***
+
+1. When setting background to true, you must supply an array of arguments
+2. The pid of the detached process is returned
+3. The stdout and stderr are written to a log file in the current directory with the name [workflowId].log
 
 [top](#processus)
 #### logHandler

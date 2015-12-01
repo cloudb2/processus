@@ -352,7 +352,7 @@ function realExecute(workflow, callback) {
     return function(callback){
       var taskName = taskNames[x];
       var taskObject = openTasks[taskNames[x]];
-      executeTask(workflow.Id, taskName, taskObject, callback);
+      executeTask(workflow.id, taskName, taskObject, callback);
     };
   }
 
@@ -475,11 +475,8 @@ function setTaskDataValues(workflow, task){
       }
 
     }
-
     task[propertyKey] = JSON.parse(propStr);
-
   });
-
 }
 
 //Init all tasks to waiting and set workflow status to open

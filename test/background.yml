@@ -1,0 +1,16 @@
+---
+  name: background example
+  description: A demo execHandler spawning a detatched process.
+  tasks:
+    task 1:
+      description: "exec background process"
+      blocking: true
+      handler: "../taskhandlers/execHandler"
+      parameters:
+        background: true
+        cmd: "./bin/processus-cli"
+        arguments:
+          - -f
+          - ./test/demo1.yml
+          - -l
+          - info
