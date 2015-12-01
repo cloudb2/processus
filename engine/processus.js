@@ -185,10 +185,10 @@ function doPost(workflow, callback){
 
 function executePrePost(workflow, taskName, task, callback){
   if(task !== undefined && task !== null) {
-    logger.info("⧖ starting [" + taskName + "] task.");
     setTaskDataValues(workflow, task);
     setConditionValues(task);
     task.status = "executing";
+    task.timeOpened = Date.now();
     executeTask(workflow.id, taskName, task, function(err, taskObject){
       callback(err, workflow);
     });
@@ -244,6 +244,9 @@ function executeTask(workflowId, taskName, taskObject, callback){
                 taskObject.errorIf === true ||
                 taskObject.handler === '' ||
                 taskObject.handler === undefined);
+
+    //Set handler executed based on skip evaluation
+    taskObject.handlerExecuted = !skip;
 
     if (!skip) {
       //No error or skip condition so execute handler

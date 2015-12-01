@@ -36,6 +36,6 @@ build:
           echo "npm version $(npm -v) running"
 
     - script:
-        name: run processus demos
+        name: run processus tests
         code: |
-          ./rundemos.sh
+          ./runtest.sh

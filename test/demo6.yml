@@ -14,12 +14,12 @@
       blocking: true
       handler: "../taskhandlers/testHandler"
       parameters:
-        delay: "$[tasks.task 1parameters.delay]"
+        delay: "$[tasks.task 1.parameters.delay]"
         error: false
     task 3:
       description: "I am the task 3, I take as long as task1."
       blocking: true
       handler: "../taskhandlers/testHandler"
       parameters:
-        delay: "$[tasks.task 1parameters.delay]"
+        delay: "$[tasks.task 1.parameters.delay]"
         error: false

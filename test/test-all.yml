@@ -1,0 +1,143 @@
+---
+  name: Test All
+  description: Testing all demos
+
+  # Workflow tasks
+  tasks:
+
+    # Task to run the demo and capture results
+    run demo 1:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo1.yml"
+    # Task to run the demo and capture results
+    run demo 2:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo2.yml"
+    # Task to run the demo and capture results
+    run demo 3:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo3.yml"
+    # Task to run the demo and capture results
+    run demo 4:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo4.yml"
+    # Task to run the demo and capture results
+    run demo 5:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo5.yml"
+    # Task to run the demo and capture results
+    run demo 6:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo6.yml"
+    # Task to run the demo and capture results
+    run demo 7:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo7.yml"
+    # Task to run the demo and capture results
+    run demo 8:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo8.yml"
+    # Task to run the demo and capture results
+    run demo 9:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo9.yml"
+    # Task to run the demo and capture results
+    run demo 10:
+      ##ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo10.yml"
+    # Task to run the demo and capture results
+    run demo 11:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo11.yml"
+    # Task to run the demo and capture results
+    run demo 11-async:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo11-async.yml"
+    # Task to run the demo and capture results
+    run demo 12:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo12.yml"
+    # Task to run the demo and capture results
+    run demo 13:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo13.yml"
+    # Task to run the demo and capture results
+    run demo 13a:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo13a.yml"
+    # Task to run the demo and capture results
+    run demo 14:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo14.yml"
+    # Task to run the demo and capture results
+    run demo 15:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo15.yml"

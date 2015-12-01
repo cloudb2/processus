@@ -16,7 +16,7 @@
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
       "parameters": {
-        "delay": "$[tasks.task 1parameters.delay]",
+        "delay": "$[tasks.task 1.parameters.delay]",
         "error": false
       }
     },
@@ -25,7 +25,7 @@
       "blocking": true,
       "handler" : "../taskhandlers/testHandler",
       "parameters": {
-        "delay": "$[tasks.task 1parameters.delay]",
+        "delay": "$[tasks.task 1.parameters.delay]",
         "error": false
       }
     }

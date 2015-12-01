@@ -1,3 +1,2 @@
 #!/bin/bash
-./bin/processus-cli -l info -f ./test/tests.json
-./bin/processus-cli -l info -f ./test/tests.yml
+./bin/processus-cli -l info -f ./test/test-all.yml

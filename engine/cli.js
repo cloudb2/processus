@@ -121,7 +121,7 @@ module.exports = function() {
 
     processus.runWorkflow(options.file, options.id, workflowTaskJSON, function(err, workflow){
       if(err){
-        //logger.error(err);
+        process.exit(1);
       }
     });
 

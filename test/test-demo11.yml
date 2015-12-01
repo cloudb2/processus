@@ -1,0 +1,44 @@
+---
+  name: Test Demo11
+  description: Testing Demo 11
+
+  # Workflow tasks
+  tasks:
+
+    # Task to run the demo and capture results
+    run demo workflow:
+      ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: true
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/demo11.yml"
+
+  # Check assertions after workflow
+  post workflow:
+    description: Perform expect assertion checks
+    blocking: true
+    handler: "../taskhandlers/expectHandler"
+    parameters:
+      expectations:
+        Workflow Open:
+
+          #Check at the demo workflow completed ok
+          assertion: toEqual
+          object: $[tasks.run demo workflow.parameters.workflow.status]
+          value: open
+          message: "The workflow did not complete as expected!"
+
+        Task 2 Paused:
+          #Check at the demo workflow task 2 paused
+          assertion: toEqual
+          object: $[tasks.run demo workflow.parameters.workflow.tasks.task 2.status]
+          value: paused
+          message: "The workflow did not skip task as expected!"
+
+        Task 3 Waiting:
+          #Check at the demo workflow task 3 is waiting
+          assertion: toEqual
+          object: $[tasks.run demo workflow.parameters.workflow.tasks.task 3.status]
+          value: waiting
+          message: "The workflow did not leave task waiting as expected!"

@@ -1,0 +1,30 @@
+---
+  name: Test Demo13
+  description: Testing Demo 13
+
+  # Workflow tasks
+  tasks:
+
+    # Task to run the demo and capture results
+    run demo workflow:
+      ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: true
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/demo13.yml"
+
+  # Check assertions after workflow
+  post workflow:
+    description: Perform expect assertion checks
+    blocking: true
+    handler: "../taskhandlers/expectHandler"
+    parameters:
+      expectations:
+        Workflow Completed:
+
+          #Check at the demo workflow completed ok
+          assertion: toEqual
+          object: $[tasks.run demo workflow.parameters.workflow.status]
+          value: completed
+          message: "The workflow did not complete as expected!"

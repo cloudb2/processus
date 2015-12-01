@@ -1,0 +1,45 @@
+---
+  name: Test Demo11-async
+  description: Testing Demo 11-async
+
+  # Workflow tasks
+  tasks:
+
+    call and respond:
+      blocking: true
+      tasks:
+
+        # Task to run the demo and capture results
+        run demo workflow:
+          ignoreError: true #ignore errors and deal with any problems in post workflow
+          description: "calls the workflow in the file"
+          blocking: true
+          handler: "../taskhandlers/workflowHandler"
+          parameters:
+            file: "./test/demo11.yml"
+
+        # Now updated existing workflow with an async reponse
+        respond async:
+          ignoreError: true #ignore errors and deal with any problems in post workflow
+          description: "calls the workflow in the file"
+          blocking: true
+          handler: "../taskhandlers/workflowHandler"
+          parameters:
+            file: "./test/demo11-async-task.yml"
+            id: "$[tasks.call and respond.tasks.run demo workflow.parameters.workflow.id]"
+
+
+  # Check assertions after workflow
+  post workflow:
+    description: Perform expect assertion checks
+    blocking: true
+    handler: "../taskhandlers/expectHandler"
+    parameters:
+      expectations:
+        Workflow Completed:
+
+          #Check at the demo workflow completed ok
+          assertion: toEqual
+          object: $[tasks.call and respond.tasks.respond async.parameters.workflow.status]
+          value: completed
+          message: "The workflow did not complete as expected!"
