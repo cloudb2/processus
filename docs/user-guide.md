@@ -18,6 +18,7 @@ workflows.
   * [Handling Errors](#handling-errors)
     * [ignoreError Property](#ignoreerror-property)
   * [Task Conditions - skipIf and errorIf](#task-conditions---skipif-and-errorif)
+  * [Pre and Post Workflow Tasks](#pre-and-post-workflow-tasks)
   * [Environment Variables](#environment-variables)
   * [Workflow History](#workflow-history)
   * [Deleting Workflows](#deleting-workflows)
@@ -933,6 +934,82 @@ info: skipping [task 2]
 error: ✘ Task [task 3] has error condition set.
 error: ✘ Workflow [test/demo10.json] with id [90727723-da21-46e4-8ac3-b5e132b2bab8] exited with error!
 ```
+
+[top](#processus)
+### Pre and Post Workflow Tasks
+A workflows contain pre and post events that can execute tasks. These tasks are exactly the same as a normal workflow task, except they will be executed before and after the main workflow. This can be useful for performing pre workflow checks such as parameter validation and post workflow checks to ensure it completed as expected.
+
+These tasks MUST have the name ```pre workflow``` and ```post workflow``` for example consider demo18.json
+
+```
+{
+  "name": "Demo18",
+  "description": "A demo showing the pre and post tasks.",
+  "pre workflow": {
+    "handler" : "../taskhandlers/logHandler",
+    "parameters": {
+      "level": "info",
+      "log": "pre workflow: I will be executed before the main workflow."
+    }
+  },
+  "tasks":{
+    "task 1": {
+      "description": "task 1",
+      "blocking": true,
+      "handler" : "../taskhandlers/testHandler",
+      "parameters": {
+        "delay": 1000,
+        "error": false
+      }
+    },
+    "task 2": {
+      "description": "task 2",
+      "blocking": true,
+      "handler" : "../taskhandlers/testHandler",
+      "parameters": {
+        "delay": 1000,
+        "error": false
+      }
+    }
+  },
+  "post workflow": {
+    "handler" : "../taskhandlers/logHandler",
+    "parameters": {
+      "level": "info",
+      "log": "post workflow: I will be executed after the main workflow."
+    }
+  }
+}
+```
+
+You should see an output similar to the following
+
+```
+$ ./bin/processus-cli -f test/demo18.json -l info
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+info: reading workflow file [test/demo18.json]
+info: ⧖ Starting task [pre workflow]
+info: pre workflow: I will be executed before the main workflow.
+info: ✔ task pre workflow completed successfully.
+info: ⧖ Starting task [task 1]
+info: ✔ task task 1 completed successfully.
+info: ⧖ Starting task [task 2]
+info: ✔ task task 2 completed successfully.
+info: ⧖ Starting task [post workflow]
+info: post workflow: I will be executed after the main workflow.
+info: ✔ task post workflow completed successfully.
+info: ✰ Workflow [test/demo18.json] with id [9528a0be-269b-4f4d-a319-9325bf112202] completed successfully.
+```
+
+***Note*** When updating an existing workflow the pre and post events will re-fire.
+
 
 [top](#processus)
 ### Environment Variables

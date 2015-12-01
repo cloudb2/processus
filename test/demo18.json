@@ -1,0 +1,38 @@
+{
+  "name": "Demo18",
+  "description": "A demo showing the pre and post tasks.",
+  "pre workflow": {
+    "handler" : "../taskhandlers/logHandler",
+    "parameters": {
+      "level": "info",
+      "log": "pre workflow: I will be executed before the main workflow."
+    }
+  },
+  "tasks":{
+    "task 1": {
+      "description": "task 1",
+      "blocking": true,
+      "handler" : "../taskhandlers/testHandler",
+      "parameters": {
+        "delay": 1000,
+        "error": false
+      }
+    },
+    "task 2": {
+      "description": "task 2",
+      "blocking": true,
+      "handler" : "../taskhandlers/testHandler",
+      "parameters": {
+        "delay": 1000,
+        "error": false
+      }
+    }
+  },
+  "post workflow": {
+    "handler" : "../taskhandlers/logHandler",
+    "parameters": {
+      "level": "info",
+      "log": "post workflow: I will be executed after the main workflow."
+    }
+  }
+}
