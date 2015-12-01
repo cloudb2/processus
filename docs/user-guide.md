@@ -937,7 +937,7 @@ error: ✘ Workflow [test/demo10.json] with id [90727723-da21-46e4-8ac3-b5e132b2
 
 [top](#processus)
 ### Pre and Post Workflow Tasks
-A workflows contain pre and post events that can execute tasks. These tasks are exactly the same as a normal workflow task, except they will be executed before and after the main workflow. This can be useful for performing pre workflow checks such as parameter validation and post workflow checks to ensure it completed as expected.
+Workflows can contain pre and post events that can execute tasks. These tasks are exactly the same as a normal workflow task, except they will be executed before and after the main workflow. This can be useful for performing pre workflow checks such as parameter validation and post workflow checks to ensure it completed as expected.
 
 These tasks MUST have the name ```pre workflow``` and ```post workflow``` for example consider demo18.json
 
@@ -1008,8 +1008,10 @@ info: ✔ task post workflow completed successfully.
 info: ✰ Workflow [test/demo18.json] with id [9528a0be-269b-4f4d-a319-9325bf112202] completed successfully.
 ```
 
-***Note*** When updating an existing workflow the pre and post events will re-fire.
+***Note***
 
+1. When updating an existing workflow the pre and post events will re-fire.
+2. Setting the blocking property is not required as these tasks will always execute before and after the main workflow.
 
 [top](#processus)
 ### Environment Variables

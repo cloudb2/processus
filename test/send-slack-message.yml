@@ -1,0 +1,20 @@
+---
+  name: "Demo Slack"
+  description: "A demo showing the use of the slack handler to make a incoming webhook call."
+  tasks:
+    get commit:
+      blocking: true
+      handler: "../taskhandlers/execHandler"
+      parameters:
+        cmd: git rev-parse origin/master
+    Send a message to Slack's incoming WebHook.:
+      blocking: true
+      handler: "processus-handler-slack"
+      parameters:
+        webhookURL: "$env[SLACK_WEBHOOK_URL]"
+        payload:
+          username: "processus"
+          channel: "$env[SLACK_CHANNEL]"
+          text: "Tests completed for commit https://github.com/cloudb2/processus/commit/$[tasks.get commit.parameters.stdout]"
+          icon_url: "https://slack.com/img/icons/app-57.png"
+          unfurl_links: true

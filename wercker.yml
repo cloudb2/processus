@@ -38,4 +38,9 @@ build:
     - script:
         name: run processus tests
         code: |
-          ./runtests.sh
+          ./bin/processus-cli -l info -f ./test/test-all.yml
+
+    - script:
+        name: send slack message
+        code: |
+          ./bin/processus-cli -l info -f ./test/send-slack-message.yml
