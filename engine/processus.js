@@ -476,7 +476,6 @@ function setTaskDataValues(workflow, task){
 
     }
 
-    console.log(propStr);
     task[propertyKey] = JSON.parse(propStr);
 
   });
