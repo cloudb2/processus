@@ -49,6 +49,7 @@ workflows.</p>
 </ul>
 </li>
 <li><a href="#task-conditions---skipif-and-errorif">Task Conditions - skipIf and errorIf</a></li>
+<li><a href="#pre-and-post-workflow-tasks">Pre and Post Workflow Tasks</a></li>
 <li><a href="#environment-variables">Environment Variables</a></li>
 <li><a href="#workflow-history">Workflow History</a></li>
 <li><a href="#deleting-workflows">Deleting Workflows</a></li>
@@ -1041,6 +1042,87 @@ error: ✘ Workflow [test/demo10.json] with id [90727723-da21-46e4-8ac3-b5e132b2
 <p><a href="#processus">top</a></p>
 
 <h3>
+<a id="pre-and-post-workflow-tasks" class="anchor" href="#pre-and-post-workflow-tasks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pre and Post Workflow Tasks</h3>
+
+<p>Workflows can contain pre and post events that can execute tasks. These tasks are exactly the same as a normal workflow task, except they will be executed before and after the main workflow. This can be useful for performing pre workflow checks such as parameter validation and post workflow checks to ensure it completed as expected.</p>
+
+<p>These tasks MUST have the name <code>pre workflow</code> and <code>post workflow</code> for example consider demo18.json</p>
+
+<pre><code>{
+  "name": "Demo18",
+  "description": "A demo showing the pre and post tasks.",
+  "pre workflow": {
+    "handler" : "../taskhandlers/logHandler",
+    "parameters": {
+      "level": "info",
+      "log": "pre workflow: I will be executed before the main workflow."
+    }
+  },
+  "tasks":{
+    "task 1": {
+      "description": "task 1",
+      "blocking": true,
+      "handler" : "../taskhandlers/testHandler",
+      "parameters": {
+        "delay": 1000,
+        "error": false
+      }
+    },
+    "task 2": {
+      "description": "task 2",
+      "blocking": true,
+      "handler" : "../taskhandlers/testHandler",
+      "parameters": {
+        "delay": 1000,
+        "error": false
+      }
+    }
+  },
+  "post workflow": {
+    "handler" : "../taskhandlers/logHandler",
+    "parameters": {
+      "level": "info",
+      "log": "post workflow: I will be executed after the main workflow."
+    }
+  }
+}
+</code></pre>
+
+<p>You should see an output similar to the following</p>
+
+<pre><code>$ ./bin/processus-cli -f test/demo18.json -l info
+
+  ____  ____   __    ___  ____  ____  ____  _  _  ____
+ (  _ \(  _ \ /  \  / __)(  __)/ ___)/ ___)/ )( \/ ___)
+  ) __/ )   /(  O )( (__  ) _) \___  \___ \) \/ (\___ \
+ (__)  (__\_) \__/  \___)(____)(____/(____/\____/(____/
+
+           Processus: A Simple Workflow Engine.
+
+info: reading workflow file [test/demo18.json]
+info: ⧖ Starting task [pre workflow]
+info: pre workflow: I will be executed before the main workflow.
+info: ✔ task pre workflow completed successfully.
+info: ⧖ Starting task [task 1]
+info: ✔ task task 1 completed successfully.
+info: ⧖ Starting task [task 2]
+info: ✔ task task 2 completed successfully.
+info: ⧖ Starting task [post workflow]
+info: post workflow: I will be executed after the main workflow.
+info: ✔ task post workflow completed successfully.
+info: ✰ Workflow [test/demo18.json] with id [9528a0be-269b-4f4d-a319-9325bf112202] completed successfully.
+</code></pre>
+
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li>When updating an existing workflow the pre and post events will re-fire.</li>
+<li>Setting the blocking property is not required as these tasks will always execute before and after the main workflow.</li>
+</ol>
+
+<p><a href="#processus">top</a></p>
+
+<h3>
 <a id="environment-variables" class="anchor" href="#environment-variables" aria-hidden="true"><span class="octicon octicon-link"></span></a>Environment Variables</h3>
 
 <p>It's possible to 'inject' environment variables into your workflow.</p>
@@ -1456,17 +1538,50 @@ info: successfully deleted workflow history [_data/0567ce60-d927-4017-9ea2-02ffc
 <a id="exechandler" class="anchor" href="#exechandler" aria-hidden="true"><span class="octicon octicon-link"></span></a>execHandler</h4>
 
 <pre><code>/* Exec Handler
- * Using the Task's parameters.cmd property, this handler will attempt to execute that
- * command as a child process.
- * output is stored in parameters.stdout and parameters.stderr
- * INPUT
+ * Using the Task's parameters.cmd property, this handler will attempt to execute that command as a child process. To spawn a detached command use background = true and arguments parameters described below.
+ output is stored in parameters.stdout and parameters.stderr (unless background = true)
+
+ * Task INPUT
  * @param task.parameters.cmd The command to execute
- * OUTPUT
+ * @param task.parameters.background Set true to spawn and detach the process
+    Note: detached processes will write stdout and stderr to [workflowId].logger
+ * @param task.parameters.arguments Set to an array of arguments
+    Note: arguments are only required for background (spawned) commands
+ * Task OUTPUT
  * @param task.parameters.stdout The stdout (if any)
  * @param task.parameters.stderr The stderr (if any)
+ * @param task.parameters.pid The child process (if background is true)
  *
  */
 </code></pre>
+
+<p>Above, you've already seen the execHandler in action. Consider the <code>background.yml</code> file as an example of executing a background workflow.</p>
+
+<pre><code>---
+  name: background example
+  description: A demo execHandler spawning a detached process.
+  tasks:
+    task 1:
+      description: "exec background process"
+      blocking: true
+      handler: "../taskhandlers/execHandler"
+      parameters:
+        background: true
+        cmd: "./bin/processus-cli"
+        arguments:
+          - -f
+          - ./test/demo1.yml
+          - -l
+          - info
+</code></pre>
+
+<p><strong><em>Note</em></strong></p>
+
+<ol>
+<li>When setting background to true, you must supply an array of arguments</li>
+<li>The pid of the detached process is returned</li>
+<li>The stdout and stderr are written to a log file in the current directory with the name [workflowId].log</li>
+</ol>
 
 <p><a href="#processus">top</a></p>
 
