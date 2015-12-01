@@ -38,4 +38,4 @@ build:
     - script:
         name: run processus tests
         code: |
-          ./runtest.sh
+          ./runtests.sh
