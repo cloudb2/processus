@@ -20,24 +20,42 @@ module.exports = {
 
 function deleteAll(config, callback){
   glob(config.dataDirectory + "/*", function (err, files) {
-
+    if(err){
+      callback(err);
+      return;
+    }
+    var delError;
     if(files) {
-      files.map(function(file){
-        fs.unlink(file, function (err) {
-          if (err) {
-            logger.error("✘ Unable to delete workflow [" + file + "] " + err);
-            callback(err);
-            return;
-          }
-          logger.info("successfully deleted workflow history [" + file + "]");
-        });
-      });
+      if(files.length === 0){
+        callback(null);
+        return;
+      }
+      for(var x=0; x<files.length; x++){
+        if(!delError){
+          var last = (x === files.length -1);
+          fs.unlink(files[x], checkDelResponse(delError, files[x], last, callback));
+        }
+      }
     }
     else {
-      logger.error("✘ Unable to find workflow [" + id + "] " + err);
+      logger.info("No workflows to delete.");
+      callback(null);
     }
-
   });
+}
+
+function checkDelResponse(err, file, last, callback){
+  if (err) {
+    logger.error("✘ Unable to delete workflow file [" + file + "] " + err);
+    callback(err);
+    return;
+  }
+  logger.info("successfully deleted workflow file [" + file + "]");
+  //is this the last one, if so callback
+  if(last){
+    callback(null);
+    return;
+  }
 }
 
 function deleteInstance(id, config, callback){
@@ -52,22 +70,20 @@ function deleteInstance(id, config, callback){
     logger.info("successfully deleted workflow [" + id + "]");
   });
 
+  var delError = null;
   glob(current + "_*", function (err, files) {
 
     if(files) {
-      files.map(function(file){
-        fs.unlink(file, function (err) {
-          if (err) {
-            logger.error("✘ Unable to delete workflow [" + file + "] " + err);
-            callback(err);
-            return;
-          }
-          logger.info("successfully deleted workflow history [" + file + "]");
-        });
-      });
+      for(var x=0; x<files.length; x++){
+        if(!delError){
+          var last = (x === files.length -1);
+          fs.unlink(files[x], checkDelResponse(delError, files[x], last, callback));
+        }
+      }
     }
     else {
-      logger.error("✘ Unable to find workflow [" + id + "] " + err);
+      logger.info("No history for workflow [" + id + "]");
+      callback(null);
     }
 
   });
