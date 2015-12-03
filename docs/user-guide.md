@@ -1,3 +1,5 @@
+<img src="./images/processus.png" width=64/>
+
 # Processus
 
 Processus is a simple lightweight workflow engine designed to help orchestrate multiple tasks.
