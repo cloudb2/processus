@@ -19,7 +19,9 @@
     </section>
 
     <section class="main-content">
-      <h1>
+      <p><img src="./images/processus.png" width="64/"></p>
+
+<h1>
 <a id="processus" class="anchor" href="#processus" aria-hidden="true"><span class="octicon octicon-link"></span></a>Processus</h1>
 
 <p>Processus is a simple lightweight workflow engine designed to help orchestrate multiple tasks.</p>
@@ -178,7 +180,7 @@ processus.execute(wf, function(err, workflow){
 
 <ul>
 <li>testHandler: testing Processus workflows</li>
-<li>execHandler: executing local commands</li>
+<li>execHandler: executing local commands (background tasks now also supported)</li>
 <li>workflowHandler: for calling other workflows</li>
 <li>requestHandler: making HTTP requests</li>
 <li>conditionHandler: evaluating conditional statements</li>
@@ -187,6 +189,7 @@ processus.execute(wf, function(err, workflow){
 </li>
 <li>Built in persistence (file based)</li>
 <li>Inject workflow with additional tasks</li>
+<li>Pre and Post workflow tasks</li>
 <li>Support for environment variables</li>
 <li>Inspect executed workflows and look back through their history</li>
 <li>Update in-flight (paused) workflows with async callbacks</li>
