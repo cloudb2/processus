@@ -140,6 +140,7 @@ processus.execute(wf, function(err, workflow){
 12. Support for environment variables
 13. Inspect executed workflows and look back through their history
 14. Update in-flight (paused) workflows with async callbacks
+15. [Dockerized API](https://github.com/cloudb2/processus-api)
 
 [top](#processus)
 ### Workflow
