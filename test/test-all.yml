@@ -141,3 +141,14 @@
       handler: "../taskhandlers/workflowHandler"
       parameters:
         file: "./test/test-demo15.yml"
+    # dummy task to wait for all others to complete
+    wait:
+      blocking: true
+    # Got here, so must have finished successfully
+    complete:
+      description: "Show success"
+      blocking: true
+      handler: "../taskhandlers/logHandler"
+      parameters:
+        level: info
+        log: "\n\n\nSuccessfully Completed Tests!\n\n¯\\_(ツ)_/¯\n\n"

@@ -335,7 +335,7 @@ See the [User Guide](http://cloudb2.github.io/processus/) for much more!
 
 Yes, please.
 
-Make a pull requests and ensure you can run ```./rundemos.sh``` successfully. Please add additional tests for any new features/mods you make.
+Make a pull requests and ensure you can run ```./runtests.sh``` successfully. Please add additional tests for any new features/mods you make.
 
 ### Roadmap
 * Workflow Persistence Plugin Architecture
