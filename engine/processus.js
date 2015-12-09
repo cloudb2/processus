@@ -467,9 +467,17 @@ function setTaskDataValues(workflow, task){
           propStr = propStr.replace(refValues[x], dataValue);
         }
         else {
-          //ok, not a string, so replace quotes wrapping the path and JSON stringify it
-          //in case it's a complete object. i.e. allow the passing of objects.
-          propStr = propStr.replace('"' + refValues[x] + '"', JSON.stringify(dataValue, 2, null));
+            //ok, not a string, so replace quotes wrapping the path and JSON stringify it
+            //in case it's a complete object. i.e. allow the passing of objects.
+            var beforeStr = propStr.replace('"' + refValues[x] + '"', JSON.stringify(dataValue, 2, null));
+            //if nothing changed, then it may not be a string, but it's part of a
+            //new string, so just replace it as is
+            if(propStr == beforeStr){
+              propStr = propStr.replace(refValues[x], dataValue);
+            }
+            else {
+              propStr = propStr.replace('"' + refValues[x] + '"', JSON.stringify(dataValue, 2, null));
+            }
         }
 
       }
