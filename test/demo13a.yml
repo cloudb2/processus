@@ -15,4 +15,4 @@
       handler: "../taskhandlers/workflowHandler"
       parameters:
         file: "$[tasks.call github for demo1.parameters.options.url]"
-        workflow: "$[tasks.call github for demo1.parameters.body]"
+        workflow: "$[tasks.call github for demo1.parameters.response.body]"
