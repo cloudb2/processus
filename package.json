@@ -1,6 +1,6 @@
 {
   "name": "processus",
-  "version": "0.1.26",
+  "version": "0.1.27",
   "description": "A simple node workflow engine",
   "homepage": "http://cloudb2.github.io/processus/",
   "engine": {
@@ -19,7 +19,7 @@
   "bin": {
     "processus-cli": "./bin/processus-cli"
   },
-  "license": "MPL",
+  "license": "MPL-2.0",
   "main": "./engine/api",
   "devDependencies": {
     "apidoc": "^0.13.1",

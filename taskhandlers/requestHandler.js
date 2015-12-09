@@ -23,7 +23,6 @@ module.exports = function(workflowId, taskName, task, callback, logger){
   request(task.parameters.options, function (error, response, body) {
 
     task.parameters.response = response;
-    task.parameters.body = body;
     callback(error, task);
 
   });
