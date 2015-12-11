@@ -1,40 +1,23 @@
-/*!
- * Processus, by Cloudb2.
+/*
+ * Processus, by cloudb2, MPL2.0 (See LICENSE file in root dir)
  *
- * This file (and this file only) is licensed under the same slightly modified
- * MIT license that Processus is. It stops evil-doers everywhere:
- *
- *   Permission is hereby granted, free of charge, to any person obtaining
- *   a copy of this software and associated documentation files (the "Software"),
- *   to deal in the Software without restriction, including without limitation
- *   the rights to use, copy, modify, merge, publish, distribute, sublicense,
- *   and/or sell copies of the Software, and to permit persons to whom
- *   the Software is furnished to do so, subject to the following conditions:
- *
- *   The above copyright notice and this permission notice shall be included
- *   in all copies or substantial portions of the Software.
- *
- *   The Software shall be used for Good, not Evil.
- *
- *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- *   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- *   DEALINGS IN THE SOFTWARE.
- *
+ * cli.js: Command line entry point
  */
+
+
+var logger = require('./logger');
 var cli = require('cli');
 var fs = require('fs');
 var processus = require('./processus');
-var logger = require('./logger');
 var store = require('./persistence/store');
 
+//Just export this function
 module.exports = function() {
 
+  //Show title, how doesn't like ASCII art?
   console.log(require('./title'));
 
+  //Parse command line
   cli.parse({
       log:   ['l', 'Sets the log level [debug|verbose|info|warn|error].', 'string', 'error'],
       file:  ['f', 'Workflow or task definition. A task must also include the workflow ID. For YAML use .yml postfix.', 'string', null],
@@ -42,17 +25,17 @@ module.exports = function() {
       rewind: ['r', 'time in reverse chronological order. 0 is current, 1 is the previous save point etc.', 'number', 0],
       delete: ['d', 'delete a workflow instance', 'string', null],
       deleteALL: ['', 'delete ALL workflow instances.']
-
   });
 
+  //Now execute main function
   cli.main(function(args, options) {
 
+    //check and set log level
     if (options.log === 'debug' ||
         options.log === 'verbose' ||
         options.log === 'info' ||
         options.log === 'warn' ||
         options.log === 'error') {
-
         logger.level = options.log;
     }
     else {
@@ -60,70 +43,106 @@ module.exports = function() {
       return -1;
     }
 
-    if(options.deleteALL === true) {
-      store.deleteAll(function(err){
-        if(err){
-          logger.error(err);
-        }
-      });
-      return;
-    }
+    //ok log set, lets' init the store and do the rest
+    store.initStore(function(err){
 
-    if(options.delete !== null) {
+      if(err){
+        logger.error("Failed to initialise store: " + err.message);
+        //well that wasn't a good start! goodbye
+        process.exit(1);
+      }
 
-      store.deleteInstance(options.delete, function(err){
-        if(err){
-          logger.error(err);
-        }
-      });
-      return;
+      //Command line wants to delete all
+      if(options.deleteALL === true) {
+        store.deleteAll(function(err){
+          if(err){
+            logger.error(err);
+            process.exit(1);
+          }
+          else {
+            process.exit(0);
+          }
+        });
+        return;
+      }
 
-    }
+      //Command line wants to delete a specific instance
+      if(options.delete !== null) {
+        logger.info("deleting " + options.delete);
+        store.deleteInstance(options.delete, function(err){
+          if(err){
+            logger.error(err);
+            process.exit(1);
+          }
+          else {
+            process.exit(0);
+          }
+        });
+        return;
+      }
 
-    if (options.file === null && options.id === null) {
-      logger.error("✘ Must supply a worklfow or task filename.");
-      return -1;
-    }
+      //We got this far, did we get a file or an id?
+      if (options.file === null && options.id === null) {
+        logger.error("✘ Must supply a worklfow or task filename.");
+        process.exit(1);
+      }
 
+      //Command line wants to get an existing instance
+      if (options.file === null && options.id !== null) {
+        //just an id supplied, so fetch that workflow
+        store.loadInstance(options.id, options.rewind, function(err, workflowFile){
+          if(!err){
+            //force logger to info
+            logger.level = 'info';
+            if(workflowFile !== undefined){
+              logger.info(JSON.stringify(workflowFile, null, 2));
+              process.exit(0);
+              return;
+            }
+            else {
+              logger.error("Unable to find workflow instance [" + options.id + "]");
+              process.exit(1);
+              return;
+            }
+          }
+          else {
+            logger.error(err.message);
+            process.exit(1);
+            return;
+          }
+        });
+        return;
+      }
 
-    if (options.file === null && options.id !== null) {
-      //just an id supplied, so fetch that workflow
-      store.loadInstance(options.id, options.rewind, function(err, workflowFile){
+      //Ok, got this far, so we must have a file name to load
+      var workflowTaskJSON;
+      store.loadDefinition(options.file, function(err, workflowFile){
         if(!err){
-          //force logger to info
-          logger.level = 'info';
-          logger.info(JSON.stringify(workflowFile, null, 2));
-          return;
+          workflowTaskJSON = workflowFile;
         }
         else {
           logger.error(err.message);
           return err;
-
         }
       });
-      return;
-    }
 
-    var workflowTaskJSON;
-    store.loadDefinition(options.file, function(err, workflowFile){
-      if(!err){
-        workflowTaskJSON = workflowFile;
-      }
-      else {
-        logger.error(err.message);
-        return err;
-
-      }
-    });
-    if(workflowTaskJSON === undefined){
-      return;
-    }
-
-    processus.runWorkflow(options.file, options.id, workflowTaskJSON, function(err, workflow){
-      if(err){
+      if(workflowTaskJSON === undefined){
+        logger.error("Workflow definition [" + options.file + "] not found.");
         process.exit(1);
+        return;
       }
-    });
 
+      //Right, well, we have the workflow and all looks good, let's execute it
+      //fingers crossed!
+      processus.runWorkflow(options.file, options.id, workflowTaskJSON, function(err, workflow){
+        if(err){
+          logger.error(err.message);
+          process.exit(1);
+        }
+        else {
+          process.exit(0);
+        }
+      });
+    });
   });
 };

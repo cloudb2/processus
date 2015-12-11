@@ -1,6 +1,6 @@
 {
   "name": "processus",
-  "version": "0.1.27",
+  "version": "0.1.28",
   "description": "A simple node workflow engine",
   "homepage": "http://cloudb2.github.io/processus/",
   "engine": {
@@ -38,6 +38,7 @@
     "expect": "^1.13.0",
     "glob": "^6.0.1",
     "js-yaml": "^3.4.3",
+    "mongodb": "^2.1.0",
     "node-uuid": "^1.4.3",
     "processus-handler-slack": "^0.0.5",
     "request": "^2.66.0",

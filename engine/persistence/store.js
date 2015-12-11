@@ -1,16 +1,23 @@
-/*!
- * Processus Persistence Store
+/*
+ * Processus, by cloudb2, MPL2.0 (See LICENSE file in root dir)
+ *
+ * store.js: persistence store entry point
  */
+
+//declare required modules
 var logger = require('../logger');
 var config = require('./config').config;
+var EventEmitter = require('events');
 
+//declare module exports
 module.exports = {
   deleteInstance: deleteInstance,
   loadDefinition: loadDefinition,
   loadInstance: loadInstance,
   initStore: initStore,
   saveInstance: saveInstance,
-  deleteAll: deleteAll
+  deleteAll: deleteAll,
+  exitStore: exitStore
 };
 
 function deleteAll(callback){
@@ -61,6 +68,16 @@ function initStore(callback) {
 function saveInstance(workflow, callback) {
   if(config.type !== null && config.type !== undefined) {
     require('./' + config.type).saveInstance(workflow, config, callback);
+  }
+  else {
+    callback(null);
+  }
+}
+
+function exitStore(callback) {
+  logger.debug("Store is exiting...");
+  if(config.type !== null && config.type !== undefined) {
+    require('./' + config.type).exitStore(config, callback);
   }
   else {
     callback(null);

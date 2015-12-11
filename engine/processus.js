@@ -1,34 +1,13 @@
-/*!
- * Processus, by Cloudb2.
+/*
+ * Processus, by cloudb2, MPL2.0 (See LICENSE file in root dir)
  *
- * This file (and this file only) is licensed under the same slightly modified
- * MIT license that Processus is. It stops evil-doers everywhere:
- *
- *   Permission is hereby granted, free of charge, to any person obtaining
- *   a copy of this software and associated documentation files (the "Software"),
- *   to deal in the Software without restriction, including without limitation
- *   the rights to use, copy, modify, merge, publish, distribute, sublicense,
- *   and/or sell copies of the Software, and to permit persons to whom
- *   the Software is furnished to do so, subject to the following conditions:
- *
- *   The above copyright notice and this permission notice shall be included
- *   in all copies or substantial portions of the Software.
- *
- *   The Software shall be used for Good, not Evil.
- *
- *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- *   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- *   DEALINGS IN THE SOFTWARE.
- *
+ * processus.js: The main engine, where the work gets done
  */
+
+var logger = require('./logger');
 require('dotenv').load();
 var async = require("async");
 var uuid = require("node-uuid");
-var logger = require('./logger');
 var store = require('./persistence/store');
 var _ = require("underscore");
 
@@ -133,41 +112,38 @@ function mergeTask(originalTask, newTask){
  * @returns {object} The validated and updated workflow object
  */
 function execute(workflow, callback){
+  logger.debug("EXECUTING...");
   //Initialise store
-  store.initStore(function(err){
-    if(!err){
-      logger.debug("init complete without error.");
-    }
-    else {
-      callback(err, workflow);
-    }
-  });
+    logger.debug("init complete without error.");
+    //Validate workflow
+    workflow = validateWorkflow(workflow);
 
-  //Validate workflow
-  workflow = validateWorkflow(workflow);
+    logger.debug("Validated workflow: " + workflow);
 
-  //Do pre-workflow Task
-  doPre(workflow, function(err, workflow){
-      if(!err) {
-        realExecute(workflow, function(err, workflow){
-          if(!err){
-            doPost(workflow, function(err, workflow){
+    //Do pre-workflow Task
+    doPre(workflow, function(err, workflow){
+        if(!err) {
+          realExecute(workflow, function(err, workflow){
+            if(!err){
+              doPost(workflow, function(err, workflow){
+                callback(err, workflow);
+              });
+            }
+            else {
+              //execute workflow failed, so callback
               callback(err, workflow);
-            });
-          }
-          else {
-            //execute workflow failed, so callback
-            callback(err, workflow);
-            return;
-          }
-        });
-      }
-      else {
-        //pre workflow failed, so callback
-        callback(err, workflow);
-        return;
-      }
-  });
+              return;
+            }
+          });
+        }
+        else {
+          //pre workflow failed, so callback
+          callback(err, workflow);
+          return;
+        }
+    });
+
+
   //return workflow;
 }
 
@@ -325,107 +301,117 @@ function realExecute(workflow, callback) {
       callback(err, workflow);
       return;
     }
-  });
 
-  //Check there's any paused tasks, if so we assume Async and exit current workflow
-  var pausedTasks = getTasksByStatus(workflow, 'paused', true);
-  var pausedTaskNames = Object.keys(pausedTasks);
-  if(pausedTaskNames.length > 0) {
-    logger.debug("found paused task(s) so returning immediately");
-    callback(null, workflow);
-    return;
-  }
-
-  //Open any waiting (and available) tasks
-  openNextAvailableTask(workflow);
-
-  //Get a list of ALL the open tasks
-  var openTasks = getTasksByStatus(workflow, 'open', true);
-  var taskNames = Object.keys(openTasks);
-
-  //Initialise the task execution queue
-  var taskExecutionQueue = [];
-
-  //This function will return a function to be used by async that calls the
-  //appopriate handler (as defined by the task)
-  function makeTaskExecutionFunction(x){
-    return function(callback){
-      var taskName = taskNames[x];
-      var taskObject = openTasks[taskNames[x]];
-      executeTask(workflow.id, taskName, taskObject, callback);
-    };
-  }
-
-  //Now cycle through the open tasks, check them to see if they can be executed,
-  //and if so, pushed onto the queue
-  for (var x=0; x<taskNames.length; x++){
-
-    //make a new execution function ready for async
-    var taskFunction = makeTaskExecutionFunction(x);
-
-    //get the task t
-    var t = openTasks[taskNames[x]];
-
-    //if the task is open and has no children, queue it to execute
-    if(t.status === 'open' && !t.tasks){
-      setTaskDataValues(workflow, t);
-      setConditionValues(t);
-      t.status = "executing";
-      taskExecutionQueue.push(taskFunction);
+    //Check there's any paused tasks, if so we assume Async and exit current workflow
+    var pausedTasks = getTasksByStatus(workflow, 'paused', true);
+    var pausedTaskNames = Object.keys(pausedTasks);
+    if(pausedTaskNames.length > 0) {
+      logger.debug("found paused task(s) so returning immediately");
+      callback(null, workflow);
+      return;
     }
-    //if the task has children, but they're ALL completed, queue it to execute
-    if(t.status === 'open' && t.tasks){
-      if(childHasStatus(t, 'completed', true)){
+
+    //Open any waiting (and available) tasks
+    openNextAvailableTask(workflow);
+
+    //Get a list of ALL the open tasks
+    var openTasks = getTasksByStatus(workflow, 'open', true);
+    var taskNames = Object.keys(openTasks);
+
+    //Initialise the task execution queue
+    var taskExecutionQueue = [];
+
+    //This function will return a function to be used by async that calls the
+    //appopriate handler (as defined by the task)
+    function makeTaskExecutionFunction(x){
+      return function(callback){
+        var taskName = taskNames[x];
+        var taskObject = openTasks[taskNames[x]];
+        executeTask(workflow.id, taskName, taskObject, callback);
+      };
+    }
+
+    //Now cycle through the open tasks, check them to see if they can be executed,
+    //and if so, pushed onto the queue
+    for (var x=0; x<taskNames.length; x++){
+
+      //make a new execution function ready for async
+      var taskFunction = makeTaskExecutionFunction(x);
+
+      //get the task t
+      var t = openTasks[taskNames[x]];
+
+      //if the task is open and has no children, queue it to execute
+      if(t.status === 'open' && !t.tasks){
         setTaskDataValues(workflow, t);
         setConditionValues(t);
         t.status = "executing";
         taskExecutionQueue.push(taskFunction);
       }
+      //if the task has children, but they're ALL completed, queue it to execute
+      if(t.status === 'open' && t.tasks){
+        if(childHasStatus(t, 'completed', true)){
+          setTaskDataValues(workflow, t);
+          setConditionValues(t);
+          t.status = "executing";
+          taskExecutionQueue.push(taskFunction);
+        }
+      }
     }
-  }
 
-  //Assuming we actually have any valid tasks to execute, let async call them in parallel
-  if(taskExecutionQueue.length > 0) {
+    //Assuming we actually have any valid tasks to execute, let async call them in parallel
+    if(taskExecutionQueue.length > 0) {
 
-    //Now execute open tasks
-    async.parallel(taskExecutionQueue,
-      //function callback for async when all tasks have finsihed or an error has occured
-      function(error, results) {
-        //if no error then cycle through results and update the task statuses
-        if(!error) {
-          //ok, all done and no error, so recurse into next set of tasks (if any)
-          realExecute(workflow, callback);
+      //Now execute open tasks
+      async.parallel(taskExecutionQueue,
+        //function callback for async when all tasks have finsihed or an error has occured
+        function(error, results) {
+          //if no error then cycle through results and update the task statuses
+          if(!error) {
+            //ok, all done and no error, so recurse into next set of tasks (if any)
+            realExecute(workflow, callback);
+          }
+          else {
+
+            //Now set the overall workflow to error
+            workflow.status = 'error';
+            store.saveInstance(workflow, function(err){
+              logger.debug("save point b reached.");
+
+              if(err){
+                callback(err, workflow);
+                return;
+              }
+              else {
+                callback(error, workflow);
+              }
+            });
+
+          }
+        });
+    }
+    else {
+      //check if ALL tasks are completed, if so, set the workflow status
+      if(childHasStatus(workflow, 'completed', true)){
+        workflow.status = 'completed';
+      }
+      store.saveInstance(workflow, function(err){
+        logger.debug("save point c reached.");
+        //None left in the queue so callback
+
+        if(err){
+          callback(err, workflow);
+          return;
         }
         else {
-
-          //Now set the overall workflow to error
-          workflow.status = 'error';
-          store.saveInstance(workflow, function(err){
-            logger.debug("save point b reached.");
-            if(err){
-              callback(err, workflow);
-              return;
-            }
-          });
-          callback(error, workflow);
+          callback(null, workflow);
         }
       });
-  }
-  else {
-    //check if ALL tasks are completed, if so, set the workflow status
-    if(childHasStatus(workflow, 'completed', true)){
-      workflow.status = 'completed';
+
     }
-    store.saveInstance(workflow, function(err){
-      logger.debug("save point c reached.");
-      if(err){
-        callback(err, workflow);
-        return;
-      }
-    });
-    //None left in the queue so callback
-    callback(null, workflow);
-  }
+
+  });
+
 }
 
 //check data values and look out for $[] references and update the value accordingly
@@ -633,3 +619,23 @@ function getBoolean(value) {
   }
   return false;
 }
+
+function exitHandler(options, err) {
+  logger.debug("Processus is exiting..");
+  store.exitStore(function(err){
+    logger.debug("GOODBYE: Cheerio!");
+    if (options.cleanup) logger.debug("Exit is clean");
+    if (err) logger.error(err.stack);
+    if (options.exit) process.exit();
+  });
+
+}
+
+//do something when app is closing
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+
+//catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+
+//catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));

@@ -1,7 +1,15 @@
-var p = require('./processus');
+/*
+ * Processus, by cloudb2, MPL2.0 (See LICENSE file in root dir)
+ *
+ * api.js: Proessus API as used by other node apps
+ */
+
+//declare required modules
 var logger = require('./logger');
 var store = require('./persistence/store');
+var p = require('./processus');
 
+//set default log level
 logger.level = 'error';
 
 module.exports = {

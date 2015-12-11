@@ -1,6 +1,10 @@
-/*!
- * File based storage for Processus
+/*
+ * Processus, by cloudb2, MPL2.0 (See LICENSE file in root dir)
+ *
+ * file.js: used to manage file based persistence store
  */
+
+//declare required modules
 var logger = require('../logger');
 var fs = require('fs');
 var envParser = require('../envParser');
@@ -9,13 +13,15 @@ var yaml = require('js-yaml');
 
 var initialised = false;
 
+//declare module exports
 module.exports = {
   deleteInstance: deleteInstance,
   loadDefinition: loadDefinition,
   loadInstance: loadInstance,
   initStore: initStore,
   saveInstance: saveInstance,
-  deleteAll: deleteAll
+  deleteAll: deleteAll,
+  exitStore: exitStore
 };
 
 function deleteAll(config, callback){
@@ -92,6 +98,10 @@ function deleteInstance(id, config, callback){
 
 function isYaml(file){
   return file.indexOf(".yml", file.length - ".yml".length) !== -1;
+}
+
+function saveDefinition(definition, callback){
+  callback(new Error("saveDefinition not implemented."));
 }
 
 function loadDefinition(id, callback){
@@ -237,4 +247,8 @@ function writeCurrent(workflow, current, callback) {
     callback(writeError);
   }
 
+}
+
+function exitStore(config, callback) {
+  callback(null);
 }
