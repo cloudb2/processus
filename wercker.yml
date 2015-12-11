@@ -44,8 +44,3 @@ build:
         name: send slack message
         code: |
           ./bin/processus-cli -l info -f ./test/send-slack-message.yml
-
-    - script:
-        name: test docker
-        code: |
-          docker ps
