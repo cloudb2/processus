@@ -5,7 +5,7 @@
  */
 
 var logger = require('./logger');
-require('dotenv').load();
+require('dotenv').load({silent: true});
 var async = require("async");
 var uuid = require("node-uuid");
 var store = require('./persistence/store');
