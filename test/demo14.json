@@ -7,7 +7,7 @@
       "handler" : "../taskhandlers/logHandler",
       "parameters": {
         "level": "info",
-        "log": "TEST_ENV = $env[TEST_ENV]"
+        "log": "TEST_ENV = $[environment.TEST_ENV]"
       }
     }
   }

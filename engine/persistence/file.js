@@ -7,7 +7,7 @@
 //declare required modules
 var logger = require('../logger');
 var fs = require('fs');
-var envParser = require('../envParser');
+//var envParser = require('../envParser');
 var glob = require('glob');
 var yaml = require('js-yaml');
 
@@ -124,7 +124,7 @@ function loadDefinition(id, callback){
   var workflowTaskJSON;
 
   //parse and replace any env vars
-  workflowTaskFile = envParser.parse(workflowTaskFile);
+  //workflowTaskFile = envParser.parse(workflowTaskFile);
 
   logger.debug("file loaded: " + workflowTaskFile);
 

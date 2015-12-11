@@ -1020,7 +1020,7 @@ info: ✰ Workflow [test/demo18.json] with id [9528a0be-269b-4f4d-a319-9325bf112
 [top](#processus)
 ### Environment Variables
 
-It's possible to 'inject' environment variables into your workflow.
+Environment variables are automatically injected into your workflow.
 
 Consider ```demo14.json```
 ```
@@ -1031,7 +1031,7 @@ Consider ```demo14.json```
       "handler" : "../taskhandlers/logHandler",
       "parameters": {
         "level": "info",
-        "log": "TEST_ENV = $env[TEST_ENV]"
+        "log": "TEST_ENV = $[environment.TEST_ENV]"
       }
     }
   }
@@ -1040,7 +1040,7 @@ Consider ```demo14.json```
 ***Note***
 
 1. Note that we're using a new handler called ```logHandler``` which, as the name suggests, logs the output supplied.
-2. Similar to data referencing, Processus uses the ```$env[<ENVIRONMENT NAME>]``` as a marker for environment variables.
+2. Similar to data referencing, Processus uses the ```$[environment.<ENVIRONMENT NAME>]``` as a marker for environment variables.
 
 looking at the example ```.env``` file used by Processus, we see the following.
 ```

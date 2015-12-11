@@ -105,6 +105,17 @@ function mergeTask(originalTask, newTask){
   originalTask.totalDuration = originalTask.timeCompleted - originalTask.timeOpened;
 }
 
+function addEnvVars(workflow){
+
+  var vars = Object.keys(process.env);
+  workflow.environment = {};
+  for(var x=0; x<vars.length; x++){
+    workflow.environment[vars[x]] = process.env[vars[x]];
+  }
+  return workflow;
+
+}
+
 /**
  * Executes the supplied workflow for this instance of the processus engine.
  *
@@ -112,36 +123,37 @@ function mergeTask(originalTask, newTask){
  * @returns {object} The validated and updated workflow object
  */
 function execute(workflow, callback){
-  logger.debug("EXECUTING...");
-  //Initialise store
-    logger.debug("init complete without error.");
-    //Validate workflow
-    workflow = validateWorkflow(workflow);
 
-    logger.debug("Validated workflow: " + workflow);
+  //add environment vars to workflow parameters
+  workflow = addEnvVars(workflow);
 
-    //Do pre-workflow Task
-    doPre(workflow, function(err, workflow){
-        if(!err) {
-          realExecute(workflow, function(err, workflow){
-            if(!err){
-              doPost(workflow, function(err, workflow){
-                callback(err, workflow);
-              });
-            }
-            else {
-              //execute workflow failed, so callback
+  //Validate workflow
+  workflow = validateWorkflow(workflow);
+
+  logger.debug("Validated workflow: " + workflow);
+
+  //Do pre-workflow Task
+  doPre(workflow, function(err, workflow){
+      if(!err) {
+        realExecute(workflow, function(err, workflow){
+          if(!err){
+            doPost(workflow, function(err, workflow){
               callback(err, workflow);
-              return;
-            }
-          });
-        }
-        else {
-          //pre workflow failed, so callback
-          callback(err, workflow);
-          return;
-        }
-    });
+            });
+          }
+          else {
+            //execute workflow failed, so callback
+            callback(err, workflow);
+            return;
+          }
+        });
+      }
+      else {
+        //pre workflow failed, so callback
+        callback(err, workflow);
+        return;
+      }
+  });
 
 
   //return workflow;

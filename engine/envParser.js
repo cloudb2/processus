@@ -4,6 +4,9 @@
  * envParser.js: parse workflow for env vars
  */
 
+/*
+deprecated in favor of workflow.environment:{} being referencable
+
 var expect = require('expect');
 var _ = require('underscore');
 
@@ -28,3 +31,4 @@ function parse(rawWorkflow){
   }
   return str;
 }
+*/
