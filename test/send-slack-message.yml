@@ -11,10 +11,10 @@
       blocking: true
       handler: "processus-handler-slack"
       parameters:
-        webhookURL: "$env[SLACK_WEBHOOK_URL]"
+        webhookURL: "$[environment.SLACK_WEBHOOK_URL]"
         payload:
           username: "processus"
-          channel: "$env[SLACK_CHANNEL]"
+          channel: "$[environment.SLACK_CHANNEL]"
           text: "Tests completed for commit https://github.com/cloudb2/processus/commit/$[tasks.get commit.parameters.stdout]"
           icon_url: "https://slack.com/img/icons/app-57.png"
           unfurl_links: true

@@ -134,7 +134,6 @@ module.exports = function(workflowId, taskName, task, callback, logger){
   task.parameters.notAllValid = !task.parameters.allValid;
   task.parameters.notAnyValid = !task.parameters.anyValid;
 
-  //logger.info("✔ task [" + taskName + "] completed successfully.");
   callback(null, task);
 
 };
