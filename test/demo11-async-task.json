@@ -7,6 +7,25 @@
       "delay": 1000,
       "error": false
     },
-    "status": "completed"
+    "tasks":{
+      "task 2-1": {
+        "description": "I am the task 2-1, injected into the original (async).",
+        "blocking": true,
+        "handler": "../taskhandlers/testHandler",
+        "parameters": {
+          "delay": 1000,
+          "error": false
+        }
+      },
+      "task 2-2": {
+        "description": "I am the task 2-2, injected into the original (async).",
+        "blocking": true,
+        "handler": "../taskhandlers/testHandler",
+        "parameters": {
+          "delay": 1000,
+          "error": false
+        }
+      }
+    }
   }
 }

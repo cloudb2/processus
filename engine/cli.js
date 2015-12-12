@@ -19,7 +19,7 @@ module.exports = function() {
 
   //Parse command line
   cli.parse({
-      log:   ['l', 'Sets the log level [debug|verbose|info|warn|error].', 'string', 'error'],
+      log:   ['l', 'Sets the log level [debug|verbose|info|warn|error].', 'string', 'info'],
       file:  ['f', 'Workflow or task definition. A task must also include the workflow ID. For YAML use .yml postfix.', 'string', null],
       id: ['i', 'Workflow ID.', 'string', null],
       rewind: ['r', 'time in reverse chronological order. 0 is current, 1 is the previous save point etc.', 'number', 0],

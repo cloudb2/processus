@@ -1,4 +1,8 @@
 ---
+
+  # We're updating the original task from demo11 and adding 2 additional taskhandlers
+  # This is how a responder to Processus can "inject" further tasks, not originally
+  # in the workflow.
   task 2:
     description: "I am the task 2, I am calling back (async)."
     blocking: true
@@ -6,4 +10,21 @@
     parameters:
       delay: 1000
       error: false
-    status: "completed"
+
+    tasks:
+
+      task 2-1:
+        description: "I am the task 2-1, being injected into the original (async)."
+        blocking: true
+        handler: "../taskhandlers/testHandler"
+        parameters:
+          delay: 1000
+          error: false
+
+      task 2-2:
+        description: "I am the task 2-2, being injected into the original (async)."
+        blocking: true
+        handler: "../taskhandlers/testHandler"
+        parameters:
+          delay: 1000
+          error: false
