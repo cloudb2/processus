@@ -64,8 +64,13 @@ function updateTasks(id, tasks, callback){
 
   store.loadInstance(id, 0, function(err, workflow){
     if(!err){
-      workflow = mergeTasks(workflow, tasks);
-      execute(workflow, callback);
+      if(workflow.status !== "completed") {
+        workflow = mergeTasks(workflow, tasks);
+        execute(workflow, callback);
+      }
+      else {
+        callback(new Error("Update failed, workflow [" + id + "] has already completed!"));
+      }
     }
     else {
       callback(err);
