@@ -1,0 +1,42 @@
+{
+  "name": "demo19",
+  "description": "A example of using the fileHandler to save and read a file.",
+  "tasks": {
+    "save json file": {
+      "blocking": true,
+      "handler": "../taskhandlers/fileHandler",
+      "parameters": {
+        "file": {
+          "name": "./test/a-json-file.json",
+          "contents": {
+            "some object": {
+              "property1": true,
+              "property2": "is a string",
+              "property3": 42
+            }
+          }
+        }
+      }
+    },
+    "read json file": {
+      "blocking": true,
+      "handler": "../taskhandlers/fileHandler",
+      "parameters": {
+        "file": {
+          "name": "./test/a-json-file.json",
+          "contents": null
+        }
+      }
+    },
+    "read non json file": {
+      "blocking": true,
+      "handler": "../taskhandlers/fileHandler",
+      "parameters": {
+        "file": {
+          "name": "./test/a-non-json-file.txt",
+          "contents": null
+        }
+      }
+    }
+  }
+}

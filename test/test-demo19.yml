@@ -1,0 +1,35 @@
+---
+  name: Test Demo19
+  description: Testing Demo 19
+
+  # Workflow tasks
+  tasks:
+
+    # Task to run the demo and capture results
+    run demo workflow:
+      ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: true
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/demo19.yml"
+
+  # Check assertions after workflow
+  post workflow:
+    description: Perform expect assertion checks
+    blocking: true
+    handler: "../taskhandlers/expectHandler"
+    parameters:
+      expectations:
+        json contents matched:
+          #Check at the demo workflow completed ok
+          assertion: toEqual
+          object: $[tasks.run demo workflow.parameters.workflow.tasks.save json file.parameters.file.contents]
+          value: $[tasks.run demo workflow.parameters.workflow.tasks.read json file.parameters.file.contents]
+          message: "The workflow did not complete as expected!"
+
+        non json matched:
+          assertion: toEqual
+          object: $[tasks.run demo workflow.parameters.workflow.tasks.read non json file.parameters.file.contents]
+          value: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\n"
+          message: "The workflow did not complete as expected!"

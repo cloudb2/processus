@@ -141,6 +141,22 @@
       handler: "../taskhandlers/workflowHandler"
       parameters:
         file: "./test/test-demo15.yml"
+    # Task to run the demo and capture results
+    run demo 17:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo17.yml"
+    # Task to run the demo and capture results
+    run demo 19:
+      #ignoreError: true #ignore errors and deal with any problems in post workflow
+      description: "calls the workflow in the file"
+      blocking: $env[TEST_TASKS_BLOCKING]
+      handler: "../taskhandlers/workflowHandler"
+      parameters:
+        file: "./test/test-demo19.yml"
     # dummy task to wait for all others to complete
     wait:
       blocking: true

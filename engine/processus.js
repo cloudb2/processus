@@ -465,7 +465,18 @@ function setTaskDataValues(workflow, task){
 
         if (typeof dataValue === 'string' || dataValue instanceof String) {
           //literally replace env ref with value
-          propStr = propStr.replace(refValues[x], dataValue);
+          dataValue = dataValue
+                        .replace(/[\\]/g, '\\\\')
+                        .replace(/[\/]/g, '\\/')
+                        .replace(/[\b]/g, '\\b')
+                        .replace(/[\f]/g, '\\f')
+                        .replace(/[\n]/g, '\\n')
+                        .replace(/[\r]/g, '\\r')
+                        .replace(/[\t]/g, '\\t')
+                        .replace(/[\"]/g, '\\"')
+                        .replace(/\\'/g, "\\'");
+                        
+          propStr = "" + propStr.replace(refValues[x], dataValue);
         }
         else {
             //ok, not a string, so replace quotes wrapping the path and JSON stringify it
@@ -485,6 +496,7 @@ function setTaskDataValues(workflow, task){
 
     }
     task[propertyKey] = JSON.parse(propStr);
+
   });
 }
 

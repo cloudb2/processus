@@ -10,7 +10,7 @@ var fs = require('fs');
  * Task INPUT
  * @param task.parameters.cmd The command to execute
  * @param task.parameters.background Set true to spawn and detach the process
-    Note: detached processes will write stdout and stderr to [workflowId].logger
+    Note: detached processes will write stdout and stderr to [workflowId].log
  * @param task.parameters.arguments Set to an array of arguments
     Note: arguments are only required for background (spawned) commands
  * Task OUTPUT
@@ -23,7 +23,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
 
   //validate that task data element exists
   if(!task.parameters) {
-    logger.debug("No task data property!");
+    logger.debug("No task parameters property!");
     callback(new Error("Task [" + taskName + "] has no task parameters property!"), task);
     return;
   }
@@ -50,6 +50,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
     exec(task.parameters.cmd, function(error, stdout, stderr) {
 
       //Set the stdout and stderr properties of the data object in the task
+      //strip out last cr/lf
       task.parameters.stdout = stdout.replace(/\n$/, "");
       task.parameters.stderr = stderr.replace(/\n$/, "");
       if(task.parameters.stdout !== ""){ logger.info(task.parameters.stdout); }

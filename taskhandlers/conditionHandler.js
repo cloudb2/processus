@@ -33,7 +33,7 @@ module.exports = function(workflowId, taskName, task, callback, logger){
 
   //validate that task data element exists
   if(!task.parameters) {
-    logger.debug("No task data property!");
+    logger.debug("No task parameters property!");
     callback(new Error("Task [" + taskName + "] has no parameters property!"), task);
     return;
   }

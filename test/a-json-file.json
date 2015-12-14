@@ -1,0 +1,7 @@
+{
+  "some object": {
+    "property1": true,
+    "property2": "is a string",
+    "property3": 42
+  }
+}
