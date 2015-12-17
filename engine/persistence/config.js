@@ -6,9 +6,9 @@
 
 //Fetch and set default env vars
 var type = process.env.DB_TYPE !== undefined ? process.env.DB_TYPE : "file";
-var dataDirectory = process.env.DATA_DIR !== undefined ? process.env.DATA_DIR : "_data";
-var dataHost = process.env.DATA_HOST !== undefined ? process.env.DATA_HOST : "localhost";
-var dataPort = process.env.DATA_PORT !== undefined ? process.env.DATA_PORT : 0;
+var dataDirectory = process.env.DB_DIR !== undefined ? process.env.DB_DIR : "_data";
+var dataHost = process.env.DB_HOST !== undefined ? process.env.DB_HOST : "localhost";
+var dataPort = process.env.DB_PORT !== undefined ? process.env.DB_PORT : 0;
 
 //declare module exports
 exports.config = {

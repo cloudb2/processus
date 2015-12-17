@@ -21,28 +21,68 @@ module.exports = {
   initStore: initStore,
   saveInstance: saveInstance,
   deleteAll: deleteAll,
-  exitStore: exitStore
+  exitStore: exitStore,
+  saveDefinition: saveDefinition,
+  getDefinition: getDefinition,
+  getWorkflows: getWorkflows,
+  deleteDefinition: deleteDefinition
 };
 
-function deleteAll(config, callback){
-  glob(config.dataDirectory + "/*", function (err, files) {
+var gConfig;
+
+function saveDefinition(workflowDef, callback){
+  try {
+    fs.writeFileSync(gConfig.dataDirectory + "/" + workflowDef.name + ".def", JSON.stringify(workflowDef, null, 2));
+    callback(null, workflowDef);
+  }
+  catch(fileError){
+    callback(fileError);
+  }
+}
+
+function getDefinition(name, callback){
+  try {
+    var workflowDef = fs.readFileSync(gConfig.dataDirectory + "/" + name + ".def", "utf8");
+    workflowDef = JSON.parse(workflowDef);
+    callback(null, workflowDef);
+  }
+  catch(fileError){
+    callback(fileError);
+  }
+}
+
+function deleteDefinition(name, callback){
+  try {
+    fs.unlink(gConfig.dataDirectory + "/" + name + ".def", function(err){
+      callback(err);
+    });
+  }
+  catch(fileError){
+    callback(fileError);
+  }
+}
+
+function deleteAll(callback){
+  logger.debug("DELETE ALL");
+  glob(gConfig.dataDirectory + "/!(*.def)", function (err, files) {
+    logger.debug("deleting files " + JSON.stringify(files, null, 2));
     if(err){
       callback(err);
       return;
     }
     var delError;
     if(files) {
-      if(files.length === 0){
-        callback(null);
-        return;
-      }
+      logger.debug("deleting files " + JSON.stringify(files, null, 2));
+
       for(var x=0; x<files.length; x++){
-        if(!delError){
-          var last = (x === files.length -1);
-          fs.unlink(files[x], checkDelResponse(delError, files[x], last, callback));
+        try{
+          fs.unlinkSync(files[x]);
         }
+        catch(e){}
       }
+      callback(null);
     }
+
     else {
       logger.info("No workflows to delete.");
       callback(null);
@@ -53,19 +93,24 @@ function deleteAll(config, callback){
 function checkDelResponse(err, file, last, callback){
   if (err) {
     logger.error("✘ Unable to delete workflow file [" + file + "] " + err);
-    callback(err);
-    return;
+    //callback(err);
+    //return;
   }
-  logger.info("successfully deleted workflow file [" + file + "]");
+  else {
+    logger.info("successfully deleted workflow file [" + file + "]");
+
+  }
   //is this the last one, if so callback
   if(last){
+    logger.debug("LAST CALLING BACK");
     callback(null);
     return;
   }
 }
 
-function deleteInstance(id, config, callback){
-  var current = config.dataDirectory + "/" + id;
+function deleteInstance(id, callback){
+  logger.debug("DELETE instance");
+  var current = gConfig.dataDirectory + "/" + id;
 
   fs.unlink(current, function (err) {
     if (err) {
@@ -74,34 +119,34 @@ function deleteInstance(id, config, callback){
       return;
     }
     logger.info("successfully deleted workflow [" + id + "]");
-  });
 
-  var delError = null;
-  glob(current + "_*", function (err, files) {
+    var delError = null;
+    glob(current + "_*", function (err, files) {
 
-    if(files) {
-      for(var x=0; x<files.length; x++){
-        if(!delError){
-          var last = (x === files.length -1);
-          fs.unlink(files[x], checkDelResponse(delError, files[x], last, callback));
+      if(files) {
+        logger.debug("deleting files " + JSON.stringify(files, null, 2));
+        for(var x=0; x<files.length; x++){
+          try{
+            fs.unlinkSync(files[x]);
+          }
+          catch(e){}
         }
+        callback(null);
       }
-    }
-    else {
-      logger.info("No history for workflow [" + id + "]");
-      callback(null);
-    }
+      else {
+        logger.info("No history for workflow [" + id + "]");
+        callback(null);
+      }
 
+    });
   });
+
+
 
 }
 
 function isYaml(file){
   return file.indexOf(".yml", file.length - ".yml".length) !== -1;
-}
-
-function saveDefinition(definition, callback){
-  callback(new Error("saveDefinition not implemented."));
 }
 
 function loadDefinition(id, callback){
@@ -152,55 +197,66 @@ function loadDefinition(id, callback){
   callback(null, workflowTaskJSON);
 }
 
-function loadInstance(id, rewind, config, callback) {
-  var current = config.dataDirectory + "/" + id;
-  glob(current + "_*", function (err, files) {
+function loadInstance(id, rewind, callback) {
+  try {
+    var current = gConfig.dataDirectory + "/" + id;
+    glob(current + "_*", function (err, files) {
 
-    if(files) {
-      if(rewind > 0 ) {
-        if (rewind > files.length) {
-          logger.warn("rewind value [" + rewind + "] is before the workflow started, assuming the oldest [" + files.length + "].");
-          rewind = files.length;
+      if(files) {
+        if(rewind > 0 ) {
+          if (rewind > files.length) {
+            logger.warn("rewind value [" + rewind + "] is before the workflow started, assuming the oldest [" + files.length + "].");
+            rewind = files.length;
 
+          }
+          index = files.length - rewind < files.length ? files.length - rewind : 0;
+          current = files[index];
         }
-        index = files.length - rewind < files.length ? files.length - rewind : 0;
-        current = files[index];
+
+        fs.readFile(current, function (err, data) {
+          var workflowLoaded;
+          if (err) {
+            logger.error("✘ Unable to find workflow [" + id + "] " + err);
+          }
+          else {
+            workflowLoaded = JSON.parse(data);
+          }
+          callback(err, workflowLoaded);
+        });
+      }
+      else {
+        logger.error("✘ Unable to find workflow [" + id + "] " + err);
       }
 
-      fs.readFile(current, function (err, data) {
-        var workflowLoaded;
-        if (err) {
-          logger.error("✘ Unable to find workflow [" + id + "] " + err);
-        }
-        else {
-          workflowLoaded = JSON.parse(data);
-        }
-        callback(err, workflowLoaded);
-      });
-    }
-    else {
-      logger.error("✘ Unable to find workflow [" + id + "] " + err);
-    }
-
-  });
+    });
+  }
+  catch(fileError){
+    callback(fileError);
+  }
 
 
 }
 
+function getWorkflows(query, callback){
+  callback(new Error("getWorkflows is not implemented in file type storage, use mongo."));
+}
+
 function initStore(config, callback){
+
+  gConfig = config;
 
   if(!initialised) {
     var stat;
 
     try {
-      logger.debug("checking for data directory [" + config.dataDirectory + "]");
-      stat = fs.statSync(config.dataDirectory);
+      logger.debug("checking for data directory [" + gConfig.dataDirectory + "]");
+      stat = fs.statSync(gConfig.dataDirectory);
       initialised = true;
     }
     catch(err) {
       try {
-        logger.debug("creating data directory [" + config.dataDirectory + "]");
-        fs.mkdirSync(config.dataDirectory);
+        logger.debug("creating data directory [" + gConfig.dataDirectory + "]");
+        fs.mkdirSync(gConfig.dataDirectory);
         initialised = true;
       }
       catch(error) {
@@ -213,8 +269,8 @@ function initStore(config, callback){
   callback(null);
 }
 
-function saveInstance(workflow, config, callback) {
-  var current = config.dataDirectory + "/" + workflow.id;
+function saveInstance(workflow, callback) {
+  var current = gConfig.dataDirectory + "/" + workflow.id;
   //If the file already exists rename it based on current time
   var stat;
   try {
@@ -249,6 +305,6 @@ function writeCurrent(workflow, current, callback) {
 
 }
 
-function exitStore(config, callback) {
+function exitStore(callback) {
   callback(null);
 }

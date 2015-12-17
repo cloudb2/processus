@@ -8,6 +8,7 @@
 var logger = require('../logger');
 var config = require('./config').config;
 var EventEmitter = require('events');
+var deasync = require('deasync');
 
 //declare module exports
 module.exports = {
@@ -17,12 +18,16 @@ module.exports = {
   initStore: initStore,
   saveInstance: saveInstance,
   deleteAll: deleteAll,
-  exitStore: exitStore
+  exitStore: exitStore,
+  saveDefinition: saveDefinition,
+  getDefinition: getDefinition,
+  getWorkflows: getWorkflows,
+  deleteDefinition: deleteDefinition
 };
 
 function deleteAll(callback){
   if(config.type !== null && config.type !== undefined) {
-    require('./' + config.type).deleteAll(config, callback);
+    require('./' + config.type).deleteAll(callback);
   }
   else {
     callback(new Error("Persistence store error, no store type selected."));
@@ -31,7 +36,34 @@ function deleteAll(callback){
 
 function deleteInstance(id, callback) {
   if(config.type !== null && config.type !== undefined) {
-    require('./' + config.type).deleteInstance(id, config, callback);
+    require('./' + config.type).deleteInstance(id, callback);
+  }
+  else {
+    callback(new Error("Persistence store error, no store type selected."));
+  }
+}
+
+function getDefinition(name, callback){
+  if(config.type !== null && config.type !== undefined) {
+    require('./' + config.type).getDefinition(name, callback);
+  }
+  else {
+    callback(new Error("Persistence store error, no store type selected."));
+  }
+}
+
+function saveDefinition(workflowDef, callback){
+  if(config.type !== null && config.type !== undefined) {
+    require('./' + config.type).saveDefinition(workflowDef, callback);
+  }
+  else {
+    callback(new Error("Persistence store error, no store type selected."));
+  }
+}
+
+function deleteDefinition(name, callback){
+  if(config.type !== null && config.type !== undefined) {
+    require('./' + config.type).deleteDefinition(name, callback);
   }
   else {
     callback(new Error("Persistence store error, no store type selected."));
@@ -48,8 +80,18 @@ function loadDefinition(id, callback) {
 }
 
 function loadInstance(id, rewind, callback) {
+  logger.debug("loading instance called with " + id + ", " + rewind);
   if(config.type !== null && config.type !== undefined) {
-    require('./' + config.type).loadInstance(id, rewind, config, callback);
+    require('./' + config.type).loadInstance(id, rewind, callback);
+  }
+  else {
+    callback(new Error("Persistence store error, no store type selected."));
+  }
+}
+
+function getWorkflows(query, callback){
+  if(config.type !== null && config.type !== undefined) {
+    require('./' + config.type).getWorkflows(query, callback);
   }
   else {
     callback(new Error("Persistence store error, no store type selected."));
@@ -57,27 +99,40 @@ function loadInstance(id, rewind, callback) {
 }
 
 function initStore(callback) {
-  if(config.type !== null && config.type !== undefined) {
-    require('./' + config.type).initStore(config, callback);
+  try {
+    if(config.type !== null && config.type !== undefined) {
+      require('./' + config.type).initStore(config, callback);
+    }
+    else {
+      callback(null);
+    }
   }
-  else {
-    callback(null);
+  catch(storeErr){
+    callback(storeErr);
   }
 }
 
 function saveInstance(workflow, callback) {
-  if(config.type !== null && config.type !== undefined) {
-    require('./' + config.type).saveInstance(workflow, config, callback);
+  try {
+    if(config.type !== null && config.type !== undefined) {
+      require('./' + config.type).saveInstance(workflow, function(err){
+        callback(err);
+      });
+    }
+    else {
+      callback(null);
+    }
   }
-  else {
-    callback(null);
+  catch(storeErr){
+    callback(storeErr);
   }
+
 }
 
 function exitStore(callback) {
   logger.debug("Store is exiting...");
   if(config.type !== null && config.type !== undefined) {
-    require('./' + config.type).exitStore(config, callback);
+    require('./' + config.type).exitStore(callback);
   }
   else {
     callback(null);

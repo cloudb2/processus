@@ -129,37 +129,41 @@ function addEnvVars(workflow){
  */
 function execute(workflow, callback){
 
-  //add environment vars to workflow parameters
-  workflow = addEnvVars(workflow);
+  try {
 
-  //Validate workflow
-  workflow = validateWorkflow(workflow);
+    //add environment vars to workflow parameters
+    workflow = addEnvVars(workflow);
 
-  logger.debug("Validated workflow: " + workflow);
+    //Validate workflow
+    workflow = validateWorkflow(workflow);
 
-  //Do pre-workflow Task
-  doPre(workflow, function(err, workflow){
-      if(!err) {
-        realExecute(workflow, function(err, workflow){
-          if(!err){
-            doPost(workflow, function(err, workflow){
+    //Do pre-workflow Task
+    doPre(workflow, function(err, workflow){
+        if(!err) {
+          realExecute(workflow, function(err, workflow){
+            if(!err){
+              doPost(workflow, function(err, workflow){
+                callback(err, workflow);
+              });
+            }
+            else {
+              //execute workflow failed, so callback
               callback(err, workflow);
-            });
-          }
-          else {
-            //execute workflow failed, so callback
-            callback(err, workflow);
-            return;
-          }
-        });
-      }
-      else {
-        //pre workflow failed, so callback
-        callback(err, workflow);
-        return;
-      }
-  });
-  //return workflow;
+              return;
+            }
+          });
+        }
+        else {
+          //pre workflow failed, so callback
+          callback(err, workflow);
+          return;
+        }
+    });
+  }
+  catch(execError){
+    callback(execError, workflow);
+  }
+
 }
 
 function doPre(workflow, callback){
@@ -401,7 +405,6 @@ function realExecute(workflow, callback) {
                 callback(error, workflow);
               }
             });
-
           }
         });
     }
@@ -412,8 +415,8 @@ function realExecute(workflow, callback) {
       }
       store.saveInstance(workflow, function(err){
         logger.debug("save point c reached.");
+        done = true;
         //None left in the queue so callback
-
         if(err){
           callback(err, workflow);
           return;
@@ -475,8 +478,9 @@ function setTaskDataValues(workflow, task){
                         .replace(/[\t]/g, '\\t')
                         .replace(/[\"]/g, '\\"')
                         .replace(/\\'/g, "\\'");
-                        
-          propStr = "" + propStr.replace(refValues[x], dataValue);
+
+            propStr = propStr.replace(refValues[x], dataValue);
+
         }
         else {
             //ok, not a string, so replace quotes wrapping the path and JSON stringify it
@@ -647,7 +651,9 @@ function getBoolean(value) {
   return false;
 }
 
+/*
 function exitHandler(options, err) {
+
   logger.debug("Processus is exiting..");
   store.exitStore(function(err){
     logger.debug("GOODBYE: Cheerio!");
@@ -666,3 +672,4 @@ process.on('SIGINT', exitHandler.bind(null, {exit:true}));
 
 //catches uncaught exceptions
 process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+*/

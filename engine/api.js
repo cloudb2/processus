@@ -10,7 +10,7 @@ var store = require('./persistence/store');
 var p = require('./processus');
 
 //set default log level
-logger.level = 'error';
+logger.level = 'info';
 
 module.exports = {
   execute: execute,
@@ -18,12 +18,49 @@ module.exports = {
   setLogLevel: setLogLevel,
   getWorkflow: getWorkflow,
   deleteWorkflow: deleteWorkflow,
-  deleteAll: deleteAll
+  deleteAll: deleteAll,
+  getWorkflows: getWorkflows,
+  saveDefinition: saveDefinition,
+  getDefinition: getDefinition,
+  deleteDefinition: deleteDefinition,
+  init: init,
+  close: close
 };
 
+function close(callback){
+    store.exitStore(callback);
+}
+
 /**
- * executes the supplied workflow and calls back with the resulting workflow.
- * @param workflow The workflow definition you wish to execute.
+ * Saves the worklfow definition
+ * @param workflowDef The workflow definition you wish to save.
+ * @param callback A function(err, workflowDef)
+ */
+function saveDefinition(workflowDef, callback){
+  store.saveDefinition(workflowDef, callback);
+}
+
+/**
+ * Deletes the worklfow definition
+ * @param name The name of the workflow definition you wish to delete.
+ * @param callback A function(err)
+ */
+function deleteDefinition(name, callback){
+  store.deleteDefinition(name, callback);
+}
+
+/**
+ * Gets the worklfow definition
+ * @param name The name of the workflow definition you wish to retrieve.
+ * @param callback A function(err, workflowDef)
+ */
+function getDefinition(name, callback){
+  store.getDefinition(name, callback);
+}
+
+/**
+ * executes the supplied workflow calls back with the resulting workflow instance.
+ * @param workflow The workflow you wish to execute.
  * @param callback A function(err, workflow)
  */
 function execute(workflow, callback){
@@ -48,6 +85,7 @@ function updateWorkflow(workflowId, tasks, callback){
  */
 function setLogLevel(level){
   logger.level = level;
+  return logger;
 }
 
 /**
@@ -58,7 +96,17 @@ function setLogLevel(level){
  * @param callback A function(err, workflow)
  */
 function getWorkflow(workflowId, rewind, callback){
+  logger.debug("getWorkflow called");
   store.loadInstance(workflowId, rewind, callback);
+}
+
+/**
+ * Gets a existing instances of a workflows idenified by query
+ * @param query object representing workflows to search for
+ * @param callback A function(err, workflow[])
+ */
+function getWorkflows(query, callback){
+  store.getWorkflows(query, callback);
 }
 
 /**
@@ -71,9 +119,22 @@ function deleteWorkflow(workflowId, callback) {
 }
 
 /**
+ * Initialise Processus store based on the configured environment variables
+ * DB_TYPE default "file" [file | mongo]
+ * DATA_DIR default "_data" [file only]
+ * DATA_HOST default "localhost" [mongo only]
+ * DATA_PORT default 27017 [mongo only]
+ * @param callback A function(err)
+ */
+function init(callback){
+  store.initStore(callback);
+}
+
+/**
  * Deletes ALL workflow instances
  * @param callback A function(err)
  */
 function deleteAll(callback){
+  logger.debug("DELETE ALL");
   store.deleteAll(callback);
 }

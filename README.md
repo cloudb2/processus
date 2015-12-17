@@ -90,7 +90,7 @@ var wf = {
 
 processus.execute(wf, function(err, workflow){
   if(!err) {
-    console.log(workflow.tasks['task 1']parameters.stdout);
+    console.log(workflow.tasks['task 1'].parameters.stdout);
   }
 });
 
