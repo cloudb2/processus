@@ -102,7 +102,6 @@ function checkDelResponse(err, file, last, callback){
   }
   //is this the last one, if so callback
   if(last){
-    logger.debug("LAST CALLING BACK");
     callback(null);
     return;
   }
@@ -277,9 +276,9 @@ function saveInstance(workflow, callback) {
     stat = fs.statSync(current);
     try {
       fs.renameSync(current, current + "_" + Date.now());
-      writeCurrent(workflow, current, function(err){
-        callback(err);
-      });
+      fs.writeFileSync(current, JSON.stringify(workflow, null, 2));
+      callback(null);
+      
     }
     catch(renameError) {
       logger.error("✘ Fatal Error, unable to rename existing workflow. " + renameError);
