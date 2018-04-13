@@ -70,8 +70,15 @@ Options:
 ```
 
 ### Usage API
+
 ```
 var processus = require('processus');
+var store = require('processus/engine/persistence/store');
+
+//Initialize the processus store
+store.initStore(function(err){
+  console.log(err);
+});
 
 var wf = {
   "name": "Example Workflow",
@@ -92,7 +99,19 @@ processus.execute(wf, function(err, workflow){
   if(!err) {
     console.log(workflow.tasks['task 1'].parameters.stdout);
   }
+  else {
+    console.log(err);
+  }
 });
+```
+
+which should result in the following:
+
+```
+info: ⧖ Starting task [task 1]
+info: Congratulations you called a workflow using the API.
+info: ✔ task task 1 completed successfully.
+Congratulations you called a workflow using the API.
 
 ```
 
