@@ -22,7 +22,7 @@
   "license": "MPL-2.0",
   "main": "./engine/api",
   "devDependencies": {
-    "apidoc": "^0.13.1",
+    "apidoc": "^0.28.1",
     "jshint": "^2.8.0",
     "mocha": "^2.3.3"
   },
